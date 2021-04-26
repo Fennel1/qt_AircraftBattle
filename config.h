@@ -23,4 +23,5 @@
 #define BOMB_MAX  4      //爆炸图片最大索引
 #define BOMB_INTERVAL 10   //爆炸切图时间间隔
 
+
 #endif // CONFIG_H
