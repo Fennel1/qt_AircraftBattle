@@ -76,6 +76,8 @@ void MainScene::playGame()
         updatePosition();
         //重新绘制图片
         update();
+        //碰撞检测
+        collisionDetection();
     });
 }
 
@@ -101,6 +103,15 @@ void MainScene::updatePosition()
         if(m_enemys[i].m_Free == false)
         {
            m_enemys[i].updatePosition();
+        }
+    }
+
+    //计算爆炸播放的图片
+    for(int i = 0 ; i < BOMB_NUM;i++)
+    {
+        if(m_bombs[i].m_Free == false)
+        {
+            m_bombs[i].updateInfo();
         }
     }
 }
@@ -132,6 +143,15 @@ void MainScene::paintEvent(QPaintEvent *event)
         if(m_enemys[i].m_Free == false)
         {
             painter.drawPixmap(m_enemys[i].m_X,m_enemys[i].m_Y,m_enemys[i].m_enemy);
+        }
+    }
+
+    //绘制爆炸图片
+    for(int i = 0 ; i < BOMB_NUM;i++)
+    {
+        if(m_bombs[i].m_Free == false)
+        {
+            painter.drawPixmap(m_bombs[i].m_X,m_bombs[i].m_Y,m_bombs[i].m_pixArr[m_bombs[i].m_index]);
         }
     }
 }
@@ -261,6 +281,52 @@ void MainScene::enemyToScene()
             break;
         }
     }
+}
+
+void MainScene::collisionDetection()
+{
+    //遍历所有非空闲的敌机
+    for(int i = 0 ;i < ENEMY_NUM;i++)
+    {
+        if(m_enemys[i].m_Free)
+        {
+            //空闲飞机 跳转下一次循环
+            continue;
+        }
+
+        //遍历所有 非空闲的子弹
+        for(int j = 0 ; j < BULLET_NUM;j++)
+        {
+            if(m_plane.m_bullets[j].m_Free)
+            {
+                //空闲子弹 跳转下一次循环
+                continue;
+            }
+
+            //如果子弹矩形框和敌机矩形框相交，发生碰撞，同时变为空闲状态即可
+            if(m_enemys[i].m_Rect.intersects(m_plane.m_bullets[j].m_Rect))
+            {
+                m_enemys[i].m_Free = true;
+                m_plane.m_bullets[j].m_Free = true;
+                //播放爆炸效果
+                for(int k = 0 ; k < BOMB_NUM;k++)
+                {
+                    if(m_bombs[k].m_Free)
+                    {
+                        //爆炸状态设置为非空闲
+                        m_bombs[k].m_Free = false;
+                        //更新坐标
+
+                        m_bombs[k].m_X = m_enemys[i].m_X;
+                        m_bombs[k].m_Y = m_enemys[i].m_Y;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
 }
 
 

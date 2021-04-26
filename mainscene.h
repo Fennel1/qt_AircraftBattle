@@ -6,6 +6,7 @@
 #include "map.h"
 #include "myplane.h"
 #include "enemyplane.h"
+#include "bomb.h"
 
 class MainScene : public QWidget
 {
@@ -32,6 +33,12 @@ public:
 
     //敌机出场
     void enemyToScene();
+
+    //碰撞检测
+    void collisionDetection();
+
+    //爆炸数组
+    Bomb m_bombs[BOMB_NUM];
 
     //敌机数组
     EnemyPlane m_enemys[ENEMY_NUM];

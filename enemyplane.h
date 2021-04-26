@@ -27,6 +27,9 @@ public:
 
     //速度
     int m_Speed;
+
+    //飞机死亡
+    void death();
 };
 
 #endif // ENEMYPLANE_H

@@ -49,7 +49,7 @@ void myPlane::shoot()
 //    //重置发射时间间隔记录
 //    m_recorder = 0;
 
-//    //发射子弹
+    //发射子弹
 //    for(int i = 0 ; i < BULLET_NUM;i++)
 //    {
 //        //如果是空闲的子弹进行发射

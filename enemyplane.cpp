@@ -30,11 +30,26 @@ void EnemyPlane::updatePosition()
         return;
     }
 
-    m_Y += m_Speed;
-    m_Rect.moveTo(m_X,m_Y);
+    m_X += m_Speed;
+    m_Y += 2;
+
+    if(m_X < 0)
+    {
+        m_Speed = ENEMY_SPEED;
+    }
+    else if(m_X > GAME_WIDTH-m_Rect.width())
+    {
+        m_Speed = -ENEMY_SPEED;
+    }
+    m_Rect.moveTo(m_X, m_Y);
 
     if(m_Y >= GAME_HEIGHT + m_Rect.height())
     {
         m_Free = true;
     }
+}
+
+void EnemyPlane::death()
+{
+    m_Free = true;
 }
