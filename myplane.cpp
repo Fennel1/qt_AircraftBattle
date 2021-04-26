@@ -19,8 +19,14 @@ myPlane::myPlane()
     m_recorder = 0;
 
     //飞机移动方向
-    m_direction_X = 0;
-    m_direction_Y = 0;
+    m_direction_w = 0;
+    m_direction_s = 0;
+    m_direction_a = 0;
+    m_direction_d = 0;
+    m_pressflag_w = false;
+    m_pressflag_s = false;
+    m_pressflag_a = false;
+    m_pressflag_d = false;
 }
 
 void myPlane::setPosition(int x, int y)
@@ -62,7 +68,7 @@ void myPlane::shoot()
         if(m_bullets[i].m_Free)
         {
             m_bullets[i].m_Free = false;
-            m_bullets[i].m_X = m_X+20;
+            m_bullets[i].m_X = m_X + m_Rect.width()/2;
             m_bullets[i].m_Y = m_Y;
             m_bullets[i].m_Rect.moveTo(m_bullets[i].m_X, m_bullets[i].m_Y);
             break;

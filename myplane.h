@@ -29,9 +29,14 @@ public:
     //发射间隔记录
     int m_recorder;
 
+    //发射子弹
+    bool m_shootflag;
+
     //飞机移动方向
-    int m_direction_X;
-    int m_direction_Y;
+    int m_direction_w;
+    int m_direction_s;
+    int m_direction_a;
+    int m_direction_d;
     bool m_pressflag_w;
     bool m_pressflag_s;
     bool m_pressflag_a;

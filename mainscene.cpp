@@ -1,6 +1,7 @@
 #include "mainscene.h"
 #include "config.h"
 #include <QIcon>
+#include <QDebug>
 #include <QPainter>
 #include <QMouseEvent>
 #include <ctime>
@@ -45,11 +46,11 @@ void MainScene::playGame()
         //主机移动
         if (m_plane.m_X >= 0 && m_plane.m_X <= GAME_WIDTH - m_plane.m_Rect.width())
         {
-            m_plane.m_X += m_plane.m_direction_X * MYPLANE_SPEED;
+            m_plane.m_X += (m_plane.m_direction_a + m_plane.m_direction_d) * MYPLANE_SPEED;
         }
         if (m_plane.m_Y >= 0 && m_plane.m_Y <= (GAME_HEIGHT - m_plane.m_Rect.height()))
         {
-            m_plane.m_Y += m_plane.m_direction_Y * MYPLANE_SPEED;
+            m_plane.m_Y += (m_plane.m_direction_w + m_plane.m_direction_s) * MYPLANE_SPEED;
         }
         //边界检测
         if(m_plane.m_X <= 0 )
@@ -137,8 +138,8 @@ void MainScene::paintEvent(QPaintEvent *event)
 
 void MainScene::mouseMoveEvent(QMouseEvent *event)
 {
-    int x = event->x() - m_plane.m_Rect.width()*0.5; //鼠标位置 - 飞机矩形的一半
-    int y = event->y() - m_plane.m_Rect.height()*0.5;
+    int x = event->x() - m_plane.m_Rect.width()/2; //鼠标位置 - 飞机矩形的一半
+    int y = event->y() - m_plane.m_Rect.height()/2;
 
     //边界检测
     if(x <= 0 )
@@ -171,31 +172,31 @@ void MainScene::keyPressEvent(QKeyEvent *event)
     {
         if(!m_plane.m_pressflag_w)
         {
-            m_plane.m_direction_Y = -1;
+            m_plane.m_direction_w = -1;
         }
         m_plane.m_pressflag_w = true;
     }
-    else if((event->key() == Qt::Key_S) && !event->isAutoRepeat())  //下
+    if((event->key() == Qt::Key_S) && !event->isAutoRepeat())  //下
     {
         if(!m_plane.m_pressflag_s)
         {
-           m_plane.m_direction_Y = 1;
+           m_plane.m_direction_s = 1;
         }
         m_plane.m_pressflag_s = true;
     }
-    else if((event->key() == Qt::Key_A) && !event->isAutoRepeat())  //左
+    if((event->key() == Qt::Key_A) && !event->isAutoRepeat())  //左
     {
         if(!m_plane.m_pressflag_a)
         {
-            m_plane.m_direction_X = -1;
+            m_plane.m_direction_a = -1;
         }
         m_plane.m_pressflag_a = true;
     }
-    else if((event->key() == Qt::Key_D) && !event->isAutoRepeat())  //右
+    if((event->key() == Qt::Key_D) && !event->isAutoRepeat())  //右
     {
         if(!m_plane.m_pressflag_d)
         {
-            m_plane.m_direction_X = 1;
+            m_plane.m_direction_d = 1;
         }
         m_plane.m_pressflag_d = true;
     }
@@ -204,35 +205,35 @@ void MainScene::keyPressEvent(QKeyEvent *event)
 
 void MainScene::keyReleaseEvent(QKeyEvent *event)
 {
-    if((event->key() == Qt::Key_W || event->key() == Qt::Key_Up)&& m_plane.m_direction_Y == -1 && !event->isAutoRepeat())     //上
+    if((event->key() == Qt::Key_W)&& m_plane.m_direction_w == -1 && !event->isAutoRepeat())     //上
     {
         if(m_plane.m_pressflag_w)
         {
-            m_plane.m_direction_Y = 0;
+            m_plane.m_direction_w = 0;
         }
         m_plane.m_pressflag_w = false;
     }
-    else if((event->key() == Qt::Key_S || event->key() == Qt::Key_Down)&& m_plane.m_direction_Y == 1 && !event->isAutoRepeat())     //下
+    if((event->key() == Qt::Key_S)&& m_plane.m_direction_s == 1 && !event->isAutoRepeat())     //下
     {
         if(m_plane.m_pressflag_s)
         {
-            m_plane.m_direction_Y = 0;
+            m_plane.m_direction_s = 0;
         }
         m_plane.m_pressflag_s = false;
     }
-    else if((event->key() == Qt::Key_A || event->key() == Qt::Key_Left)&& m_plane.m_direction_X == -1 && !event->isAutoRepeat())     //左
+    if((event->key() == Qt::Key_A)&& m_plane.m_direction_a == -1 && !event->isAutoRepeat())     //左
     {
         if(m_plane.m_pressflag_a)
         {
-            m_plane.m_direction_X = 0;
+            m_plane.m_direction_a = 0;
         }
         m_plane.m_pressflag_a = false;
     }
-    else if((event->key() == Qt::Key_D || event->key() == Qt::Key_Right)&& m_plane.m_direction_X == 1 && !event->isAutoRepeat())     //右
+    if((event->key() == Qt::Key_D)&& m_plane.m_direction_d == 1 && !event->isAutoRepeat())     //右
     {
         if(m_plane.m_pressflag_d)
         {
-            m_plane.m_direction_X = 0;
+            m_plane.m_direction_d = 0;
         }
         m_plane.m_pressflag_d = false;
     }
