@@ -1,9 +1,10 @@
 #ifndef MYPLANE_H
 #define MYPLANE_H
 #include <QPixmap>
+#include "bomb.h"
 #include "bullet.h"
 
-class myPlane
+class myPlane : Bomb
 {
 public:
     myPlane();
@@ -12,6 +13,10 @@ public:
     void shoot();
     //设置飞机位置
     void setPosition(int x, int y);
+
+    //飞机死亡
+    void death();
+    bool isdeath;
 
     //飞机资源 对象
     QPixmap m_Plane;

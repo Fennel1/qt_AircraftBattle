@@ -1,7 +1,7 @@
 #include "myplane.h"
 #include "config.h"
 
-myPlane::myPlane()
+myPlane::myPlane() : Bomb()
 {
     //初始化加载飞机图片资源
     m_Plane.load(MYPLANE_PATH);
@@ -28,6 +28,9 @@ myPlane::myPlane()
     m_pressflag_s = false;
     m_pressflag_a = false;
     m_pressflag_d = false;
+
+    //飞机死亡
+    isdeath = false;
 }
 
 void myPlane::setPosition(int x, int y)

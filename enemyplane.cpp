@@ -1,7 +1,7 @@
 #include "enemyplane.h"
 #include "config.h"
 
-EnemyPlane::EnemyPlane()
+EnemyPlane::EnemyPlane() : Bomb()
 {
     //敌机资源加载
     m_enemy.load(ENEMY_PATH);

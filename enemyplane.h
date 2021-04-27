@@ -3,8 +3,9 @@
 
 
 #include <QPixmap>
+#include <bomb.h>
 
-class EnemyPlane
+class EnemyPlane : public Bomb
 {
 public:
     EnemyPlane();
@@ -30,6 +31,18 @@ public:
 
     //飞机死亡
     void death();
+};
+
+class CommonEnemyPlane : public EnemyPlane{
+
+};
+
+class SpeedEnemyPlane : public EnemyPlane{
+
+};
+
+class ShootEnemyPlane : public EnemyPlane{
+
 };
 
 #endif // ENEMYPLANE_H

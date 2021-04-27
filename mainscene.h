@@ -37,9 +37,6 @@ public:
     //碰撞检测
     void collisionDetection();
 
-    //爆炸数组
-    Bomb m_bombs[BOMB_NUM];
-
     //敌机数组
     EnemyPlane m_enemys[ENEMY_NUM];
 

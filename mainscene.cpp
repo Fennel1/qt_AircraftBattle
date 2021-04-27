@@ -113,9 +113,9 @@ void MainScene::updatePosition()
     //计算爆炸播放的图片
     for(int i = 0 ; i < BOMB_NUM;i++)
     {
-        if(m_bombs[i].m_Free == false)
+        if(m_enemys[i].bomb_free == false)
         {
-            m_bombs[i].updateInfo();
+            m_enemys[i].updateInfo();
         }
     }
 }
@@ -153,16 +153,16 @@ void MainScene::paintEvent(QPaintEvent *event)
     //绘制爆炸图片
     for(int i = 0 ; i < BOMB_NUM;i++)
     {
-        if(m_bombs[i].m_Free == false)
+        if(m_enemys[i].bomb_free == false)
         {
-            painter.drawPixmap(m_bombs[i].m_X,m_bombs[i].m_Y,m_bombs[i].m_pixArr[m_bombs[i].m_index]);
+            painter.drawPixmap(m_enemys[i].m_X, m_enemys[i].m_Y, m_enemys[i].m_pixArr[m_enemys[i].m_index]);
         }
     }
 }
 
 void MainScene::mouseMoveEvent(QMouseEvent *event)
 {
-    int x = event->x() - m_plane.m_Rect.width()/2; //鼠标位置 - 飞机矩形的一半
+    int x = event->x() - m_plane.m_Rect.width()/2;      //鼠标位置 - 飞机矩形的一半
     int y = event->y() - m_plane.m_Rect.height()/2;
 
     //边界检测
@@ -185,7 +185,7 @@ void MainScene::mouseMoveEvent(QMouseEvent *event)
     m_plane.setPosition(x,y);
 }
 
-void MainScene::keyPressEvent(QKeyEvent *event)
+void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判定 持续按住按键控制
 {
     if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
@@ -228,7 +228,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)
 
 }
 
-void MainScene::keyReleaseEvent(QKeyEvent *event)
+void MainScene::keyReleaseEvent(QKeyEvent *event)       //键盘按键抬起判定 持续按住按键控制
 {
     if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
@@ -304,6 +304,12 @@ void MainScene::collisionDetection()
             continue;
         }
 
+        //判定敌机与主机碰撞
+        if (m_enemys[i].m_Rect.intersects(m_plane.m_Rect))
+        {
+            m_plane.isdeath = true;
+        }
+
         //遍历所有 非空闲的子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
         {
@@ -313,25 +319,14 @@ void MainScene::collisionDetection()
                 continue;
             }
 
-            //如果子弹矩形框和敌机矩形框相交，发生碰撞，同时变为空闲状态即可
+            //如果子弹矩形框和敌机矩形框相交，发生碰撞
             if(m_enemys[i].m_Rect.intersects(m_plane.m_bullets[j].m_Rect))
             {
+                //敌机与碰撞的子弹变为空闲
                 m_enemys[i].m_Free = true;
                 m_plane.m_bullets[j].m_Free = true;
-                //播放爆炸效果
-                for(int k = 0 ; k < BOMB_NUM;k++)
-                {
-                    if(m_bombs[k].m_Free)
-                    {
-                        //爆炸状态设置为非空闲
-                        m_bombs[k].m_Free = false;
-                        //更新坐标
-
-                        m_bombs[k].m_X = m_enemys[i].m_X;
-                        m_bombs[k].m_Y = m_enemys[i].m_Y;
-                        break;
-                    }
-                }
+                //爆炸变为非空闲
+                m_enemys[i].bomb_free = false;
             }
         }
     }

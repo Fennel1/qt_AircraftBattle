@@ -10,12 +10,30 @@ Bomb::Bomb()
          m_pixArr.push_back(QPixmap(str));
     }
 
-    //初始化坐标
-    m_X = 0;
-    m_Y = 0;
 
     //初始化空闲状态
-    m_Free = true;
+    bomb_free = true;
+
+    //当前播放图片下标
+    m_index = 0;
+
+    //爆炸间隔记录
+    m_Recoder = 0;
+}
+
+Bomb::Bomb(QString path)
+{
+    //初始化爆炸图片数组
+    for(int i = 1 ;i <= BOMB_MAX ;i++)
+    {
+        //字符串拼接，类似  ":/res/bomb-1.png"
+        QString str = QString(path).arg(i);
+         m_pixArr.push_back(QPixmap(str));
+    }
+
+
+    //初始化空闲状态
+    bomb_free = true;
 
     //当前播放图片下标
     m_index = 0;
@@ -27,7 +45,7 @@ Bomb::Bomb()
 void Bomb::updateInfo()
 {
     //空闲状态
-    if(m_Free)
+    if(bomb_free)
     {
         return;
     }
@@ -48,6 +66,6 @@ void Bomb::updateInfo()
     if(m_index > BOMB_MAX-1)
     {
         m_index = 0;
-        m_Free = true;
+        bomb_free = true;
     }
 }
