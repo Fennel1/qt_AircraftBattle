@@ -3,15 +3,20 @@
 #include "config.h"
 #include <QPixmap>
 
+class MainScene;
+class myPlane;
+
 class Bullet
 {
+    friend class myPlane;
+    friend class MainScene;
 public:
     Bullet();
 
     //更新子弹坐标
     void updatePosition();
 
-public:
+private:
     //子弹资源对象
     QPixmap m_Bullet;
     //子弹坐标

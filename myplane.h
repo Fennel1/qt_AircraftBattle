@@ -4,8 +4,11 @@
 #include "bomb.h"
 #include "bullet.h"
 
+class MainScene;
+
 class myPlane : Bomb
 {
+    friend class MainScene;
 public:
     myPlane();
 
@@ -16,8 +19,8 @@ public:
 
     //飞机死亡
     void death();
-    bool isdeath;
 
+private:
     //飞机资源 对象
     QPixmap m_Plane;
 
@@ -46,6 +49,9 @@ public:
     bool m_pressflag_s;
     bool m_pressflag_a;
     bool m_pressflag_d;
+
+    //飞机死亡
+    bool isdeath;
 };
 
 

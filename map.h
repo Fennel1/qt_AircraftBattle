@@ -2,14 +2,17 @@
 #define MAP_H
 #include <QPixmap>
 
+class MainScene;
+
 class Map
 {
+    friend class MainScene;
 public:
     Map();
     //地图滚动坐标计算
     void mapPosition();
 
-public:
+private:
     //地图图片对象
     QPixmap m_map1;
     QPixmap m_map2;

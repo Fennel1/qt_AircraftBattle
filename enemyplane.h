@@ -1,18 +1,23 @@
 #ifndef ENEMYPLANE_H
 #define ENEMYPLANE_H
-
-
 #include <QPixmap>
 #include <bomb.h>
 
+class MainScene;
+
 class EnemyPlane : public Bomb
 {
+    friend class MainScene;
 public:
     EnemyPlane();
 
     //更新坐标
     void updatePosition();
-public:
+
+    //飞机死亡
+    void death();
+
+protected:
     //敌机资源对象
     QPixmap m_enemy;
 
@@ -29,8 +34,7 @@ public:
     //速度
     int m_Speed;
 
-    //飞机死亡
-    void death();
+
 };
 
 class CommonEnemyPlane : public EnemyPlane{
