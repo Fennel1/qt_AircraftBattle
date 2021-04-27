@@ -70,6 +70,10 @@ void MainScene::playGame()
             m_plane.m_Y = GAME_HEIGHT - m_plane.m_Rect.height();
         }
         m_plane.m_Rect.moveTo(m_plane.m_X, m_plane.m_Y);
+        if (m_plane.m_shootflag)
+        {
+            m_plane.shoot();
+        }
         //敌机出场
         enemyToScene();
         //更新游戏元素坐标
@@ -183,9 +187,10 @@ void MainScene::mouseMoveEvent(QMouseEvent *event)
 
 void MainScene::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_J)
+    if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
-        m_plane.shoot();
+        m_plane.m_shootflag = true;
+        //m_plane.shoot();
     }
 
     if((event->key() == Qt::Key_W) && !event->isAutoRepeat())   //上
@@ -225,6 +230,11 @@ void MainScene::keyPressEvent(QKeyEvent *event)
 
 void MainScene::keyReleaseEvent(QKeyEvent *event)
 {
+    if (event->key() == Qt::Key_J && !event->isAutoRepeat())
+    {
+        m_plane.m_shootflag = false;
+    }
+
     if((event->key() == Qt::Key_W)&& m_plane.m_direction_w == -1 && !event->isAutoRepeat())     //上
     {
         if(m_plane.m_pressflag_w)

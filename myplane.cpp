@@ -17,6 +17,7 @@ myPlane::myPlane()
 
     //初始化发射间隔记录
     m_recorder = 0;
+    m_shootflag = false;
 
     //飞机移动方向
     m_direction_w = 0;
@@ -38,40 +39,40 @@ void myPlane::setPosition(int x, int y)
 
 void myPlane::shoot()
 {
-//    //累加时间间隔记录变量
-//    m_recorder++;
-//    //判断如果记录数字 未达到发射间隔，直接return
-//    if(m_recorder < BULLET_INTERVAL)
-//    {
-//       return;
-//    }
-//    //到达发射时间处理
-//    //重置发射时间间隔记录
-//    m_recorder = 0;
+    //累加时间间隔记录变量
+    m_recorder++;
+    //判断如果记录数字 未达到发射间隔，直接return
+    if(m_recorder < BULLET_INTERVAL)
+    {
+       return;
+    }
+    //到达发射时间处理
+    //重置发射时间间隔记录
+    m_recorder = 0;
 
     //发射子弹
-//    for(int i = 0 ; i < BULLET_NUM;i++)
-//    {
-//        //如果是空闲的子弹进行发射
-//        if(m_bullets[i].m_Free)
-//        {
-//            //将改子弹空闲状态改为假
-//            m_bullets[i].m_Free = false;
-//            //设置发射的子弹坐标
-//            m_bullets[i].m_X = m_X + m_Rect.width()*0.5 - 10;
-//            m_bullets[i].m_Y = m_Y - 25 ;
-//            break;
-//        }
-//    }
-    for(int i=0; i<BULLET_NUM; i++)
+    for(int i = 0 ; i < BULLET_NUM;i++)
     {
+        //如果是空闲的子弹进行发射
         if(m_bullets[i].m_Free)
         {
+            //将改子弹空闲状态改为假
             m_bullets[i].m_Free = false;
-            m_bullets[i].m_X = m_X + m_Rect.width()/2;
-            m_bullets[i].m_Y = m_Y;
-            m_bullets[i].m_Rect.moveTo(m_bullets[i].m_X, m_bullets[i].m_Y);
+            //设置发射的子弹坐标
+            m_bullets[i].m_X = m_X + m_Rect.width()*0.5 - 10;
+            m_bullets[i].m_Y = m_Y - 25 ;
             break;
         }
     }
+//    for(int i=0; i<BULLET_NUM; i++)
+//    {
+//        if(m_bullets[i].m_Free)
+//        {
+//            m_bullets[i].m_Free = false;
+//            m_bullets[i].m_X = m_X + m_Rect.width()/2;
+//            m_bullets[i].m_Y = m_Y;
+//            m_bullets[i].m_Rect.moveTo(m_bullets[i].m_X, m_bullets[i].m_Y);
+//            break;
+//        }
+//    }
 }
