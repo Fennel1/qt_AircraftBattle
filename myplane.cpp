@@ -1,7 +1,7 @@
 #include "myplane.h"
 #include "config.h"
 
-myPlane::myPlane() : Bomb()
+MyPlane::MyPlane() : Bomb()
 {
     //初始化加载飞机图片资源
     Plane.load(MYPLANE_PATH);
@@ -11,9 +11,9 @@ myPlane::myPlane() : Bomb()
     Y = GAME_HEIGHT - Plane.height();
 
     //初始化矩形框
-    Rect.setWidth(Plane.width());
-    Rect.setHeight(Plane.height());
-    Rect.moveTo(X,Y);
+    rect.setWidth(Plane.width());
+    rect.setHeight(Plane.height());
+    rect.moveTo(X,Y);
 
     //初始化发射间隔记录
     recorder = 0;
@@ -36,7 +36,7 @@ myPlane::myPlane() : Bomb()
     health = 5;
 }
 
-myPlane::myPlane(QString bombPath) : Bomb(bombPath)
+MyPlane::MyPlane(QString bombPath) : Bomb(bombPath)
 {
     //初始化加载飞机图片资源
     Plane.load(MYPLANE_PATH);
@@ -46,9 +46,9 @@ myPlane::myPlane(QString bombPath) : Bomb(bombPath)
     Y = GAME_HEIGHT - Plane.height();
 
     //初始化矩形框
-    Rect.setWidth(Plane.width());
-    Rect.setHeight(Plane.height());
-    Rect.moveTo(X,Y);
+    rect.setWidth(Plane.width());
+    rect.setHeight(Plane.height());
+    rect.moveTo(X,Y);
 
     //初始化发射间隔记录
     recorder = 0;
@@ -71,14 +71,14 @@ myPlane::myPlane(QString bombPath) : Bomb(bombPath)
     health = 5;
 }
 
-void myPlane::setPosition(int x, int y)
+void MyPlane::setPosition(int x, int y)
 {
     X = x;
     Y = y;
-    Rect.moveTo(X, Y);
+    rect.moveTo(X, Y);
 }
 
-void myPlane::shoot()
+void MyPlane::shoot()
 {
     //累加时间间隔记录变量
     recorder++;
@@ -95,12 +95,12 @@ void myPlane::shoot()
     for(int i = 0 ; i < BULLET_NUM;i++)
     {
         //如果是空闲的子弹进行发射
-        if(bullets[i].Free)
+        if(bullets[i].free)
         {
             //将改子弹空闲状态改为假
-            bullets[i].Free = false;
+            bullets[i].free = false;
             //设置发射的子弹坐标
-            bullets[i].X = X + Rect.width()*0.5;
+            bullets[i].X = X + rect.width()*0.5;
             bullets[i].Y = Y - 25 ;
             break;
         }

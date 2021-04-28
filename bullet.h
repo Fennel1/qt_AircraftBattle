@@ -10,7 +10,7 @@ class EnemyPlane;
 class Bullet
 { 
     friend class MainScene;
-    friend class myPlane;
+    friend class MyPlane;
     friend class EnemyPlane;
 public:
     Bullet();
@@ -20,16 +20,16 @@ public:
 
 protected:
     //子弹资源对象
-    QPixmap mBullet;
+    QPixmap bullet;
     //子弹坐标
     int X;
     int Y;
     //子弹移动速度
-    int Speed;
+    int speed;
     //子弹是否闲置
-    bool Free;
+    bool free;
     //子弹的矩形边框（用于碰撞检测）
-    QRect Rect;
+    QRect rect;
 };
 
 class MyBullet : public Bullet

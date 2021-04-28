@@ -48,7 +48,7 @@ private:
     Map map;
 
     //主机对象
-    myPlane plane;
+    MyPlane plane;
 };
 
 

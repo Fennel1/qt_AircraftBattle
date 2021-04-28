@@ -12,13 +12,13 @@ Bomb::Bomb()
 
 
     //初始化空闲状态
-    bomb_free = true;
+    bombfree = true;
 
     //当前播放图片下标
     index = 0;
 
     //爆炸间隔记录
-    Recoder = 0;
+    recoder = 0;
 }
 
 Bomb::Bomb(QString path)
@@ -33,31 +33,31 @@ Bomb::Bomb(QString path)
 
 
     //初始化空闲状态
-    bomb_free = true;
+    bombfree = true;
 
     //当前播放图片下标
     index = 0;
 
     //爆炸间隔记录
-    Recoder = 0;
+    recoder = 0;
 }
 
 void Bomb::updateInfo()
 {
     //空闲状态
-    if(bomb_free)
+    if(bombfree)
     {
         return;
     }
 
-    Recoder++;
-    if(Recoder < BOMB_INTERVAL)
+    recoder++;
+    if(recoder < BOMB_INTERVAL)
     {
         //记录爆炸间隔未到，直接return，不需要切图
         return;
     }
-    //重置记录
-    Recoder = 0;
+    //重置记录ad
+    recoder = 0;
 
     //切换爆炸播放图片
     index++;
@@ -66,6 +66,6 @@ void Bomb::updateInfo()
     if(index > BOMB_MAX-1)
     {
         index = 0;
-        bomb_free = true;
+        bombfree = true;
     }
 }

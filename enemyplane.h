@@ -30,13 +30,13 @@ protected:
     int Y;
 
     //敌机的矩形边框（碰撞检测）
-    QRect Rect;
+    QRect rect;
 
     //状态
-    bool Free;
+    bool free;
 
     //速度
-    int Speed;
+    int speed;
 
     //弹匣
     EnemyBullet bullets[BULLET_NUM];

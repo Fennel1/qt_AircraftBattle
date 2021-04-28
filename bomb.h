@@ -18,10 +18,10 @@ protected:
     QVector<QPixmap> pixArr;
 
     //爆炸状态
-    bool bomb_free;
+    bool bombfree;
 
     //爆炸切图的时间间隔
-    int Recoder;
+    int recoder;
 
     //爆炸时加载的图片下标
     int index;

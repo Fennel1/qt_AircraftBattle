@@ -6,12 +6,12 @@
 
 class MainScene;
 
-class myPlane : public Bomb
+class MyPlane : public Bomb
 {
     friend class MainScene;
 public:
-    myPlane();
-    myPlane(QString bombPath);
+    MyPlane();
+    MyPlane(QString bombPath);
     //发射子弹
     void shoot();
     //设置飞机位置
@@ -29,7 +29,7 @@ private:
     int Y;
 
     //飞机的矩形边框
-    QRect Rect;
+    QRect rect;
 
     //弹匣
     MyBullet bullets[BULLET_NUM];

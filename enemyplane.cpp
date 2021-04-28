@@ -11,15 +11,15 @@ EnemyPlane::EnemyPlane() : Bomb()
     Y = 0;
 
     //敌机状态
-    Free = true;
+    free = true;
 
     //敌机速度
-    Speed = ENEMY_SPEED;
+    speed = ENEMY_SPEED;
 
     //敌机矩形
-    Rect.setWidth(enemy.width());
-    Rect.setHeight(enemy.height());
-    Rect.moveTo(X,Y);
+    rect.setWidth(enemy.width());
+    rect.setHeight(enemy.height());
+    rect.moveTo(X,Y);
 
     //初始化发射间隔记录
     recorder = 0;
@@ -29,33 +29,33 @@ EnemyPlane::EnemyPlane() : Bomb()
 void EnemyPlane::updatePosition()
 {
     //空闲状态，不计算坐标
-    if(Free)
+    if(free)
     {
         return;
     }
 
-    X += Speed;
+    X += speed;
     Y += 2;
 
     if(X < 0)
     {
-        Speed = ENEMY_SPEED;
+        speed = ENEMY_SPEED;
     }
-    else if(X > GAME_WIDTH-Rect.width())
+    else if(X > GAME_WIDTH-rect.width())
     {
-        Speed = -ENEMY_SPEED;
+        speed = -ENEMY_SPEED;
     }
-    Rect.moveTo(X, Y);
+    rect.moveTo(X, Y);
 
-    if(Y >= GAME_HEIGHT + Rect.height())
+    if(Y >= GAME_HEIGHT + rect.height())
     {
-        Free = true;
+        free = true;
     }
 }
 
 void EnemyPlane::death()
 {
-    Free = true;
+    free = true;
 }
 
 void EnemyPlane::shoot()
@@ -75,12 +75,12 @@ void EnemyPlane::shoot()
     for(int i = 0 ; i < BULLET_NUM;i++)
     {
         //如果是空闲的子弹进行发射
-        if(bullets[i].Free)
+        if(bullets[i].free)
         {
             //将改子弹空闲状态改为假
-            bullets[i].Free = false;
+            bullets[i].free = false;
             //设置发射的子弹坐标
-            bullets[i].X = X + Rect.width()*0.5;
+            bullets[i].X = X + rect.width()*0.5;
             bullets[i].Y = Y ;
             break;
         }
