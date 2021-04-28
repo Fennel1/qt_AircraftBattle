@@ -20,7 +20,7 @@ Bullet::Bullet()
     m_Rect.setHeight(m_Bullet.height());
     m_Rect.moveTo(m_X,m_Y);
 }
-void Bullet::updatePosition()
+void MyBullet::updatePosition()
 {
     //如果子弹是空闲状态，不需要坐标计算
     //玩家飞机可以控制子弹的空闲状态为false
@@ -34,6 +34,24 @@ void Bullet::updatePosition()
     m_Rect.moveTo(m_X,m_Y);
 
     if(m_Y <= -m_Rect.height())
+    {
+        m_Free = true;
+    }
+}
+
+void EnemyBullet::updatePosition()
+{
+    //如果子弹是空闲状态，不需要坐标计算
+    if(m_Free)
+    {
+        return;
+    }
+
+    //子弹向下移动
+    m_Y  += m_Speed;
+    m_Rect.moveTo(m_X,m_Y);
+
+    if(m_Y >= GAME_HEIGHT)
     {
         m_Free = true;
     }

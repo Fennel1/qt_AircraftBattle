@@ -1,7 +1,8 @@
 #ifndef ENEMYPLANE_H
 #define ENEMYPLANE_H
 #include <QPixmap>
-#include <bomb.h>
+#include "bomb.h"
+#include "bullet.h"
 
 class MainScene;
 
@@ -16,6 +17,9 @@ public:
 
     //飞机死亡
     void death();
+
+    //发射子弹
+    void shoot();
 
 protected:
     //敌机资源对象
@@ -34,6 +38,11 @@ protected:
     //速度
     int m_Speed;
 
+    //弹匣
+    EnemyBullet m_bullets[BULLET_NUM];
+
+    //发射间隔记录
+    int m_recorder;
 
 };
 

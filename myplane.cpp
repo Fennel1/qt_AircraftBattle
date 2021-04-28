@@ -31,6 +31,44 @@ myPlane::myPlane() : Bomb()
 
     //飞机死亡
     isdeath = false;
+
+    //飞机生命值
+    health = 5;
+}
+
+myPlane::myPlane(QString bombPath) : Bomb(bombPath)
+{
+    //初始化加载飞机图片资源
+    m_Plane.load(MYPLANE_PATH);
+
+    //初始化坐标
+    m_X = GAME_WIDTH * 0.5 - m_Plane.width() * 0.5;
+    m_Y = GAME_HEIGHT - m_Plane.height();
+
+    //初始化矩形框
+    m_Rect.setWidth(m_Plane.width());
+    m_Rect.setHeight(m_Plane.height());
+    m_Rect.moveTo(m_X,m_Y);
+
+    //初始化发射间隔记录
+    m_recorder = 0;
+    m_shootflag = false;
+
+    //飞机移动方向
+    m_direction_w = 0;
+    m_direction_s = 0;
+    m_direction_a = 0;
+    m_direction_d = 0;
+    m_pressflag_w = false;
+    m_pressflag_s = false;
+    m_pressflag_a = false;
+    m_pressflag_d = false;
+
+    //飞机死亡
+    isdeath = false;
+
+    //飞机生命值
+    health = 5;
 }
 
 void myPlane::setPosition(int x, int y)
@@ -62,20 +100,9 @@ void myPlane::shoot()
             //将改子弹空闲状态改为假
             m_bullets[i].m_Free = false;
             //设置发射的子弹坐标
-            m_bullets[i].m_X = m_X + m_Rect.width()*0.5 - 10;
+            m_bullets[i].m_X = m_X + m_Rect.width()*0.5;
             m_bullets[i].m_Y = m_Y - 25 ;
             break;
         }
     }
-//    for(int i=0; i<BULLET_NUM; i++)
-//    {
-//        if(m_bullets[i].m_Free)
-//        {
-//            m_bullets[i].m_Free = false;
-//            m_bullets[i].m_X = m_X + m_Rect.width()/2;
-//            m_bullets[i].m_Y = m_Y;
-//            m_bullets[i].m_Rect.moveTo(m_bullets[i].m_X, m_bullets[i].m_Y);
-//            break;
-//        }
-//    }
 }

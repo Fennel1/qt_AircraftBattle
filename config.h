@@ -6,7 +6,7 @@
 #define GAME_TITLE "飞机大战 v1.0"           //标题
 #define GAME_ICON ":/images/enemy2.png"     //图标
 #define MAP_PATH ":/image/images/background.png"      //地图
-#define MYPLANE_PATH ":/images/me1.png"
+#define MYPLANE_PATH ":/images/life.png"     //玩家飞机图片
 #define MAP_SCROLL_SPEED 2                   //地图滚动速度
 #define GAME_RATE 10
 #define BULLET_PATH ":/images/bullet1.png"   //子弹图片路径
@@ -17,9 +17,10 @@
 #define ENEMY_PATH  ":/images/enemy1.png"  //敌机资源图片
 #define ENEMY_SPEED 2  //敌机移动速度
 #define ENEMY_NUM   20  //敌机总数量
+#define ENEMY_BULLETINTERVAL 150 //敌机发射子弹间隔
 #define ENEMY_INTERVAL  50  //敌机出场时间间隔
 #define BOMB_PATH  ":/images/enemy1_down%1.png"   //敌机爆炸资源图片
-#define MYBOMB_PATH "/images/me_destroy_%1.png"   //玩家飞机爆炸资源图片
+#define MYBOMB_PATH ":/images/me_destroy_%1.png"   //玩家飞机爆炸资源图片
 #define BOMB_NUM  20     //爆炸数量
 #define BOMB_MAX  4      //爆炸图片最大索引
 #define BOMB_INTERVAL 10   //爆炸切图时间间隔

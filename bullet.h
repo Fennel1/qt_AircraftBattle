@@ -5,18 +5,20 @@
 
 class MainScene;
 class myPlane;
+class EnemyPlane;
 
 class Bullet
-{
-    friend class myPlane;
+{ 
     friend class MainScene;
+    friend class myPlane;
+    friend class EnemyPlane;
 public:
     Bullet();
 
     //更新子弹坐标
-    void updatePosition();
+    virtual void updatePosition() = 0;
 
-private:
+protected:
     //子弹资源对象
     QPixmap m_Bullet;
     //子弹坐标
@@ -28,6 +30,18 @@ private:
     bool m_Free;
     //子弹的矩形边框（用于碰撞检测）
     QRect m_Rect;
+};
+
+class MyBullet : public Bullet
+{
+public:
+    void updatePosition();
+};
+
+class EnemyBullet : public Bullet
+{
+public:
+    void updatePosition();
 };
 
 #endif // BULLET_H

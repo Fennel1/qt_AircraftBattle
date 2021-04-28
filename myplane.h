@@ -6,12 +6,12 @@
 
 class MainScene;
 
-class myPlane : Bomb
+class myPlane : public Bomb
 {
     friend class MainScene;
 public:
     myPlane();
-
+    myPlane(QString bombPath);
     //发射子弹
     void shoot();
     //设置飞机位置
@@ -32,7 +32,7 @@ private:
     QRect m_Rect;
 
     //弹匣
-    Bullet m_bullets[BULLET_NUM];
+    MyBullet m_bullets[BULLET_NUM];
 
     //发射间隔记录
     int m_recorder;
@@ -52,6 +52,9 @@ private:
 
     //飞机死亡
     bool isdeath;
+
+    //飞机生命值
+    int health;
 };
 
 

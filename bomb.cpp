@@ -27,7 +27,7 @@ Bomb::Bomb(QString path)
     for(int i = 1 ;i <= BOMB_MAX ;i++)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
-        QString str = QString(path).arg(i);
+        QString str = QString(MYBOMB_PATH).arg(i);
          m_pixArr.push_back(QPixmap(str));
     }
 
