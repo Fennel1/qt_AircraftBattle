@@ -7,7 +7,7 @@ Bomb::Bomb()
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(BOMB_PATH).arg(i);
-         m_pixArr.push_back(QPixmap(str));
+         pixArr.push_back(QPixmap(str));
     }
 
 
@@ -15,10 +15,10 @@ Bomb::Bomb()
     bomb_free = true;
 
     //当前播放图片下标
-    m_index = 0;
+    index = 0;
 
     //爆炸间隔记录
-    m_Recoder = 0;
+    Recoder = 0;
 }
 
 Bomb::Bomb(QString path)
@@ -28,7 +28,7 @@ Bomb::Bomb(QString path)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(MYBOMB_PATH).arg(i);
-         m_pixArr.push_back(QPixmap(str));
+         pixArr.push_back(QPixmap(str));
     }
 
 
@@ -36,10 +36,10 @@ Bomb::Bomb(QString path)
     bomb_free = true;
 
     //当前播放图片下标
-    m_index = 0;
+    index = 0;
 
     //爆炸间隔记录
-    m_Recoder = 0;
+    Recoder = 0;
 }
 
 void Bomb::updateInfo()
@@ -50,22 +50,22 @@ void Bomb::updateInfo()
         return;
     }
 
-    m_Recoder++;
-    if(m_Recoder < BOMB_INTERVAL)
+    Recoder++;
+    if(Recoder < BOMB_INTERVAL)
     {
         //记录爆炸间隔未到，直接return，不需要切图
         return;
     }
     //重置记录
-    m_Recoder = 0;
+    Recoder = 0;
 
     //切换爆炸播放图片
-    m_index++;
+    index++;
     //注：数组中的下标从0开始，最大是6
     //如果计算的下标大于6，重置为0
-    if(m_index > BOMB_MAX-1)
+    if(index > BOMB_MAX-1)
     {
-        m_index = 0;
+        index = 0;
         bomb_free = true;
     }
 }

@@ -13,7 +13,7 @@ class MainScene : public QWidget
     Q_OBJECT
 
 public:
-    QTimer m_Timer;
+    QTimer Timer;
 
     MainScene(QWidget *parent = nullptr);
     ~MainScene();
@@ -39,16 +39,16 @@ public:
 
 private:
     //敌机数组
-    EnemyPlane m_enemys[ENEMY_NUM];
+    EnemyPlane enemys[ENEMY_NUM];
 
     //敌机出场间隔记录
-    int m_recorder;
+    int recorder;
 
     //地图对象
-    Map m_map;
+    Map map;
 
     //主机对象
-    myPlane m_plane;
+    myPlane plane;
 };
 
 

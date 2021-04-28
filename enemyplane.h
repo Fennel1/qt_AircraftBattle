@@ -23,26 +23,26 @@ public:
 
 protected:
     //敌机资源对象
-    QPixmap m_enemy;
+    QPixmap enemy;
 
     //位置
-    int m_X;
-    int m_Y;
+    int X;
+    int Y;
 
     //敌机的矩形边框（碰撞检测）
-    QRect m_Rect;
+    QRect Rect;
 
     //状态
-    bool m_Free;
+    bool Free;
 
     //速度
-    int m_Speed;
+    int Speed;
 
     //弹匣
-    EnemyBullet m_bullets[BULLET_NUM];
+    EnemyBullet bullets[BULLET_NUM];
 
     //发射间隔记录
-    int m_recorder;
+    int recorder;
 
 };
 

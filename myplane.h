@@ -22,33 +22,33 @@ public:
 
 private:
     //飞机资源 对象
-    QPixmap m_Plane;
+    QPixmap Plane;
 
     //飞机坐标
-    int m_X;
-    int m_Y;
+    int X;
+    int Y;
 
     //飞机的矩形边框
-    QRect m_Rect;
+    QRect Rect;
 
     //弹匣
-    MyBullet m_bullets[BULLET_NUM];
+    MyBullet bullets[BULLET_NUM];
 
     //发射间隔记录
-    int m_recorder;
+    int recorder;
 
     //发射子弹
-    bool m_shootflag;
+    bool shootflag;
 
     //飞机移动方向
-    int m_direction_w;
-    int m_direction_s;
-    int m_direction_a;
-    int m_direction_d;
-    bool m_pressflag_w;
-    bool m_pressflag_s;
-    bool m_pressflag_a;
-    bool m_pressflag_d;
+    int direction_w;
+    int direction_s;
+    int direction_a;
+    int direction_d;
+    bool pressflag_w;
+    bool pressflag_s;
+    bool pressflag_a;
+    bool pressflag_d;
 
     //飞机死亡
     bool isdeath;

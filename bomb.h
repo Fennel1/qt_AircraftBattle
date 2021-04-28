@@ -15,16 +15,16 @@ public:
 
 protected:
     //放爆炸资源数组
-    QVector<QPixmap> m_pixArr;
+    QVector<QPixmap> pixArr;
 
     //爆炸状态
     bool bomb_free;
 
     //爆炸切图的时间间隔
-    int m_Recoder;
+    int Recoder;
 
     //爆炸时加载的图片下标
-    int m_index;
+    int index;
 };
 
 #endif // BOMB_H

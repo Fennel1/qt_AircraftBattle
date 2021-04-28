@@ -3,56 +3,56 @@
 Bullet::Bullet()
 {
     //加载子弹资源
-    m_Bullet.load(BULLET_PATH);
+    mBullet.load(BULLET_PATH);
 
     //子弹坐标 初始坐标可随意设置，后期会重置
-    m_X = GAME_WIDTH*0.5 - m_Bullet.width()*0.5;
-    m_Y = GAME_HEIGHT;
+    X = GAME_WIDTH*0.5 - mBullet.width()*0.5;
+    Y = GAME_HEIGHT;
 
     //子弹状态
-    m_Free = true;
+    Free = true;
 
     //子弹速度
-    m_Speed = BULLET_SPEED;
+    Speed = BULLET_SPEED;
 
     //子弹矩形框
-    m_Rect.setWidth(m_Bullet.width());
-    m_Rect.setHeight(m_Bullet.height());
-    m_Rect.moveTo(m_X,m_Y);
+    Rect.setWidth(mBullet.width());
+    Rect.setHeight(mBullet.height());
+    Rect.moveTo(X,Y);
 }
 void MyBullet::updatePosition()
 {
     //如果子弹是空闲状态，不需要坐标计算
     //玩家飞机可以控制子弹的空闲状态为false
-    if(m_Free)
+    if(Free)
     {
         return;
     }
 
     //子弹向上移动
-    m_Y  -= m_Speed;
-    m_Rect.moveTo(m_X,m_Y);
+    Y  -= Speed;
+    Rect.moveTo(X,Y);
 
-    if(m_Y <= -m_Rect.height())
+    if(Y <= -Rect.height())
     {
-        m_Free = true;
+        Free = true;
     }
 }
 
 void EnemyBullet::updatePosition()
 {
     //如果子弹是空闲状态，不需要坐标计算
-    if(m_Free)
+    if(Free)
     {
         return;
     }
 
     //子弹向下移动
-    m_Y  += m_Speed;
-    m_Rect.moveTo(m_X,m_Y);
+    Y  += Speed;
+    Rect.moveTo(X,Y);
 
-    if(m_Y >= GAME_HEIGHT)
+    if(Y >= GAME_HEIGHT)
     {
-        m_Free = true;
+        Free = true;
     }
 }
