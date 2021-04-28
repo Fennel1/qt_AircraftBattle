@@ -4,7 +4,7 @@
 #include <QPixmap>
 
 class MainScene;
-class myPlane;
+class MyPlane;
 class EnemyPlane;
 
 class Bullet
