@@ -18,6 +18,10 @@ public:
     //飞机死亡
     void death();
 
+    //设置飞机参数
+    void setPlanePath(QString planepath);
+    void setspeed();
+
 protected:
     //敌机资源对象
     QPixmap enemy;
@@ -37,6 +41,8 @@ protected:
 
 };
 
+
+
 class CommonEnemyPlane : public EnemyPlane
 {
     friend class MainScene;
@@ -45,10 +51,7 @@ public:
     CommonEnemyPlane(QString planepath, QString bombpath);
 };
 
-class SpeedEnemyPlane : public EnemyPlane
-{
 
-};
 
 class ShootEnemyPlane : public EnemyPlane
 {
@@ -62,12 +65,23 @@ public:
     //更新坐标
     void updatePosition();
 
+    //飞机参数设置
+    void setbulletinterval(int interval);
+
 protected:
     //弹匣
     EnemyBullet bullets[BULLET_NUM];
 
     //发射间隔记录
     int recorder;
+    int bulletinterval;
+
+};
+
+
+
+class SpeedEnemyPlane : public EnemyPlane
+{
 
 };
 

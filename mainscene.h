@@ -39,8 +39,8 @@ public:
 
 private:
     //敌机数组
-    CommonEnemyPlane commonenemys[COMMONENEMY_NUM];
-    ShootEnemyPlane shootenemys[SHOOTENEMY_NUM];
+    CommonEnemyPlane *commonenemys;
+    ShootEnemyPlane *shootenemys;
 
     //敌机出场间隔记录
     int commonrecorder;
@@ -50,7 +50,7 @@ private:
     Map map;
 
     //主机对象
-    MyPlane plane;
+    MyPlane *plane;
 };
 
 

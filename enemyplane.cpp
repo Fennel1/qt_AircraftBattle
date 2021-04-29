@@ -20,7 +20,6 @@ EnemyPlane::EnemyPlane() : Bomb()
     rect.setWidth(enemy.width());
     rect.setHeight(enemy.height());
     rect.moveTo(X,Y);
-
 }
 
 EnemyPlane::EnemyPlane(QString planepath, QString bombpath) : Bomb(bombpath)
@@ -77,6 +76,10 @@ void EnemyPlane::death()
     free = true;
 }
 
+void EnemyPlane::setPlanePath(QString planepath)
+{
+    enemy.load(planepath);
+}
 
 CommonEnemyPlane::CommonEnemyPlane() : EnemyPlane(COMMONENEMY_PATH, BOMB_COMMONENEMY_PATH)
 {
@@ -93,12 +96,14 @@ ShootEnemyPlane::ShootEnemyPlane() : EnemyPlane(SHOOTENEMY_PATH, BOMB_SHOOTENEMY
 {
     //初始化发射间隔记录
     recorder = 0;
+    bulletinterval = 100;
 }
 
 ShootEnemyPlane::ShootEnemyPlane(QString planepath, QString bombpath) : EnemyPlane(planepath, bombpath)
 {
     //初始化发射间隔记录
     recorder = 0;
+    bulletinterval = 100;
 }
 
 void ShootEnemyPlane::shoot()
@@ -106,7 +111,7 @@ void ShootEnemyPlane::shoot()
     //累加时间间隔记录变量
     recorder++;
     //判断如果记录数字 未达到发射间隔，直接return
-    if(recorder < ENEMY_BULLETINTERVAL)
+    if(recorder < bulletinterval)
     {
        return;
     }

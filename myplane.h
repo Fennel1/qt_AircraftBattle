@@ -11,7 +11,7 @@ class MyPlane : public Bomb
     friend class MainScene;
 public:
     MyPlane();
-    MyPlane(QString bombPath);
+    MyPlane(QString planepath, QString bombPath);
     //发射子弹
     void shoot();
     //设置飞机位置
@@ -20,7 +20,12 @@ public:
     //飞机死亡
     void death();
 
-private:
+    //设置飞机参数
+    void setspeed(int speed);
+    void sethealth(int health);
+    void setbulletinterval(int interval);
+
+protected:
     //飞机资源 对象
     QPixmap Plane;
 
@@ -36,6 +41,7 @@ private:
 
     //发射间隔记录
     int recorder;
+    int bulletinterval;
 
     //发射子弹
     bool shootflag;
@@ -55,7 +61,16 @@ private:
 
     //飞机生命值
     int health;
+    //飞机速度
+    int speed;
 };
 
+class CommonMyPlane : public MyPlane
+{
+    friend class MainScene;
+public:
+    CommonMyPlane();
+    CommonMyPlane(QString planepath, QString bombpath);
+};
 
 #endif // MYPLANE_H

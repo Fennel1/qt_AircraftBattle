@@ -4,7 +4,7 @@
 MyPlane::MyPlane() : Bomb()
 {
     //初始化加载飞机图片资源
-    Plane.load(MYPLANE_PATH);
+    Plane.load(COMMONMYPLANE_PATH);
 
     //初始化坐标
     X = GAME_WIDTH * 0.5 - Plane.width() * 0.5;
@@ -17,6 +17,7 @@ MyPlane::MyPlane() : Bomb()
 
     //初始化发射间隔记录
     recorder = 0;
+    bulletinterval = 20;
     shootflag = false;
 
     //飞机移动方向
@@ -34,12 +35,15 @@ MyPlane::MyPlane() : Bomb()
 
     //飞机生命值
     health = 5;
+
+    //飞机速度
+    speed = 0;
 }
 
-MyPlane::MyPlane(QString bombPath) : Bomb(bombPath)
+MyPlane::MyPlane(QString planepath,QString bombPath) : Bomb(bombPath)
 {
     //初始化加载飞机图片资源
-    Plane.load(MYPLANE_PATH);
+    Plane.load(planepath);
 
     //初始化坐标
     X = GAME_WIDTH * 0.5 - Plane.width() * 0.5;
@@ -52,6 +56,7 @@ MyPlane::MyPlane(QString bombPath) : Bomb(bombPath)
 
     //初始化发射间隔记录
     recorder = 0;
+    bulletinterval = 20;
     shootflag = false;
 
     //飞机移动方向
@@ -69,6 +74,9 @@ MyPlane::MyPlane(QString bombPath) : Bomb(bombPath)
 
     //飞机生命值
     health = 5;
+
+    //飞机速度
+    speed = 0;
 }
 
 void MyPlane::setPosition(int x, int y)
@@ -83,7 +91,7 @@ void MyPlane::shoot()
     //累加时间间隔记录变量
     recorder++;
     //判断如果记录数字 未达到发射间隔，直接return
-    if(recorder < BULLET_INTERVAL)
+    if(recorder < bulletinterval)
     {
        return;
     }
@@ -105,4 +113,14 @@ void MyPlane::shoot()
             break;
         }
     }
+}
+
+CommonMyPlane::CommonMyPlane() : MyPlane(COMMONMYPLANE_PATH, COMMONMYBOMB_PATH)
+{
+
+}
+CommonMyPlane::CommonMyPlane(QString planepath, QString bombpath)
+    : MyPlane(planepath, bombpath)
+{
+
 }

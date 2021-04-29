@@ -7,10 +7,26 @@
 #include <ctime>
 
 MainScene::MainScene(QWidget *parent)
-    : QWidget(parent), plane(QString(MYBOMB_PATH))
+    : QWidget(parent)
 {
     //场景的初始化
     initScene();
+
+    plane = new CommonMyPlane(COMMONMYPLANE_PATH, COMMONMYBOMB_PATH);
+    commonenemys = new CommonEnemyPlane[COMMONENEMY_NUM];
+    shootenemys = new ShootEnemyPlane[SHOOTENEMY_NUM];
+    for (int i=0; i < COMMONENEMY_NUM; i++)
+    {
+        //设置普通飞机图片路径
+        commonenemys[i].setPlanePath(COMMONENEMY_PATH);
+        commonenemys[i].setBombPath(BOMB_COMMONENEMY_PATH);
+    }
+    for (int i=0; i < SHOOTENEMY_NUM; i++)
+    {
+        //设置射击飞机图片路径
+        shootenemys[i].setPlanePath(SHOOTENEMY_PATH);
+        shootenemys[i].setBombPath(BOMB_SHOOTENEMY_PATH);
+    }
 }
 
 MainScene::~MainScene()
@@ -33,6 +49,7 @@ void MainScene::initScene()
     //启动游戏
     playGame();
 
+    //敌机刷新间隔
     commonrecorder = 0;
     shootrecorder = 0;
 }
@@ -45,35 +62,35 @@ void MainScene::playGame()
     //监听定时器
     connect(&Timer,&QTimer::timeout,[=](){
         //主机移动
-        if (plane.X >= 0 && plane.X <= GAME_WIDTH - plane.rect.width())
+        if (plane->X >= 0 && plane->X <= GAME_WIDTH - plane->rect.width())
         {
-            plane.X += (plane.direction_a + plane.direction_d) * MYPLANE_SPEED;
+            plane->X += (plane->direction_a + plane->direction_d) * MYPLANE_SPEED;
         }
-        if (plane.Y >= 0 && plane.Y <= (GAME_HEIGHT - plane.rect.height()))
+        if (plane->Y >= 0 && plane->Y <= (GAME_HEIGHT - plane->rect.height()))
         {
-            plane.Y += (plane.direction_w + plane.direction_s) * MYPLANE_SPEED;
+            plane->Y += (plane->direction_w + plane->direction_s) * MYPLANE_SPEED;
         }
         //边界检测
-        if(plane.X <= 0 )
+        if(plane->X <= 0 )
         {
-            plane.X = 0;
+            plane->X = 0;
         }
-        else if(plane.X >= GAME_WIDTH - plane.rect.width())
+        else if(plane->X >= GAME_WIDTH - plane->rect.width())
         {
-            plane.X = GAME_WIDTH - plane.rect.width();
+            plane->X = GAME_WIDTH - plane->rect.width();
         }
-        if(plane.Y <= 0)
+        if(plane->Y <= 0)
         {
-            plane.Y = 0;
+            plane->Y = 0;
         }
-        else if(plane.Y >= GAME_HEIGHT - plane.rect.height())
+        else if(plane->Y >= GAME_HEIGHT - plane->rect.height())
         {
-            plane.Y = GAME_HEIGHT - plane.rect.height();
+            plane->Y = GAME_HEIGHT - plane->rect.height();
         }
-        plane.rect.moveTo(plane.X, plane.Y);
-        if (plane.shootflag)
+        plane->rect.moveTo(plane->X, plane->Y);
+        if (plane->shootflag)
         {
-            plane.shoot();
+            plane->shoot();
         }
         //敌机出场
         enemyToScene();
@@ -95,9 +112,9 @@ void MainScene::updatePosition()
     for(int i = 0 ;i < BULLET_NUM;i++)
     {
         //如果子弹状态为非空闲，计算发射位置
-        if(!plane.bullets[i].free)
+        if(!plane->bullets[i].free)
         {
-            plane.bullets[i].updatePosition();
+            plane->bullets[i].updatePosition();
         }
     }
 
@@ -147,9 +164,9 @@ void MainScene::updatePosition()
     }
 
     //主机爆炸
-    if (plane.bombfree == false)
+    if (plane->bombfree == false)
     {
-        plane.updateInfo();
+        plane->updateInfo();
     }
 }
 
@@ -162,22 +179,22 @@ void MainScene::paintEvent(QPaintEvent *event)
     painter.drawPixmap(0,map.map2_posY , map.map2);
 
     //绘制主机
-    if (plane.isdeath == false)
+    if (plane->isdeath == false)
     {
-        painter.drawPixmap(plane.X, plane.Y, plane.Plane);
+        painter.drawPixmap(plane->X, plane->Y, plane->Plane);
     }
-    if (plane.bombfree == false)
+    if (plane->bombfree == false)
     {
-        painter.drawPixmap(plane.X, plane.Y, plane.pixArr[plane.index]);
+        painter.drawPixmap(plane->X, plane->Y, plane->pixArr[plane->index]);
     }
 
     //绘制主机子弹
     for(int i = 0 ;i < BULLET_NUM;i++)
     {
         //如果子弹状态为非空闲，计算发射位置
-        if(!plane.bullets[i].free)
+        if(!plane->bullets[i].free)
         {
-            painter.drawPixmap(plane.bullets[i].X,plane.bullets[i].Y,plane.bullets[i].bullet);
+            painter.drawPixmap(plane->bullets[i].X,plane->bullets[i].Y,plane->bullets[i].bullet);
         }
     }
 
@@ -225,68 +242,68 @@ void MainScene::paintEvent(QPaintEvent *event)
 
 void MainScene::mouseMoveEvent(QMouseEvent *event)
 {
-    int x = event->x() - plane.rect.width()/2;      //鼠标位置 - 飞机矩形的一半
-    int y = event->y() - plane.rect.height()/2;
+    int x = event->x() - plane->rect.width()/2;      //鼠标位置 - 飞机矩形的一半
+    int y = event->y() - plane->rect.height()/2;
 
     //边界检测
     if(x <= 0 )
     {
         x = 0;
     }
-    if(x >= GAME_WIDTH - plane.rect.width())
+    if(x >= GAME_WIDTH - plane->rect.width())
     {
-        x = GAME_WIDTH - plane.rect.width();
+        x = GAME_WIDTH - plane->rect.width();
     }
     if(y <= 0)
     {
         y = 0;
     }
-    if(y >= GAME_HEIGHT - plane.rect.height())
+    if(y >= GAME_HEIGHT - plane->rect.height())
     {
-        y = GAME_HEIGHT - plane.rect.height();
+        y = GAME_HEIGHT - plane->rect.height();
     }
-    plane.setPosition(x,y);
+    plane->setPosition(x,y);
 }
 
 void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判定 持续按住按键控制
 {
     if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
-        plane.shootflag = true;
+        plane->shootflag = true;
         //plane.shoot();
     }
 
     if((event->key() == Qt::Key_W) && !event->isAutoRepeat())   //上
     {
-        if(!plane.pressflag_w)
+        if(!plane->pressflag_w)
         {
-            plane.direction_w = -1;
+            plane->direction_w = -1;
         }
-        plane.pressflag_w = true;
+        plane->pressflag_w = true;
     }
     if((event->key() == Qt::Key_S) && !event->isAutoRepeat())  //下
     {
-        if(!plane.pressflag_s)
+        if(!plane->pressflag_s)
         {
-           plane.direction_s = 1;
+           plane->direction_s = 1;
         }
-        plane.pressflag_s = true;
+        plane->pressflag_s = true;
     }
     if((event->key() == Qt::Key_A) && !event->isAutoRepeat())  //左
     {
-        if(!plane.pressflag_a)
+        if(!plane->pressflag_a)
         {
-            plane.direction_a = -1;
+            plane->direction_a = -1;
         }
-        plane.pressflag_a = true;
+        plane->pressflag_a = true;
     }
     if((event->key() == Qt::Key_D) && !event->isAutoRepeat())  //右
     {
-        if(!plane.pressflag_d)
+        if(!plane->pressflag_d)
         {
-            plane.direction_d = 1;
+            plane->direction_d = 1;
         }
-        plane.pressflag_d = true;
+        plane->pressflag_d = true;
     }
 
 }
@@ -295,40 +312,40 @@ void MainScene::keyReleaseEvent(QKeyEvent *event)       //键盘按键抬起判�
 {
     if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
-        plane.shootflag = false;
+        plane->shootflag = false;
     }
 
-    if((event->key() == Qt::Key_W)&& plane.direction_w == -1 && !event->isAutoRepeat())     //上
+    if((event->key() == Qt::Key_W)&& plane->direction_w == -1 && !event->isAutoRepeat())     //上
     {
-        if(plane.pressflag_w)
+        if(plane->pressflag_w)
         {
-            plane.direction_w = 0;
+            plane->direction_w = 0;
         }
-        plane.pressflag_w = false;
+        plane->pressflag_w = false;
     }
-    if((event->key() == Qt::Key_S)&& plane.direction_s == 1 && !event->isAutoRepeat())     //下
+    if((event->key() == Qt::Key_S)&& plane->direction_s == 1 && !event->isAutoRepeat())     //下
     {
-        if(plane.pressflag_s)
+        if(plane->pressflag_s)
         {
-            plane.direction_s = 0;
+            plane->direction_s = 0;
         }
-        plane.pressflag_s = false;
+        plane->pressflag_s = false;
     }
-    if((event->key() == Qt::Key_A)&& plane.direction_a == -1 && !event->isAutoRepeat())     //左
+    if((event->key() == Qt::Key_A)&& plane->direction_a == -1 && !event->isAutoRepeat())     //左
     {
-        if(plane.pressflag_a)
+        if(plane->pressflag_a)
         {
-            plane.direction_a = 0;
+            plane->direction_a = 0;
         }
-        plane.pressflag_a = false;
+        plane->pressflag_a = false;
     }
-    if((event->key() == Qt::Key_D)&& plane.direction_d == 1 && !event->isAutoRepeat())     //右
+    if((event->key() == Qt::Key_D)&& plane->direction_d == 1 && !event->isAutoRepeat())     //右
     {
-        if(plane.pressflag_d)
+        if(plane->pressflag_d)
         {
-            plane.direction_d = 0;
+            plane->direction_d = 0;
         }
-        plane.pressflag_d = false;
+        plane->pressflag_d = false;
     }
 }
 
@@ -385,36 +402,36 @@ void MainScene::collisionDetection()
         }
 
         //判定敌机与主机碰撞
-        if (commonenemys[i].rect.intersects(plane.rect))
+        if (commonenemys[i].rect.intersects(plane->rect))
         {
             commonenemys[i].free = true;
             commonenemys[i].bombfree = false;
-            if (plane.health>0)
+            if (plane->health>0)
             {
-                plane.health--;
+                plane->health--;
             }
             else
             {
-                plane.isdeath = true;
-                plane.bombfree = false;
+                plane->isdeath = true;
+                plane->bombfree = false;
             }
         }
 
         //遍历所有非空闲的子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
         {
-            if(plane.bullets[j].free)
+            if(plane->bullets[j].free)
             {
                 //空闲子弹 跳转下一次循环
                 continue;
             }
 
             //如果子弹矩形框和敌机矩形框相交，发生碰撞
-            if(commonenemys[i].rect.intersects(plane.bullets[j].rect))
+            if(commonenemys[i].rect.intersects(plane->bullets[j].rect))
             {
                 //敌机与碰撞的子弹变为空闲
                 commonenemys[i].free = true;
-                plane.bullets[j].free = true;
+                plane->bullets[j].free = true;
                 //爆炸变为非空闲
                 commonenemys[i].bombfree = false;
             }
@@ -434,18 +451,18 @@ void MainScene::collisionDetection()
             }
 
             //如果子弹矩形框和敌机子弹矩形框相交，发生碰撞
-            if(shootenemys[i].bullets[j].rect.intersects(plane.rect))
+            if(shootenemys[i].bullets[j].rect.intersects(plane->rect))
             {
                 //敌机子弹变为空闲
                 shootenemys[i].bullets[j].free = true;
-                if (plane.health>0)
+                if (plane->health>0)
                 {
-                    plane.health--;
+                    plane->health--;
                 }
                 else
                 {
-                    plane.isdeath = true;
-                    plane.bombfree = false;
+                    plane->isdeath = true;
+                    plane->bombfree = false;
                 }
             }
         }
@@ -457,36 +474,36 @@ void MainScene::collisionDetection()
         }
 
         //判定敌机与主机碰撞
-        if (shootenemys[i].rect.intersects(plane.rect))
+        if (shootenemys[i].rect.intersects(plane->rect))
         {
             shootenemys[i].free = true;
             shootenemys[i].bombfree = false;
-            if (plane.health>0)
+            if (plane->health>0)
             {
-                plane.health--;
+                plane->health--;
             }
             else
             {
-                plane.isdeath = true;
-                plane.bombfree = false;
+                plane->isdeath = true;
+                plane->bombfree = false;
             }
         }
 
         //遍历所有非空闲的子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
         {
-            if(plane.bullets[j].free)
+            if(plane->bullets[j].free)
             {
                 //空闲子弹 跳转下一次循环
                 continue;
             }
 
             //如果子弹矩形框和敌机矩形框相交，发生碰撞
-            if(shootenemys[i].rect.intersects(plane.bullets[j].rect))
+            if(shootenemys[i].rect.intersects(plane->bullets[j].rect))
             {
                 //敌机与碰撞的子弹变为空闲
                 shootenemys[i].free = true;
-                plane.bullets[j].free = true;
+                plane->bullets[j].free = true;
                 //爆炸变为非空闲
                 shootenemys[i].bombfree = false;
             }

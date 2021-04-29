@@ -69,3 +69,13 @@ void Bomb::updateInfo()
         bombfree = true;
     }
 }
+
+void Bomb::setBombPath(QString path)
+{
+    for(int i = 1 ;i <= BOMB_MAX ;i++)
+    {
+        //字符串拼接，类似  ":/res/bomb-1.png"
+        QString str = QString(path).arg(i);
+         pixArr.push_back(QPixmap(str));
+    }
+}
