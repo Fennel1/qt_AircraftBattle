@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     bomb.cpp \
     bullet.cpp \
+    data.cpp \
     enemyplane.cpp \
     main.cpp \
     mainscene.cpp \
@@ -21,6 +22,7 @@ HEADERS += \
     bomb.h \
     bullet.h \
     config.h \
+    data.h \
     enemyplane.h \
     mainscene.h \
     map.h \

@@ -17,13 +17,13 @@ MainScene::MainScene(QWidget *parent)
     shootenemys = new ShootEnemyPlane[SHOOTENEMY_NUM];
     for (int i=0; i < COMMONENEMY_NUM; i++)
     {
-        //设置普通飞机图片路径
+        //设置普通敌机参数
         commonenemys[i].setPlanePath(COMMONENEMY_PATH);
         commonenemys[i].setBombPath(BOMB_COMMONENEMY_PATH);
     }
     for (int i=0; i < SHOOTENEMY_NUM; i++)
     {
-        //设置射击飞机图片路径
+        //设置射击敌机参数
         shootenemys[i].setPlanePath(SHOOTENEMY_PATH);
         shootenemys[i].setBombPath(BOMB_SHOOTENEMY_PATH);
     }

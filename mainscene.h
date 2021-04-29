@@ -7,6 +7,7 @@
 #include "myplane.h"
 #include "enemyplane.h"
 #include "bomb.h"
+#include "data.h"
 
 class MainScene : public QWidget
 {
@@ -51,6 +52,9 @@ private:
 
     //主机对象
     MyPlane *plane;
+
+    //游戏数据对象
+    Data data;
 };
 
 
