@@ -20,7 +20,7 @@ public:
 
     //设置飞机参数
     void setPlanePath(QString planepath);
-    void setspeed();
+    void setspeed(int speed);
 
 protected:
     //敌机资源对象
@@ -66,7 +66,7 @@ public:
     void updatePosition();
 
     //飞机参数设置
-    void setbulletinterval(int interval);
+    void setBulletinterval(int interval);
 
 protected:
     //弹匣

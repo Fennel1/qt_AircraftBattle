@@ -71,6 +71,11 @@ void EnemyPlane::updatePosition()
     }
 }
 
+void EnemyPlane::setspeed(int speed)
+{
+    this->speed=speed;
+}
+
 void EnemyPlane::death()
 {
     free = true;
@@ -164,4 +169,9 @@ void ShootEnemyPlane::updatePosition()
     {
         free = true;
     }
+}
+
+void ShootEnemyPlane::setBulletinterval(int interval)
+{
+    this->bulletinterval=interval;
 }

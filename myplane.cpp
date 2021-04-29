@@ -86,6 +86,26 @@ void MyPlane::setPosition(int x, int y)
     rect.moveTo(X, Y);
 }
 
+void MyPlane::setSpeed(int speed)
+{
+    this->speed=speed;
+}
+
+void MyPlane::setHealth(int health)
+{
+    this->health=health;
+}
+
+void MyPlane::setBulletinterval(int interval)
+{
+    this->bulletinterval=interval;
+}
+
+void MyPlane::death()
+{
+
+}
+
 void MyPlane::shoot()
 {
     //累加时间间隔记录变量

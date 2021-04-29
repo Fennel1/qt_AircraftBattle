@@ -21,9 +21,9 @@ public:
     void death();
 
     //设置飞机参数
-    void setspeed(int speed);
-    void sethealth(int health);
-    void setbulletinterval(int interval);
+    void setSpeed(int speed);
+    void setHealth(int health);
+    void setBulletinterval(int interval);
 
 protected:
     //飞机资源 对象
