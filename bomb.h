@@ -28,6 +28,10 @@ protected:
 
     //爆炸时加载的图片下标
     int index;
+
+    //爆炸参数
+    int bombmax;
+    int bombinterval;
 };
 
 #endif // BOMB_H

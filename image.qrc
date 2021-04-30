@@ -40,6 +40,11 @@
         <file>images/resume_nor.png</file>
         <file>images/resume_pressed.png</file>
         <file>images/tohou1.jpg</file>
+        <file>images/enemy4.png</file>
+        <file>images/enemy4_down1.png</file>
+        <file>images/enemy4_down2.png</file>
+        <file>images/enemy4_down3.png</file>
+        <file>images/enemy4_down4.png</file>
     </qresource>
     <qresource prefix="/image">
         <file>images/again.png</file>
@@ -82,5 +87,10 @@
         <file>images/resume_nor.png</file>
         <file>images/resume_pressed.png</file>
         <file>images/tohou1.jpg</file>
+        <file>images/enemy4.png</file>
+        <file>images/enemy4_down1.png</file>
+        <file>images/enemy4_down2.png</file>
+        <file>images/enemy4_down3.png</file>
+        <file>images/enemy4_down4.png</file>
     </qresource>
 </RCC>

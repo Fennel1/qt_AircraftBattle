@@ -79,10 +79,25 @@ protected:
 };
 
 
-
 class SpeedEnemyPlane : public EnemyPlane
 {
+    friend class MainScene;
+public:
+    SpeedEnemyPlane();
+    SpeedEnemyPlane(QString planepath, QString bombpath);
 
+    //更新坐标
+    void updatePosition();
+
+    //飞机参数设置
+    void setBulletinterval(int interval);
+
+private:
+    int recorder;
+
+    //飞机加速点
+    int speeduppoint;
 };
+
 
 #endif // ENEMYPLANE_H

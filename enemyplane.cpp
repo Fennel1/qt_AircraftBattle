@@ -14,7 +14,7 @@ EnemyPlane::EnemyPlane() : Bomb()
     free = true;
 
     //敌机速度
-    speed = ENEMY_SPEED;
+    speed = 2;
 
     //敌机矩形
     rect.setWidth(enemy.width());
@@ -35,7 +35,7 @@ EnemyPlane::EnemyPlane(QString planepath, QString bombpath) : Bomb(bombpath)
     free = true;
 
     //敌机速度
-    speed = ENEMY_SPEED;
+    speed = 2;
 
     //敌机矩形
     rect.setWidth(enemy.width());
@@ -57,11 +57,11 @@ void EnemyPlane::updatePosition()
 
     if(X < 0)
     {
-        speed = ENEMY_SPEED;
+        speed = 2;
     }
     else if(X > GAME_WIDTH-rect.width())
     {
-        speed = -ENEMY_SPEED;
+        speed = -2;
     }
     rect.moveTo(X, Y);
 
@@ -144,7 +144,7 @@ void ShootEnemyPlane::updatePosition()
     }
 
     X += speed;
-    if (Y <= rect.height())
+    if (Y <= rect.height()/2)
     {
         Y +=2;
     }
@@ -152,11 +152,63 @@ void ShootEnemyPlane::updatePosition()
 
     if(X < 0)
     {
-        speed = ENEMY_SPEED;
+        speed = 2;
     }
     else if(X > GAME_WIDTH-rect.width())
     {
-        speed = -ENEMY_SPEED;
+        speed = -2;
+    }
+    rect.moveTo(X, Y);
+
+    if(Y >= GAME_HEIGHT + rect.height())
+    {
+        free = true;
+    }
+}
+
+SpeedEnemyPlane::SpeedEnemyPlane() : EnemyPlane(SHOOTENEMY_PATH, BOMB_SHOOTENEMY_PATH)
+{
+    //初始化停顿间隔记录
+    recorder = 0;
+    //初始化加速点
+    speeduppoint = 150;
+    //初始化速度
+    speed=2;
+}
+
+SpeedEnemyPlane::SpeedEnemyPlane(QString planepath, QString bombpath) : EnemyPlane(planepath, bombpath)
+{
+    //初始化停顿间隔记录
+    recorder = 0;
+    //初始化加速点
+    speeduppoint = 150;
+    //初始化速度
+    speed=2;
+}
+
+void SpeedEnemyPlane::updatePosition()
+{
+    //空闲状态，不计算坐标
+    if(free)
+    {
+        return;
+    }
+
+    speed = 2;
+    if (Y <= speeduppoint)
+    {
+        Y += speed;
+    }
+    else
+    {
+        speed = 10;
+        if(recorder==speeduppoint)
+        {
+            Y += speed;
+        }
+        else {
+            recorder++;
+        }
     }
     rect.moveTo(X, Y);
 

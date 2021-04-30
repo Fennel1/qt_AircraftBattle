@@ -2,8 +2,12 @@
 
 Bomb::Bomb()
 {
+    //爆炸参数
+    bombmax = 4;
+    bombinterval = 10;
+
     //初始化爆炸图片数组
-    for(int i = 1 ;i <= BOMB_MAX ;i++)
+    for(int i = 1 ;i <= bombmax ;i++)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(BOMB_COMMONENEMY_PATH).arg(i);
@@ -23,8 +27,12 @@ Bomb::Bomb()
 
 Bomb::Bomb(QString path)
 {
+    //爆炸参数
+    bombmax = 4;
+    bombinterval = 10;
+
     //初始化爆炸图片数组
-    for(int i = 1 ;i <= BOMB_MAX ;i++)
+    for(int i = 1 ;i <= bombmax ;i++)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(path).arg(i);
@@ -51,7 +59,7 @@ void Bomb::updateInfo()
     }
 
     recoder++;
-    if(recoder < BOMB_INTERVAL)
+    if(recoder < bombinterval)
     {
         //记录爆炸间隔未到，直接return，不需要切图
         return;
@@ -63,7 +71,7 @@ void Bomb::updateInfo()
     index++;
     //注：数组中的下标从0开始，最大是6
     //如果计算的下标大于6，重置为0
-    if(index > BOMB_MAX-1)
+    if(index > bombmax-1)
     {
         index = 0;
         bombfree = true;
@@ -72,7 +80,7 @@ void Bomb::updateInfo()
 
 void Bomb::setBombPath(QString path)
 {
-    for(int i = 1 ;i <= BOMB_MAX ;i++)
+    for(int i = 1 ;i <= bombmax; i++)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(path).arg(i);

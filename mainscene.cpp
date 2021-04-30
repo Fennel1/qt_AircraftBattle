@@ -11,32 +11,61 @@ MainScene::MainScene(QWidget *parent)
 {
     //场景的初始化
     initScene();
+    //飞机参数初始化
+    initplane();
 
-    plane = new CommonMyPlane(COMMONMYPLANE_PATH, COMMONMYBOMB_PATH);
-    commonenemys = new CommonEnemyPlane[COMMONENEMY_NUM];
-    shootenemys = new ShootEnemyPlane[SHOOTENEMY_NUM];
-    for (int i=0; i < COMMONENEMY_NUM; i++)
-    {
-        //设置普通敌机参数
-        commonenemys[i].setPlanePath(COMMONENEMY_PATH);
-        commonenemys[i].setBombPath(BOMB_COMMONENEMY_PATH);
-    }
-    for (int i=0; i < SHOOTENEMY_NUM; i++)
-    {
-        //设置射击敌机参数
-        shootenemys[i].setPlanePath(SHOOTENEMY_PATH);
-        shootenemys[i].setBombPath(BOMB_SHOOTENEMY_PATH);
-    }
 }
 
 MainScene::~MainScene()
 {
 }
 
+void MainScene::initplane()
+{
+    //敌机最大数量
+    commonenemynum = 20;
+    shootenemynum = 10;
+    speedenemynum = 15;
+
+    //初始化飞机
+    plane = new CommonMyPlane(COMMONMYPLANE_PATH, COMMONMYBOMB_PATH);
+    commonenemys = new CommonEnemyPlane[commonenemynum];
+    shootenemys = new ShootEnemyPlane[shootenemynum];
+    speedenemys = new SpeedEnemyPlane[speedenemynum];
+
+    //设置飞机参数
+    for (int i=0; i < commonenemynum; i++)
+    {
+        //设置普通敌机参数
+        commonenemys[i].setPlanePath(COMMONENEMY_PATH);
+        commonenemys[i].setBombPath(BOMB_COMMONENEMY_PATH);
+    }
+    for (int i=0; i < shootenemynum; i++)
+    {
+        //设置射击敌机参数
+        shootenemys[i].setPlanePath(SHOOTENEMY_PATH);
+        shootenemys[i].setBombPath(BOMB_SHOOTENEMY_PATH);
+    }
+    for (int i=0; i<speedenemynum; i++)
+    {
+        //设置速度飞机参数
+        speedenemys[i].setPlanePath(SPEEDENEMY_PATH);
+        speedenemys[i].setBombPath(BOMB_SPEEDENEMY_PATH);
+    }
+
+    //敌机刷新间隔
+    commonrecorder = 0;
+    shootrecorder = 0;
+    speedrecorder = 0;
+    commonenemyinterval = 50;
+    shootenemyinterval = 200;
+    speedenemyinterval = 100;
+}
+
 void MainScene::initScene()
 {
     //随机数种子
-    srand((unsigned int)time(NULL));
+    srand((unsigned int)time(nullptr));
 
     //窗口大小
     setFixedSize(GAME_WIDTH,GAME_HEIGHT);
@@ -48,10 +77,6 @@ void MainScene::initScene()
     Timer.setInterval(GAME_RATE);
     //启动游戏
     playGame();
-
-    //敌机刷新间隔
-    commonrecorder = 0;
-    shootrecorder = 0;
 }
 
 void MainScene::playGame()
@@ -65,10 +90,12 @@ void MainScene::playGame()
         if (plane->X >= 0 && plane->X <= GAME_WIDTH - plane->rect.width())
         {
             plane->X += (plane->direction_a + plane->direction_d) * MYPLANE_SPEED;
+            data.movingdistance += (plane->direction_a + plane->direction_d) * MYPLANE_SPEED;   //增加移动距离
         }
         if (plane->Y >= 0 && plane->Y <= (GAME_HEIGHT - plane->rect.height()))
         {
             plane->Y += (plane->direction_w + plane->direction_s) * MYPLANE_SPEED;
+            data.movingdistance += (plane->direction_w + plane->direction_s) * MYPLANE_SPEED;   //增加移动距离
         }
         //边界检测
         if(plane->X <= 0 )
@@ -91,6 +118,7 @@ void MainScene::playGame()
         if (plane->shootflag)
         {
             plane->shoot();
+            data.myplaneshoottime++;    //射击子弹数加一
         }
         //敌机出场
         enemyToScene();
@@ -119,7 +147,7 @@ void MainScene::updatePosition()
     }
 
     //敌机坐标计算
-    for(int i = 0 ; i< COMMONENEMY_NUM;i++)
+    for(int i = 0 ; i< commonenemynum;i++)
     {
         //非空闲敌机 更新坐标
         if(commonenemys[i].free == false)
@@ -127,7 +155,7 @@ void MainScene::updatePosition()
            commonenemys[i].updatePosition();
         }
     }
-    for(int i = 0 ; i< SHOOTENEMY_NUM;i++)
+    for(int i = 0 ; i< shootenemynum;i++)
     {
         //非空闲敌机 更新坐标
         if(shootenemys[i].free == false)
@@ -144,9 +172,17 @@ void MainScene::updatePosition()
             }
         }
     }
+    for (int i=0; i<speedenemynum; i++)
+    {
+        //非空闲敌机 更新坐标
+        if(speedenemys[i].free == false)
+        {
+           speedenemys[i].updatePosition();
+        }
+    }
 
     //计算爆炸播放的图片
-    for(int i = 0 ; i < COMMONENEMY_NUM;i++)
+    for(int i = 0 ; i < commonenemynum;i++)
     {
         //敌机爆炸
         if(commonenemys[i].bombfree == false)
@@ -154,12 +190,20 @@ void MainScene::updatePosition()
             commonenemys[i].updateInfo();
         }
     }
-    for(int i = 0 ; i < SHOOTENEMY_NUM;i++)
+    for(int i = 0 ; i < shootenemynum;i++)
     {
         //敌机爆炸
         if(shootenemys[i].bombfree == false)
         {
             shootenemys[i].updateInfo();
+        }
+    }
+    for(int i = 0 ; i < speedenemynum;i++)
+    {
+        //敌机爆炸
+        if(speedenemys[i].bombfree == false)
+        {
+            speedenemys[i].updateInfo();
         }
     }
 
@@ -199,14 +243,14 @@ void MainScene::paintEvent(QPaintEvent *event)
     }
 
     //绘制敌机
-    for(int i = 0 ; i< COMMONENEMY_NUM;i++)
+    for(int i = 0 ; i< commonenemynum;i++)
     {
         if(commonenemys[i].free == false)
         {
             painter.drawPixmap(commonenemys[i].X,commonenemys[i].Y,commonenemys[i].enemy);
         }
     }
-    for(int i = 0 ; i< SHOOTENEMY_NUM;i++)
+    for(int i = 0 ; i< shootenemynum;i++)
     {
         if(shootenemys[i].free == false)
         {
@@ -222,20 +266,34 @@ void MainScene::paintEvent(QPaintEvent *event)
                 }
             }
     }
+    for (int i=0; i<speedenemynum; i++)
+    {
+        if(speedenemys[i].free == false)
+        {
+            painter.drawPixmap(speedenemys[i].X,speedenemys[i].Y,speedenemys[i].enemy);
+        }
+    }
 
     //绘制敌机爆炸图片
-    for(int i = 0 ; i < COMMONENEMY_NUM;i++)
+    for(int i = 0 ; i < commonenemynum;i++)
     {
         if(commonenemys[i].bombfree == false)
         {
             painter.drawPixmap(commonenemys[i].X, commonenemys[i].Y, commonenemys[i].pixArr[commonenemys[i].index]);
         }
     }
-    for(int i = 0 ; i < SHOOTENEMY_NUM;i++)
+    for(int i = 0 ; i < shootenemynum;i++)
     {
         if(shootenemys[i].bombfree == false)
         {
             painter.drawPixmap(shootenemys[i].X, shootenemys[i].Y, shootenemys[i].pixArr[shootenemys[i].index]);
+        }
+    }
+    for(int i = 0 ; i < speedenemynum;i++)
+    {
+        if(speedenemys[i].bombfree == false)
+        {
+            painter.drawPixmap(speedenemys[i].X, speedenemys[i].Y, speedenemys[i].pixArr[speedenemys[i].index]);
         }
     }
 }
@@ -270,7 +328,6 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
     if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
         plane->shootflag = true;
-        //plane.shoot();
     }
 
     if((event->key() == Qt::Key_W) && !event->isAutoRepeat())   //上
@@ -353,10 +410,11 @@ void MainScene::enemyToScene()
 {
     commonrecorder++;
     shootrecorder++;
+    speedrecorder++;
 
-    if (commonrecorder > COMMONENEMY_INTERVAL)
+    if (commonrecorder > commonenemyinterval)
     {
-        for(int i = 0 ; i< COMMONENEMY_NUM;i++)
+        for(int i = 0 ; i< commonenemynum;i++)
         {
             if(commonenemys[i].free)
             {
@@ -371,9 +429,9 @@ void MainScene::enemyToScene()
         commonrecorder = 0;
     }
 
-    if (shootrecorder > SHOOTENEMY_INTERVAL)
+    if (shootrecorder > shootenemyinterval)
     {
-        for(int i = 0 ; i< SHOOTENEMY_NUM;i++)
+        for(int i = 0 ; i< shootenemynum;i++)
         {
             if(shootenemys[i].free)
             {
@@ -388,12 +446,29 @@ void MainScene::enemyToScene()
         shootrecorder = 0;
     }
 
+    if (speedrecorder > speedenemyinterval)
+    {
+        for(int i = 0 ; i< speedenemynum;i++)
+        {
+            if(speedenemys[i].free)
+            {
+                //敌机空闲状态改为false
+                speedenemys[i].free = false;
+                //设置坐标
+                speedenemys[i].X = rand() % (GAME_WIDTH - speedenemys[i].rect.width());
+                speedenemys[i].Y = -speedenemys[i].rect.height();
+                break;
+            }
+        }
+        speedrecorder = 0;
+    }
+
 }
 
 void MainScene::collisionDetection()
 {
-    //遍历所有非空闲的敌机
-    for(int i = 0 ;i < COMMONENEMY_NUM;i++)
+    //遍历所有非空闲的普通敌机
+    for(int i = 0 ;i < commonenemynum;i++)
     {
         if(commonenemys[i].free)
         {
@@ -406,12 +481,15 @@ void MainScene::collisionDetection()
         {
             commonenemys[i].free = true;
             commonenemys[i].bombfree = false;
+            data.destorycommonenemy++;  //击毁普通敌机数加一
+            data.crashtime++;   //与敌机碰撞次数加一
             if (plane->health>0)
             {
                 plane->health--;
             }
             else
             {
+                data.destroyedbycommonenemy++;   //被普通敌机击毁次数加一
                 plane->isdeath = true;
                 plane->bombfree = false;
             }
@@ -434,12 +512,14 @@ void MainScene::collisionDetection()
                 plane->bullets[j].free = true;
                 //爆炸变为非空闲
                 commonenemys[i].bombfree = false;
+
+                data.destoryshootenemy++;   //击毁普通敌机数加一
             }
         }
     }
 
     //遍历所有非空闲的射击敌机
-    for(int i = 0 ;i < SHOOTENEMY_NUM;i++)
+    for(int i = 0 ;i < shootenemynum;i++)
     {
         //遍历所非空闲的敌机子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
@@ -455,12 +535,14 @@ void MainScene::collisionDetection()
             {
                 //敌机子弹变为空闲
                 shootenemys[i].bullets[j].free = true;
+                data.beshottime++;  //被敌机子弹击中次数加一
                 if (plane->health>0)
                 {
                     plane->health--;
                 }
                 else
                 {
+                    data.destroyedbyshootenemy++;   //被射击敌机击毁次数加一
                     plane->isdeath = true;
                     plane->bombfree = false;
                 }
@@ -478,12 +560,15 @@ void MainScene::collisionDetection()
         {
             shootenemys[i].free = true;
             shootenemys[i].bombfree = false;
+            data.destoryshootenemy++;   //击毁射击敌机数加一
+            data.crashtime++;   //与敌机碰撞次数加一
             if (plane->health>0)
             {
                 plane->health--;
             }
             else
             {
+                data.destroyedbyshootenemy++;   //被射击敌机击毁次数加一
                 plane->isdeath = true;
                 plane->bombfree = false;
             }
@@ -506,6 +591,59 @@ void MainScene::collisionDetection()
                 plane->bullets[j].free = true;
                 //爆炸变为非空闲
                 shootenemys[i].bombfree = false;
+
+                data.destoryshootenemy++;   //击毁射击敌机数加一
+            }
+        }
+    }
+
+    //遍历所有速度敌机
+    for(int i = 0 ;i < speedenemynum;i++)
+    {
+        if(speedenemys[i].free)
+        {
+            //空闲飞机 跳转下一次循环
+            continue;
+        }
+
+        //判定敌机与主机碰撞
+        if (speedenemys[i].rect.intersects(plane->rect))
+        {
+            speedenemys[i].free = true;
+            speedenemys[i].bombfree = false;
+            data.destorycommonenemy++;  //击毁普通敌机数加一
+            data.crashtime++;   //与敌机碰撞次数加一
+            if (plane->health>0)
+            {
+                plane->health--;
+            }
+            else
+            {
+                data.destroyedbycommonenemy++;   //被普通敌机击毁次数加一
+                plane->isdeath = true;
+                plane->bombfree = false;
+            }
+        }
+
+        //遍历所有非空闲的子弹
+        for(int j = 0 ; j < BULLET_NUM;j++)
+        {
+            if(plane->bullets[j].free)
+            {
+                //空闲子弹 跳转下一次循环
+                continue;
+            }
+
+            //如果子弹矩形框和敌机矩形框相交，发生碰撞
+            if(speedenemys[i].rect.intersects(plane->bullets[j].rect))
+            {
+                //敌机与碰撞的子弹变为空闲
+                speedenemys[i].free = true;
+                plane->bullets[j].free = true;
+                //爆炸变为非空闲
+                speedenemys[i].bombfree = false;
+
+                data.destoryshootenemy++;   //击毁普通敌机数加一
             }
         }
     }

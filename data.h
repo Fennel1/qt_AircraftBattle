@@ -28,6 +28,7 @@ private:
     //击毁敌机数
     int destorycommonenemy;
     int destoryshootenemy;
+    int destoryspeedenemy;
 
     //发射子弹数
     int myplaneshoottime;

@@ -19,6 +19,7 @@ public:
     MainScene(QWidget *parent = nullptr);
     ~MainScene();
     void initScene();
+    void initplane();
     //启动游戏
     void playGame();
     //更新坐标
@@ -42,10 +43,20 @@ private:
     //敌机数组
     CommonEnemyPlane *commonenemys;
     ShootEnemyPlane *shootenemys;
+    SpeedEnemyPlane *speedenemys;
 
     //敌机出场间隔记录
     int commonrecorder;
     int shootrecorder;
+    int speedrecorder;
+    int commonenemyinterval;
+    int shootenemyinterval;
+    int speedenemyinterval;
+
+    //敌机最大数量
+    int commonenemynum;
+    int shootenemynum;
+    int speedenemynum;
 
     //地图对象
     Map map;
