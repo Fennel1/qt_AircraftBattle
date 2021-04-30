@@ -16,7 +16,8 @@ SOURCES += \
     main.cpp \
     mainscene.cpp \
     map.cpp \
-    myplane.cpp
+    myplane.cpp \
+    skill.cpp
 
 HEADERS += \
     bomb.h \
@@ -26,7 +27,8 @@ HEADERS += \
     enemyplane.h \
     mainscene.h \
     map.h \
-    myplane.h
+    myplane.h \
+    skill.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -5,6 +5,7 @@
 #include "bullet.h"
 
 class MainScene;
+class ScreenClear;
 
 class EnemyPlane : public Bomb
 {
@@ -46,6 +47,7 @@ protected:
 class CommonEnemyPlane : public EnemyPlane
 {
     friend class MainScene;
+    friend class ScreenClear;
 public:
     CommonEnemyPlane();
     CommonEnemyPlane(QString planepath, QString bombpath);
@@ -56,6 +58,7 @@ public:
 class ShootEnemyPlane : public EnemyPlane
 {
     friend class MainScene;
+    friend class ScreenClear;
 public:
     ShootEnemyPlane();
     ShootEnemyPlane(QString planepath, QString bombpath);
@@ -82,6 +85,7 @@ protected:
 class SpeedEnemyPlane : public EnemyPlane
 {
     friend class MainScene;
+    friend class ScreenClear;
 public:
     SpeedEnemyPlane();
     SpeedEnemyPlane(QString planepath, QString bombpath);
@@ -97,6 +101,9 @@ private:
 
     //飞机加速点
     int speeduppoint;
+
+    //停顿判断
+    bool ispause;
 };
 
 

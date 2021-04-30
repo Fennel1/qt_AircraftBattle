@@ -6,8 +6,8 @@
 #include "map.h"
 #include "myplane.h"
 #include "enemyplane.h"
-#include "bomb.h"
 #include "data.h"
+#include "skill.h"
 
 class MainScene : public QWidget
 {
@@ -39,6 +39,9 @@ public:
     //碰撞检测
     void collisionDetection();
 
+    //刷新技能
+    void updateSkill();
+
 private:
     //敌机数组
     CommonEnemyPlane *commonenemys;
@@ -66,6 +69,9 @@ private:
 
     //游戏数据对象
     Data data;
+
+    //技能
+    ScreenClear screenclear;
 };
 
 

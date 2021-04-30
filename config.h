@@ -11,7 +11,6 @@
 #define BULLET_PATH ":/images/bullet1.png"   //子弹图片路径
 #define BULLET_SPEED 5  //子弹移动速度
 #define BULLET_NUM 30   //弹匣中子弹总数
-#define MYPLANE_SPEED 5      //主机飞行速度
 #define COMMONENEMY_PATH  ":/images/enemy1.png"  //普通敌机资源图片
 #define SHOOTENEMY_PATH ":/images/enemy2.png"     //射击敌机资源图片
 #define SPEEDENEMY_PATH ":/images/enemy4.png"     //射击速度资源图片

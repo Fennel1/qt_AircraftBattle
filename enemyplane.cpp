@@ -166,7 +166,7 @@ void ShootEnemyPlane::updatePosition()
     }
 }
 
-SpeedEnemyPlane::SpeedEnemyPlane() : EnemyPlane(SHOOTENEMY_PATH, BOMB_SHOOTENEMY_PATH)
+SpeedEnemyPlane::SpeedEnemyPlane() : EnemyPlane(SPEEDENEMY_PATH, BOMB_SPEEDENEMY_PATH)
 {
     //初始化停顿间隔记录
     recorder = 0;
@@ -193,7 +193,11 @@ void SpeedEnemyPlane::updatePosition()
     {
         return;
     }
-
+    if (Y <= speeduppoint && ispause)
+    {
+        recorder = 0;
+        ispause = false;
+    }
     speed = 2;
     if (Y <= speeduppoint)
     {
@@ -204,6 +208,7 @@ void SpeedEnemyPlane::updatePosition()
         speed = 10;
         if(recorder==speeduppoint)
         {
+            ispause = true;
             Y += speed;
         }
         else {

@@ -37,7 +37,7 @@ MyPlane::MyPlane() : Bomb()
     health = 5;
 
     //飞机速度
-    speed = 0;
+    speed = 5;
 }
 
 MyPlane::MyPlane(QString planepath,QString bombPath) : Bomb(bombPath)
@@ -76,7 +76,7 @@ MyPlane::MyPlane(QString planepath,QString bombPath) : Bomb(bombPath)
     health = 5;
 
     //飞机速度
-    speed = 0;
+    speed = 5;
 }
 
 void MyPlane::setPosition(int x, int y)

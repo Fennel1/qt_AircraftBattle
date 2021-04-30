@@ -5,7 +5,6 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <ctime>
-
 MainScene::MainScene(QWidget *parent)
     : QWidget(parent)
 {
@@ -65,7 +64,7 @@ void MainScene::initplane()
 void MainScene::initScene()
 {
     //随机数种子
-    srand((unsigned int)time(nullptr));
+    srand((unsigned int)time(NULL));
 
     //窗口大小
     setFixedSize(GAME_WIDTH,GAME_HEIGHT);
@@ -89,13 +88,13 @@ void MainScene::playGame()
         //主机移动
         if (plane->X >= 0 && plane->X <= GAME_WIDTH - plane->rect.width())
         {
-            plane->X += (plane->direction_a + plane->direction_d) * MYPLANE_SPEED;
-            data.movingdistance += (plane->direction_a + plane->direction_d) * MYPLANE_SPEED;   //增加移动距离
+            plane->X += (plane->direction_a + plane->direction_d) * plane->speed;
+            data.movingdistance += (plane->direction_a + plane->direction_d) * plane->speed;   //增加移动距离
         }
         if (plane->Y >= 0 && plane->Y <= (GAME_HEIGHT - plane->rect.height()))
         {
-            plane->Y += (plane->direction_w + plane->direction_s) * MYPLANE_SPEED;
-            data.movingdistance += (plane->direction_w + plane->direction_s) * MYPLANE_SPEED;   //增加移动距离
+            plane->Y += (plane->direction_w + plane->direction_s) * plane->speed;
+            data.movingdistance += (plane->direction_w + plane->direction_s) * plane->speed;   //增加移动距离
         }
         //边界检测
         if(plane->X <= 0 )
@@ -128,7 +127,21 @@ void MainScene::playGame()
         update();
         //碰撞检测
         collisionDetection();
+        //刷新技能
+        updateSkill();
     });
+}
+
+void MainScene::updateSkill()
+{
+    if (screenclear.free == false)
+    {
+        screenclear.cd++;
+        if (screenclear.cd >= 1000)
+        {
+            screenclear.free = true;
+        }
+    }
 }
 
 void MainScene::updatePosition()
@@ -325,11 +338,22 @@ void MainScene::mouseMoveEvent(QMouseEvent *event)
 
 void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判定 持续按住按键控制
 {
+    //使用技能
+    if (event->key() == Qt::Key_K && !event->isAutoRepeat())
+    {
+        if (screenclear.free == true)
+        {
+            screenclear.use(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+        }
+    }
+
+    //射击
     if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
         plane->shootflag = true;
     }
 
+    //移动
     if((event->key() == Qt::Key_W) && !event->isAutoRepeat())   //上
     {
         if(!plane->pressflag_w)
@@ -476,24 +500,7 @@ void MainScene::collisionDetection()
             continue;
         }
 
-        //判定敌机与主机碰撞
-        if (commonenemys[i].rect.intersects(plane->rect))
-        {
-            commonenemys[i].free = true;
-            commonenemys[i].bombfree = false;
-            data.destorycommonenemy++;  //击毁普通敌机数加一
-            data.crashtime++;   //与敌机碰撞次数加一
-            if (plane->health>0)
-            {
-                plane->health--;
-            }
-            else
-            {
-                data.destroyedbycommonenemy++;   //被普通敌机击毁次数加一
-                plane->isdeath = true;
-                plane->bombfree = false;
-            }
-        }
+
 
         //遍历所有非空闲的子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
