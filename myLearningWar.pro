@@ -13,11 +13,14 @@ SOURCES += \
     bullet.cpp \
     data.cpp \
     enemyplane.cpp \
+    loginwindow.cpp \
     main.cpp \
     mainscene.cpp \
+    mainwindow.cpp \
     map.cpp \
     myplane.cpp \
-    skill.cpp
+    skill.cpp \
+    thehome.cpp
 
 HEADERS += \
     bomb.h \
@@ -25,10 +28,13 @@ HEADERS += \
     config.h \
     data.h \
     enemyplane.h \
+    loginwindow.h \
     mainscene.h \
+    mainwindow.h \
     map.h \
     myplane.h \
-    skill.h
+    skill.h \
+    thehome.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -37,3 +43,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     image.qrc
+
+FORMS += \
+    mainwindow.ui
