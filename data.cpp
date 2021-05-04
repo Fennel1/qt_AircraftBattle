@@ -36,7 +36,7 @@ Data& Data::operator=(const Data &d)
     return *this;
 }
 
-Data Data::operator+=(const Data &d)
-{
+//Data Data::operator+=(const Data &d)
+//{
 
-}
+//}
