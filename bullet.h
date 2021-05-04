@@ -8,6 +8,8 @@ class MyPlane;
 class CommonEnemyPlane;
 class ShootEnemyPlane;
 class ScreenClear;
+class Laser;
+class Missle;
 
 class Bullet
 { 
@@ -15,6 +17,8 @@ class Bullet
     friend class MyPlane;
     friend class ShootEnemyPlane;
     friend class ScreenClear;
+    friend class Laser;
+    friend class Missle;
 public:
     Bullet();
 

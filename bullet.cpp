@@ -13,7 +13,7 @@ Bullet::Bullet()
     free = true;
 
     //子弹速度
-    speed = BULLET_SPEED;
+    speed = 5;
 
     //子弹矩形框
     rect.setWidth(bullet.width());

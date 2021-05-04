@@ -6,6 +6,8 @@
 
 class MainScene;
 class ScreenClear;
+class Laser;
+class Missle;
 
 class EnemyPlane : public Bomb
 {
@@ -48,6 +50,8 @@ class CommonEnemyPlane : public EnemyPlane
 {
     friend class MainScene;
     friend class ScreenClear;
+    friend class Laser;
+    friend class Missle;
 public:
     CommonEnemyPlane();
     CommonEnemyPlane(QString planepath, QString bombpath);
@@ -59,6 +63,8 @@ class ShootEnemyPlane : public EnemyPlane
 {
     friend class MainScene;
     friend class ScreenClear;
+    friend class Laser;
+    friend class Missle;
 public:
     ShootEnemyPlane();
     ShootEnemyPlane(QString planepath, QString bombpath);
@@ -86,6 +92,8 @@ class SpeedEnemyPlane : public EnemyPlane
 {
     friend class MainScene;
     friend class ScreenClear;
+    friend class Laser;
+    friend class Missle;
 public:
     SpeedEnemyPlane();
     SpeedEnemyPlane(QString planepath, QString bombpath);

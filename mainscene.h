@@ -71,7 +71,9 @@ private:
     Data data;
 
     //技能
-    ScreenClear screenclear;
+    ScreenClear screenclear;    //清屏
+    Laser laser;      //激光
+    Missle missle;      //导弹
 };
 
 

@@ -136,10 +136,26 @@ void MainScene::updateSkill()
 {
     if (screenclear.free == false)
     {
-        screenclear.cd++;
-        if (screenclear.cd >= 1000)
+        screenclear.skillrecorder++;
+        if (screenclear.skillrecorder >= screenclear.cd)
         {
             screenclear.free = true;
+        }
+    }
+    if (laser.free == false)
+    {
+        laser.skillrecorder++;
+        if (laser.skillrecorder >= laser.cd)
+        {
+            laser.free = true;
+        }
+    }
+    if (missle.free == false && missle.misslefree == true)
+    {
+        missle.skillrecorder++;
+        if (missle.skillrecorder >= missle.cd)
+        {
+            missle.free = true;
         }
     }
 }
@@ -225,6 +241,12 @@ void MainScene::updatePosition()
     {
         plane->updateInfo();
     }
+
+    //导弹更新
+    if (missle.misslefree == false)
+    {
+        missle.updatePosition();
+    }
 }
 
 void MainScene::paintEvent(QPaintEvent *event)
@@ -309,6 +331,12 @@ void MainScene::paintEvent(QPaintEvent *event)
             painter.drawPixmap(speedenemys[i].X, speedenemys[i].Y, speedenemys[i].pixArr[speedenemys[i].index]);
         }
     }
+
+    //绘制导弹
+    if (missle.misslefree == false)
+    {
+        painter.drawPixmap(missle.X, missle.Y, missle.missle);
+    }
 }
 
 void MainScene::mouseMoveEvent(QMouseEvent *event)
@@ -344,6 +372,20 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
         if (screenclear.free == true)
         {
             screenclear.use(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+        }
+    }
+    if (event->key() == Qt::Key_L && !event->isAutoRepeat())
+    {
+        if (laser.free == true)
+        {
+            laser.use(plane->X, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+        }
+    }
+    if (event->key() == Qt::Key_U && !event->isAutoRepeat())
+    {
+        if (missle.free == true)
+        {
+            missle.shoot(plane->X, plane->Y);
         }
     }
 
@@ -500,7 +542,11 @@ void MainScene::collisionDetection()
             continue;
         }
 
-
+        //导弹碰撞判定
+        if (missle.misslefree == false && commonenemys[i].rect.intersects(missle.rect))
+        {
+            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+        }
 
         //遍历所有非空闲的子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
@@ -562,6 +608,12 @@ void MainScene::collisionDetection()
             continue;
         }
 
+        //导弹碰撞判定
+        if (missle.misslefree == false && commonenemys[i].rect.intersects(missle.rect))
+        {
+            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+        }
+
         //判定敌机与主机碰撞
         if (shootenemys[i].rect.intersects(plane->rect))
         {
@@ -611,6 +663,12 @@ void MainScene::collisionDetection()
         {
             //空闲飞机 跳转下一次循环
             continue;
+        }
+
+        //导弹碰撞判定
+        if (missle.misslefree == false && commonenemys[i].rect.intersects(missle.rect))
+        {
+            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
         }
 
         //判定敌机与主机碰撞
