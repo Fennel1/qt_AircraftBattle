@@ -6,6 +6,7 @@
 #include <QProxyStyle>
 #include <QTabBar>
 #include <QStyleOptionTab>
+#include <QTabWidget>
 
 class CustomTabStyle : public QProxyStyle
 {
@@ -75,6 +76,18 @@ MainWindow::MainWindow(QWidget *parent) :
     btn_back.resize(100,40);
 
     connect(&btn_back, &QPushButton::clicked, this, &MainWindow::sendslot_back);
+    /*
+    //play game界面设置
+    QPushButton* btn_to_mainscene = new QPushButton;
+    ui->tabWidget->addTab(btn_to_mainscene, "play");
+    btn_to_mainscene->setParent(this);
+    btn_to_mainscene->setText("Start Game");
+    btn_to_mainscene->move(410,380);
+    btn_to_mainscene->resize(260,50);
+    btn_to_mainscene->setFont(QFont("consolas",16));
+
+    connect(&*btn_to_mainscene, &QPushButton::clicked, this, &MainWindow::change_window_to_mainscene);
+    */
 
 #if 0
     ui->tabWidget->setStyleSheet("QTabWidget::pane{ \
@@ -91,4 +104,11 @@ void MainWindow::sendslot_back()
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_btn_to_mainscene_clicked()
+{
+    MainScene* win_mainscene = new MainScene;
+    win_mainscene->setWindowModality(Qt::ApplicationModal);
+    win_mainscene->show();
 }

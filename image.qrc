@@ -52,6 +52,10 @@
         <file>images/me1_shield3.png</file>
         <file>images/missle_bomb1.png</file>
         <file>images/missle_bomb2.png</file>
+        <file>images/laser1.png</file>
+        <file>images/laser2.png</file>
+        <file>images/laser3.png</file>
+        <file>images/laser4.png</file>
     </qresource>
     <qresource prefix="/image">
         <file>images/again.png</file>

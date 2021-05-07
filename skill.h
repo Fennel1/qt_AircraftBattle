@@ -30,8 +30,23 @@ class Laser : public Skill
     friend class MainScene;
 public:
     Laser();
-    void use(int laserx, int commonenemynum, int shootenemynum, int speedenemynum,
+    void use(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
              CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys);
+    void updateInfo();
+private:
+    //激光资源
+    QVector<QPixmap> pixArr;
+
+    //发射状态
+    bool laserfree;
+
+    //切图时间间隔
+    int laserrecorder;
+    int laserinterval;
+    int lasermax;
+
+    //加载图片下标
+    int index;
 };
 
 class Missle : public Skill, public Bomb

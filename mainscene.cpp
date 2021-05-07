@@ -65,24 +65,24 @@ void MainScene::initplane()
 
     //掉落物最大数量
     dropobjectnum = 5;
-     bloodbagnum = 1;
-     //掉落物刷新间隔
-     droprecorder = 0;
-     dropobjectinterval = 500;
-     bloodbagrecorder = 0;
-     bloodbaginterval = 100;
-     //初始化掉落物
-     dropobjects = new DropObject[dropobjectnum];
-     bloodbags = new BloodBag[bloodbagnum];
-     //设置掉落物参数
-     for (int i=0; i<dropobjectnum; i++)
-     {
-         dropobjects[i].setObjectPath(DROPOBJECT_PATH);
-     }
-     for (int i=0; i<bloodbagnum; i++)
-     {
-         bloodbags[i].setObjectPath(BLOODBAG_PATH);
-     }
+    bloodbagnum = 1;
+    //掉落物刷新间隔
+    droprecorder = 0;
+    dropobjectinterval = 500;
+    bloodbagrecorder = 0;
+    bloodbaginterval = 100;
+    //初始化掉落物
+    dropobjects = new DropObject[dropobjectnum];
+    bloodbags = new BloodBag[bloodbagnum];
+    //设置掉落物参数
+    for (int i=0; i<dropobjectnum; i++)
+    {
+        dropobjects[i].setObjectPath(DROPOBJECT_PATH);
+    }
+    for (int i=0; i<bloodbagnum; i++)
+    {
+        bloodbags[i].setObjectPath(BLOODBAG_PATH);
+    }
 }
 
 void MainScene::initScene()
@@ -303,6 +303,12 @@ void MainScene::updatePosition()
         missle.updateInfo();
     }
 
+    //激光发射
+    if (laser.laserfree == false)
+    {
+        laser.updateInfo();
+    }
+
     //掉落物坐标计算
        for(int i = 0 ; i< dropobjectnum;i++)
        {
@@ -415,6 +421,11 @@ void MainScene::paintEvent(QPaintEvent *event)
     if (missle.bombfree == false)
     {
         painter.drawPixmap(missle.X-100, missle.Y-100, missle.pixArr[missle.index]);
+    }
+
+    if (laser.laserfree == false)
+    {
+        painter.drawPixmap(plane->X, plane->Y-700, laser.pixArr[laser.index]);
     }
 
     //绘制掉落物
@@ -544,7 +555,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
     {
         if (laser.free == true)
         {
-            laser.use(plane->X, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+            laser.use(plane->X, plane->Y, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
         }
     }
     if (event->key() == Qt::Key_U && !event->isAutoRepeat())

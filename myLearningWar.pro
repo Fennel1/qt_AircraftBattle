@@ -14,13 +14,14 @@ SOURCES += \
     data.cpp \
     dropobjects.cpp \
     enemyplane.cpp \
-    item.cpp \
+    gameover.cpp \
     loginwindow.cpp \
     main.cpp \
     mainscene.cpp \
     mainwindow.cpp \
     map.cpp \
     myplane.cpp \
+    props.cpp \
     skill.cpp \
     thehome.cpp
 
@@ -31,12 +32,13 @@ HEADERS += \
     data.h \
     dropobjects.h \
     enemyplane.h \
-    item.h \
+    gameover.h \
     loginwindow.h \
     mainscene.h \
     mainwindow.h \
     map.h \
     myplane.h \
+    props.h \
     skill.h \
     thehome.h
 
@@ -49,4 +51,5 @@ RESOURCES += \
     image.qrc
 
 FORMS += \
+    gameover.ui \
     mainwindow.ui

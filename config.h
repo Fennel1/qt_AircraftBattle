@@ -19,6 +19,7 @@
 #define BOMB_SPEEDENEMY_PATH  ":/images/enemy4_down%1.png"   //速度敌机爆炸资源图片
 #define COMMONMYBOMB_PATH ":/images/me_destroy_%1.png"   //玩家飞机爆炸资源图片
 #define MISSLEBOMB_PATH  ":/images/missle_bomb%1.png"   //导弹爆炸资源图片
+#define LASER_PATH  ":/images/laser%1.png"   //激光资源图片
 #define MISSLE_PATH ":/images/missle.png"   //导弹资源图片
 #define DROPOBJECT_PATH ":/images/bullet_supply.png"  //掉落物资源图片
 #define BLOODBAG_PATH ":/images/bomb_supply.png"  //血包资源图片

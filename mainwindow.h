@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include "mainscene.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,9 +17,14 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void sendslot_back();
+    void change_window_to_mainscene();
 
 signals:
     void signal_back();
+
+private slots:
+
+    void on_btn_to_mainscene_clicked();
 
 private:
     Ui::MainWindow *ui;

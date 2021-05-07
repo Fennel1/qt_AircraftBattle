@@ -71,13 +71,55 @@ void ScreenClear::use(int commonenemynum, int shootenemynum, int speedenemynum,
 Laser::Laser()
 {
     cd = 300;
+
+    //切图参数
+    lasermax = 4;
+    laserinterval = 10;
+    laserfree = true;
+    index = 0;
+    laserrecorder = 0;
+
+    for (int i=1; i<=lasermax; i++)
+    {
+        QString str = QString(LASER_PATH).arg(i);
+        pixArr.push_back(QPixmap(str));
+    }
 }
 
-void Laser::use(int laserx, int commonenemynum, int shootenemynum, int speedenemynum,
+void Laser::updateInfo()
+{
+    //空闲状态
+    if(laserfree)
+    {
+        return;
+    }
+
+    laserrecorder++;
+    if(laserrecorder < laserinterval)
+    {
+        //记录爆炸间隔未到，直接return，不需要切图
+        return;
+    }
+    //重置记录ad
+    laserrecorder = 0;
+
+    //切换爆炸播放图片
+    index++;
+    //注：数组中的下标从0开始，最大是6
+    //如果计算的下标大于6，重置为0
+    if(index > lasermax-1)
+    {
+        index = 0;
+        laserfree = true;
+    }
+}
+
+void Laser::use(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
                 CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys)
 {
-    QRect laser(laserx-35, 0, 70, GAME_HEIGHT);
+    QRect laser(laserx-50, 0, 100, lasery);
     free = false;
+    laserfree = false;
     skillrecorder  = 0;
     //遍历所有非空闲的普通敌机
     for(int i = 0 ;i < commonenemynum;i++)
