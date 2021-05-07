@@ -12,7 +12,9 @@ SOURCES += \
     bomb.cpp \
     bullet.cpp \
     data.cpp \
+    dropobjects.cpp \
     enemyplane.cpp \
+    item.cpp \
     loginwindow.cpp \
     main.cpp \
     mainscene.cpp \
@@ -27,7 +29,9 @@ HEADERS += \
     bullet.h \
     config.h \
     data.h \
+    dropobjects.h \
     enemyplane.h \
+    item.h \
     loginwindow.h \
     mainscene.h \
     mainwindow.h \

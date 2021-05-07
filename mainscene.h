@@ -8,6 +8,7 @@
 #include "enemyplane.h"
 #include "data.h"
 #include "skill.h"
+#include "dropobjects.h"
 
 class MainScene : public QWidget
 {
@@ -35,6 +36,9 @@ public:
 
     //敌机出场
     void enemyToScene();
+
+    //掉落物出场
+    void objectToScene();
 
     //碰撞检测
     void collisionDetection();
@@ -74,6 +78,22 @@ private:
     ScreenClear screenclear;    //清屏
     Laser laser;      //激光
     Missle missle;      //导弹
+    Shield shield;      //护盾
+
+    //掉落物数组
+    DropObject *dropobjects;
+    BloodBag *bloodbags;
+
+    //掉落物出场间隔
+    int droprecorder;
+    int dropobjectinterval;
+    int bloodbagrecorder;
+    int bloodbaginterval;
+
+
+    //掉落物最大数量
+    int dropobjectnum;
+    int bloodbagnum;
 };
 
 

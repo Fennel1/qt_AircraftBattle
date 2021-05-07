@@ -80,6 +80,7 @@ void Bomb::updateInfo()
 
 void Bomb::setBombPath(QString path)
 {
+    pixArr.clear();
     for(int i = 1 ;i <= bombmax; i++)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"

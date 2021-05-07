@@ -45,6 +45,13 @@
         <file>images/enemy4_down2.png</file>
         <file>images/enemy4_down3.png</file>
         <file>images/enemy4_down4.png</file>
+        <file>images/missle.png</file>
+        <file>images/shieldlife.png</file>
+        <file>images/me1_shield1.png</file>
+        <file>images/me1_shield2.png</file>
+        <file>images/me1_shield3.png</file>
+        <file>images/missle_bomb1.png</file>
+        <file>images/missle_bomb2.png</file>
     </qresource>
     <qresource prefix="/image">
         <file>images/again.png</file>

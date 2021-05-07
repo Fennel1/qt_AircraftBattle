@@ -2,6 +2,7 @@
 #define SKILL_H
 #include "config.h"
 #include "enemyplane.h"
+#include "myplane.h"
 
 class Skill
 {
@@ -33,11 +34,12 @@ public:
              CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys);
 };
 
-class Missle : public Skill
+class Missle : public Skill, public Bomb
 {
     friend class MainScene;
 public:
     Missle();
+    Missle(QString bombPath);
     void shoot(int misslex, int missley);
     void updatePosition();
     void bomb(int commonenemynum, int shootenemynum, int speedenemynum,
@@ -54,6 +56,19 @@ private:
     bool misslefree;
     //子弹资源对象
     QPixmap missle;
+};
+
+class Shield : public Skill
+{
+    friend class MainScene;
+public:
+    Shield();
+    void use(MyPlane *myplane);
+    void end(MyPlane *myplane);
+private:
+    int duration;
+    int shieldrecorder;
+    bool shieldfree;
 };
 
 

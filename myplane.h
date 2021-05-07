@@ -5,10 +5,12 @@
 #include "bullet.h"
 
 class MainScene;
+class Shield;
 
 class MyPlane : public Bomb
 {
     friend class MainScene;
+    friend class Shield;
 public:
     MyPlane();
     MyPlane(QString planepath, QString bombPath);

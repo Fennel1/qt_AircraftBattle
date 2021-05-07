@@ -59,6 +59,30 @@ void MainScene::initplane()
     commonenemyinterval = 50;
     shootenemyinterval = 200;
     speedenemyinterval = 100;
+
+    //设置技能参数
+    missle.setBombPath(MISSLEBOMB_PATH);
+
+    //掉落物最大数量
+    dropobjectnum = 5;
+     bloodbagnum = 1;
+     //掉落物刷新间隔
+     droprecorder = 0;
+     dropobjectinterval = 500;
+     bloodbagrecorder = 0;
+     bloodbaginterval = 100;
+     //初始化掉落物
+     dropobjects = new DropObject[dropobjectnum];
+     bloodbags = new BloodBag[bloodbagnum];
+     //设置掉落物参数
+     for (int i=0; i<dropobjectnum; i++)
+     {
+         dropobjects[i].setObjectPath(DROPOBJECT_PATH);
+     }
+     for (int i=0; i<bloodbagnum; i++)
+     {
+         bloodbags[i].setObjectPath(BLOODBAG_PATH);
+     }
 }
 
 void MainScene::initScene()
@@ -119,6 +143,8 @@ void MainScene::playGame()
             plane->shoot();
             data.myplaneshoottime++;    //射击子弹数加一
         }
+        //掉落物出场
+        objectToScene();
         //敌机出场
         enemyToScene();
         //更新游戏元素坐标
@@ -134,6 +160,7 @@ void MainScene::playGame()
 
 void MainScene::updateSkill()
 {
+    //清屏
     if (screenclear.free == false)
     {
         screenclear.skillrecorder++;
@@ -142,6 +169,7 @@ void MainScene::updateSkill()
             screenclear.free = true;
         }
     }
+    //激光
     if (laser.free == false)
     {
         laser.skillrecorder++;
@@ -150,12 +178,33 @@ void MainScene::updateSkill()
             laser.free = true;
         }
     }
+    //导弹
     if (missle.free == false && missle.misslefree == true)
     {
         missle.skillrecorder++;
         if (missle.skillrecorder >= missle.cd)
         {
             missle.free = true;
+        }
+    }
+    //护盾
+    if (shield.free == false){
+        if (shield.shieldfree == false)
+        {
+            shield.shieldrecorder++;
+            if (shield.shieldrecorder >= shield.duration)
+            {
+                shield.shieldfree = true;
+                shield.end(plane);
+            }
+        }
+        else
+        {
+            shield.skillrecorder++;
+            if (shield.skillrecorder >= shield.cd)
+            {
+                shield.free = true;
+            }
         }
     }
 }
@@ -247,6 +296,30 @@ void MainScene::updatePosition()
     {
         missle.updatePosition();
     }
+
+    //导弹爆炸
+    if (missle.bombfree == false)
+    {
+        missle.updateInfo();
+    }
+
+    //掉落物坐标计算
+       for(int i = 0 ; i< dropobjectnum;i++)
+       {
+           //非空闲敌机 更新坐标
+           if(dropobjects[i].free == false)
+           {
+              dropobjects[i].updatePosition();
+           }
+       }
+       for(int i = 0 ; i< bloodbagnum;i++)
+       {
+           //非空闲敌机 更新坐标
+           if(bloodbags[i].free == false)
+           {
+              bloodbags[i].updatePosition();
+           }
+       }
 }
 
 void MainScene::paintEvent(QPaintEvent *event)
@@ -337,6 +410,99 @@ void MainScene::paintEvent(QPaintEvent *event)
     {
         painter.drawPixmap(missle.X, missle.Y, missle.missle);
     }
+
+    //绘制导弹爆炸
+    if (missle.bombfree == false)
+    {
+        painter.drawPixmap(missle.X-100, missle.Y-100, missle.pixArr[missle.index]);
+    }
+
+    //绘制掉落物
+        for(int i = 0 ; i< dropobjectnum;i++)
+        {
+            if(dropobjects[i].free == false)
+            {
+                painter.drawPixmap(dropobjects[i].X,dropobjects[i].Y,dropobjects[i].object);
+            }
+        }
+        for(int i = 0 ; i< bloodbagnum;i++)
+        {
+            if(bloodbags[i].free == false)
+            {
+                painter.drawPixmap(bloodbags[i].X,bloodbags[i].Y,bloodbags[i].object);
+            }
+        }
+}
+
+void MainScene::objectToScene()
+{
+    droprecorder++;
+    bloodbagrecorder++;
+
+    if (droprecorder > dropobjectinterval )
+    {
+        for(int i = 0 ; i< dropobjectnum;i++)
+        {
+            if(dropobjects[i].free)
+            {
+                //敌机空闲状态改为false
+                dropobjects[i].free = false;
+                //设置坐标
+                dropobjects[i].X = rand() % (GAME_WIDTH - dropobjects[i].rect.width());
+                if(dropobjects[i].X-75<0){
+                    dropobjects[i].widthl = 0;
+                    dropobjects[i].widthr = dropobjects[i].X +75;
+                }
+                else {
+                    dropobjects[i].widthl = dropobjects[i].X -75;
+                    dropobjects[i].widthr = dropobjects[i].X +75;
+                }
+                if(dropobjects[i].X+75>GAME_WIDTH){
+                    dropobjects[i].widthl = dropobjects[i].X -75;
+                    dropobjects[i].widthr = GAME_WIDTH;
+                }
+                else {
+                    dropobjects[i].widthl = dropobjects[i].X -75;
+                    dropobjects[i].widthr = dropobjects[i].X +75;
+                }
+                dropobjects[i].Y = -dropobjects[i].rect.height();
+                break;
+            }
+        }
+        droprecorder = 0;
+    }
+    if (bloodbagrecorder > bloodbaginterval )
+    {
+        for(int i = 0 ; i< bloodbagnum;i++)
+        {
+            if(bloodbags[i].free)
+            {
+                //敌机空闲状态改为false
+                bloodbags[i].free = false;
+                //设置坐标
+                bloodbags[i].X = rand() % (GAME_WIDTH - bloodbags[i].rect.width());
+                if(bloodbags[i].X-75<0){
+                    bloodbags[i].widthl = 0;
+                    bloodbags[i].widthr = bloodbags[i].X +75;
+                }
+                else {
+                    bloodbags[i].widthl = bloodbags[i].X -75;
+                    bloodbags[i].widthr = bloodbags[i].X +75;
+                }
+                if(bloodbags[i].X+75>GAME_WIDTH){
+                    bloodbags[i].widthl = bloodbags[i].X -75;
+                    bloodbags[i].widthr = GAME_WIDTH;
+                }
+                else {
+                    bloodbags[i].widthl = bloodbags[i].X -75;
+                    bloodbags[i].widthr = bloodbags[i].X +75;
+                }
+                bloodbags[i].Y = -bloodbags[i].rect.height();
+                break;
+            }
+        }
+        bloodbagrecorder = 0;
+    }
 }
 
 void MainScene::mouseMoveEvent(QMouseEvent *event)
@@ -386,6 +552,13 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
         if (missle.free == true)
         {
             missle.shoot(plane->X, plane->Y);
+        }
+    }
+    if (event->key() == Qt::Key_I && !event->isAutoRepeat())
+    {
+        if (shield.free == true)
+        {
+            shield.use(plane);
         }
     }
 
@@ -548,6 +721,28 @@ void MainScene::collisionDetection()
             missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
         }
 
+        //判定敌机与主机碰撞
+        if (commonenemys[i].rect.intersects(plane->rect))
+        {
+            commonenemys[i].free = true;
+            commonenemys[i].bombfree = false;
+            data.destorycommonenemy++;  //击毁普通敌机数加一
+            data.crashtime++;   //与敌机碰撞次数加一
+            if (shield.shieldfree == true)
+            {
+                if (plane->health>0)
+                {
+                    plane->health--;
+                }
+                else
+                {
+                    data.destroyedbycommonenemy++;   //被普通敌机击毁次数加一
+                    plane->isdeath = true;
+                    plane->bombfree = false;
+                }
+            }
+        }
+
         //遍历所有非空闲的子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
         {
@@ -568,7 +763,7 @@ void MainScene::collisionDetection()
 
                 data.destoryshootenemy++;   //击毁普通敌机数加一
             }
-        }
+        }       
     }
 
     //遍历所有非空闲的射击敌机
@@ -589,15 +784,18 @@ void MainScene::collisionDetection()
                 //敌机子弹变为空闲
                 shootenemys[i].bullets[j].free = true;
                 data.beshottime++;  //被敌机子弹击中次数加一
-                if (plane->health>0)
+                if (shield.shieldfree == true)
                 {
-                    plane->health--;
-                }
-                else
-                {
-                    data.destroyedbyshootenemy++;   //被射击敌机击毁次数加一
-                    plane->isdeath = true;
-                    plane->bombfree = false;
+                    if (plane->health>0)
+                    {
+                        plane->health--;
+                    }
+                    else
+                    {
+                        data.destroyedbyshootenemy++;   //被射击敌机击毁次数加一
+                        plane->isdeath = true;
+                        plane->bombfree = false;
+                    }
                 }
             }
         }
@@ -621,15 +819,18 @@ void MainScene::collisionDetection()
             shootenemys[i].bombfree = false;
             data.destoryshootenemy++;   //击毁射击敌机数加一
             data.crashtime++;   //与敌机碰撞次数加一
-            if (plane->health>0)
+            if (shield.shieldfree == true)
             {
-                plane->health--;
-            }
-            else
-            {
-                data.destroyedbyshootenemy++;   //被射击敌机击毁次数加一
-                plane->isdeath = true;
-                plane->bombfree = false;
+                if (plane->health>0)
+                {
+                    plane->health--;
+                }
+                else
+                {
+                    data.destroyedbyshootenemy++;   //被射击敌机击毁次数加一
+                    plane->isdeath = true;
+                    plane->bombfree = false;
+                }
             }
         }
 
@@ -678,15 +879,18 @@ void MainScene::collisionDetection()
             speedenemys[i].bombfree = false;
             data.destorycommonenemy++;  //击毁普通敌机数加一
             data.crashtime++;   //与敌机碰撞次数加一
-            if (plane->health>0)
+            if (shield.shieldfree == true)
             {
-                plane->health--;
-            }
-            else
-            {
-                data.destroyedbycommonenemy++;   //被普通敌机击毁次数加一
-                plane->isdeath = true;
-                plane->bombfree = false;
+                if (plane->health>0)
+                {
+                    plane->health--;
+                }
+                else
+                {
+                    data.destroyedbycommonenemy++;   //被普通敌机击毁次数加一
+                    plane->isdeath = true;
+                    plane->bombfree = false;
+                }
             }
         }
 
@@ -712,7 +916,38 @@ void MainScene::collisionDetection()
             }
         }
     }
+    //遍历所有非空闲的掉落物
+      for(int i = 0 ;i < dropobjectnum;i++)
+      {
+          if(dropobjects[i].free)
+          {
+              //空闲飞机 跳转下一次循环
+              continue;
+          }
 
+          //判定敌机与主机碰撞
+          if (dropobjects[i].rect.intersects(plane->rect))
+          {
+              dropobjects[i].free = true;
+          }
+      }
+
+      //遍历所有非空闲的掉落物
+      for(int i = 0 ;i < bloodbagnum;i++)
+      {
+          if(bloodbags[i].free)
+          {
+              //空闲飞机 跳转下一次循环
+              continue;
+          }
+
+          //判定血包与主机碰撞
+          if (bloodbags[i].rect.intersects(plane->rect))
+          {
+              bloodbags[i].free = true;
+              plane->health++;
+          }
+      }
 }
 
 

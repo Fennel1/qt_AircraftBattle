@@ -2,13 +2,13 @@
 
 Skill::Skill()
 {
+    skillrecorder = 0;
+    free = true;
 }
 
 ScreenClear::ScreenClear()
 {
     cd = 1000;
-    skillrecorder = 0;
-    free = true;
 }
 
 void ScreenClear::use(int commonenemynum, int shootenemynum, int speedenemynum,
@@ -71,8 +71,6 @@ void ScreenClear::use(int commonenemynum, int shootenemynum, int speedenemynum,
 Laser::Laser()
 {
     cd = 300;
-    skillrecorder = 0;
-    free = true;
 }
 
 void Laser::use(int laserx, int commonenemynum, int shootenemynum, int speedenemynum,
@@ -162,8 +160,28 @@ Missle::Missle()
     rect.moveTo(X,Y);
 
     cd = 100;
-    skillrecorder = 0;
-    free = true;
+}
+
+Missle::Missle(QString bombPath) : Bomb (bombPath)
+{
+    //加载导弹图片
+    missle.load(MISSLE_PATH);
+
+    X = 0;
+    Y = 0;
+
+    //导弹状态
+    misslefree = true;
+
+    //导弹速度
+    speed = 8;
+
+    //导弹矩形框
+    rect.setWidth(missle.width());
+    rect.setHeight(missle.height());
+    rect.moveTo(X,Y);
+
+    cd = 100;
 }
 
 void Missle::shoot(int misslex, int missley)
@@ -195,8 +213,9 @@ void Missle::updatePosition()
 void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
                   CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys)
 {
-    QRect laser(X-100, Y-100, 200, 200);
+    QRect missle(X-100, Y-100, 200, 200);
     misslefree = true;
+    bombfree = false;
     //遍历所有非空闲的普通敌机
     for(int i = 0 ;i < commonenemynum;i++)
     {
@@ -205,7 +224,7 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
             //空闲飞机 跳转下一次循环
             continue;
         }
-        if (commonenemys[i].rect.intersects(laser))
+        if (commonenemys[i].rect.intersects(missle))
         {
             commonenemys[i].free = true;
             commonenemys[i].bombfree = false;
@@ -223,7 +242,7 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
                 //空闲子弹 跳转下一次循环
                 continue;
             }
-            if(shootenemys[i].bullets[j].rect.intersects(laser))
+            if(shootenemys[i].bullets[j].rect.intersects(missle))
             {
                 shootenemys[i].bullets[j].free = true;
             }
@@ -234,7 +253,7 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
             //空闲飞机 跳转下一次循环
             continue;
         }
-        if (shootenemys[i].rect.intersects(laser))
+        if (shootenemys[i].rect.intersects(missle))
         {
             shootenemys[i].free = true;
             shootenemys[i].bombfree = false;
@@ -249,7 +268,7 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
             //空闲飞机 跳转下一次循环
             continue;
         }
-        if (speedenemys[i].rect.intersects(laser))
+        if (speedenemys[i].rect.intersects(missle))
         {
             speedenemys[i].free = true;
             speedenemys[i].bombfree = false;
@@ -257,3 +276,25 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
 
     }
 }
+
+Shield::Shield()
+{
+    cd = 1000;
+    duration = 1000;
+    shieldrecorder = 0;
+}
+
+void Shield::use(MyPlane *myplane)
+{
+    shieldfree = false;
+    free = false;
+    shieldrecorder = 0;
+    skillrecorder = 0;
+    myplane->Plane.load(COMMONMYPLANESHIELD_PATH);
+}
+
+void Shield::end(MyPlane *myplane)
+{
+    myplane->Plane.load(COMMONMYPLANE_PATH);
+}
+
