@@ -21,8 +21,19 @@ class ScreenClear : public Skill
     friend class MainScene;
 public:
     ScreenClear();
-    void use(int commonenemynum, int shootenemynum, int speedenemynum,
-             CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys);
+    void shoot();
+    void updatePosition();
+private:
+    //动画资源
+    QPixmap clear;
+    //坐标
+    int y;
+    //速度
+    int speed;
+    //是否闲置
+    bool screenclearfree;
+    //矩形
+    QRect rect;
 };
 
 class Laser : public Skill
@@ -30,8 +41,9 @@ class Laser : public Skill
     friend class MainScene;
 public:
     Laser();
-    void use(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
-             CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys);
+    void use();
+    void shoot(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
+               CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys);
     void updateInfo();
 private:
     //激光资源
@@ -78,12 +90,26 @@ class Shield : public Skill
     friend class MainScene;
 public:
     Shield();
-    void use(MyPlane *myplane);
+    void use();
     void end(MyPlane *myplane);
+    void updateInfo(MyPlane *myplane);
 private:
+    //护盾持续时间
     int duration;
+    //护盾计时
     int shieldrecorder;
+    //护盾是否存在
     bool shieldfree;
+    //护盾资源
+    QVector<QPixmap> pixArr;
+    //加载图片下标
+    int index;
+    //切图时间间隔
+    int shieldstartrecorder;
+    int shieldstartinterval;
+    int shieldstartmax;
+    //是否开始出现护盾
+    bool shieldstartfree;
 };
 
 

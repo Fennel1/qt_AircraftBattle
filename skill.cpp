@@ -8,63 +8,41 @@ Skill::Skill()
 
 ScreenClear::ScreenClear()
 {
-    cd = 1000;
+    cd = 10;
+    //加载图片
+    clear.load(SCREENCLEAR_PATH);
+    //闲置
+    screenclearfree = true;
+    //速度
+    speed = 15;
+    //矩形框
+    rect.setWidth(clear.width());
+    rect.setHeight(clear.height());
+    rect.moveTo(0,0);
 }
 
-void ScreenClear::use(int commonenemynum, int shootenemynum, int speedenemynum,
-                      CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys)
+void ScreenClear::shoot()
 {
-    free = false;
+    screenclearfree = false;
     skillrecorder  = 0;
-    //遍历所有非空闲的普通敌机
-    for(int i = 0 ;i < commonenemynum;i++)
-    {
-        if(commonenemys[i].free)
-        {
-            //空闲飞机 跳转下一次循环
-            continue;
-        }
+    y = GAME_HEIGHT;
+}
 
-        commonenemys[i].free = true;
-        commonenemys[i].bombfree = false;
+void ScreenClear::updatePosition()
+{
+    if(screenclearfree)
+    {
+        return;
     }
 
-    //遍历所有非空闲的射击敌机
-    for(int i = 0 ;i < shootenemynum;i++)
+    //子弹向上移动
+    y -= speed;
+    rect.moveTo(0,y);
+
+    if(y <= 0)
     {
-        //遍历所非空闲的敌机子弹
-        for(int j = 0 ; j < BULLET_NUM;j++)
-        {
-            if(shootenemys[i].bullets[j].free)
-            {
-                //空闲子弹 跳转下一次循环
-                continue;
-            }
-
-            shootenemys[i].bullets[j].free = true;
-        }
-
-        if(shootenemys[i].free)
-        {
-            //空闲飞机 跳转下一次循环
-            continue;
-        }
-
-        shootenemys[i].free = true;
-        shootenemys[i].bombfree = false;
-    }
-
-    //遍历所有速度敌机
-    for(int i = 0 ;i < speedenemynum;i++)
-    {
-        if(speedenemys[i].free)
-        {
-            //空闲飞机 跳转下一次循环
-            continue;
-        }
-
-        speedenemys[i].free = true;
-        speedenemys[i].bombfree = false;
+        screenclearfree = true;
+        free = false;
     }
 }
 
@@ -73,7 +51,7 @@ Laser::Laser()
     cd = 300;
 
     //切图参数
-    lasermax = 4;
+    lasermax = 5;
     laserinterval = 10;
     laserfree = true;
     index = 0;
@@ -105,8 +83,7 @@ void Laser::updateInfo()
 
     //切换爆炸播放图片
     index++;
-    //注：数组中的下标从0开始，最大是6
-    //如果计算的下标大于6，重置为0
+
     if(index > lasermax-1)
     {
         index = 0;
@@ -114,13 +91,17 @@ void Laser::updateInfo()
     }
 }
 
-void Laser::use(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
-                CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys)
+void Laser::use()
 {
-    QRect laser(laserx-50, 0, 100, lasery);
     free = false;
     laserfree = false;
     skillrecorder  = 0;
+}
+
+void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
+                CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys)
+{
+    QRect laser(laserx-50, 0, 100, lasery);
     //遍历所有非空闲的普通敌机
     for(int i = 0 ;i < commonenemynum;i++)
     {
@@ -321,22 +302,68 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
 
 Shield::Shield()
 {
+    //CD时间
     cd = 1000;
+    //持续时间
     duration = 1000;
+    //护盾计时
     shieldrecorder = 0;
+
+    //护盾出现参数
+    shieldstartmax = 5;
+    shieldstartinterval = 10;
+    shieldstartrecorder = 0;
+    index = 0;
+    //护盾资源
+    for (int i=1; i<=shieldstartmax; i++)
+    {
+        QString str = QString(COMMONMYPLANESHIELDSTART_PATH).arg(i);
+        pixArr.push_back(QPixmap(str));
+    }
+    //是否开始出现护盾
+    shieldstartfree = true;
 }
 
-void Shield::use(MyPlane *myplane)
+void Shield::use()
 {
     shieldfree = false;
     free = false;
     shieldrecorder = 0;
     skillrecorder = 0;
-    myplane->Plane.load(COMMONMYPLANESHIELD_PATH);
+
+    shieldstartfree = false;
+
 }
 
 void Shield::end(MyPlane *myplane)
 {
     myplane->Plane.load(COMMONMYPLANE_PATH);
+}
+void Shield::updateInfo(MyPlane *myplane)
+{
+    //空闲状态
+    if(shieldstartfree)
+    {
+        return;
+    }
+
+    shieldstartrecorder++;
+    if(shieldstartrecorder < shieldstartinterval)
+    {
+        //记录爆炸间隔未到，直接return，不需要切图
+        return;
+    }
+    //重置记录ad
+    shieldstartrecorder = 0;
+
+    //切换爆炸播放图片
+    index++;
+
+    if(index > shieldstartmax-1)
+    {
+        index = 0;
+        shieldstartfree = true;
+        myplane->Plane.load(COMMONMYPLANESHIELD_PATH);
+    }
 }
 

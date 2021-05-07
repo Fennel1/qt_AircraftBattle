@@ -303,10 +303,21 @@ void MainScene::updatePosition()
         missle.updateInfo();
     }
 
+    //清屏
+    if (screenclear.screenclearfree == false)
+    {
+        screenclear.updatePosition();
+    }
+
     //激光发射
     if (laser.laserfree == false)
     {
         laser.updateInfo();
+    }
+    //护盾出现
+    if (shield.shieldstartfree == false)
+    {
+        shield.updateInfo(plane);
     }
 
     //掉落物坐标计算
@@ -423,9 +434,23 @@ void MainScene::paintEvent(QPaintEvent *event)
         painter.drawPixmap(missle.X-100, missle.Y-100, missle.pixArr[missle.index]);
     }
 
+    //清屏
+    if (screenclear.screenclearfree == false)
+    {
+        painter.drawPixmap(0, screenclear.y, screenclear.clear);
+    }
+
+    //绘制激光
     if (laser.laserfree == false)
     {
         painter.drawPixmap(plane->X, plane->Y-700, laser.pixArr[laser.index]);
+        laser.shoot(plane->X, plane->Y, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+    }
+
+    //护盾出现
+    if (shield.shieldstartfree == false)
+    {
+        painter.drawPixmap(plane->X, plane->Y, shield.pixArr[shield.index]);
     }
 
     //绘制掉落物
@@ -548,28 +573,28 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
     {
         if (screenclear.free == true)
         {
-            screenclear.use(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+            screenclear.shoot();
         }
     }
     if (event->key() == Qt::Key_L && !event->isAutoRepeat())
     {
         if (laser.free == true)
         {
-            laser.use(plane->X, plane->Y, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+            laser.use();
         }
     }
     if (event->key() == Qt::Key_U && !event->isAutoRepeat())
     {
         if (missle.free == true)
         {
-            missle.shoot(plane->X, plane->Y);
+            missle.shoot(plane->X + plane->rect.width()/2, plane->Y);
         }
     }
     if (event->key() == Qt::Key_I && !event->isAutoRepeat())
     {
         if (shield.free == true)
         {
-            shield.use(plane);
+            shield.use();
         }
     }
 
@@ -725,7 +750,12 @@ void MainScene::collisionDetection()
             //空闲飞机 跳转下一次循环
             continue;
         }
-
+        //清屏判定
+        if (screenclear.screenclearfree == false && commonenemys[i].rect.intersects(screenclear.rect))
+        {
+            commonenemys[i].free = true;
+            commonenemys[i].bombfree = false;
+        }
         //导弹碰撞判定
         if (missle.misslefree == false && commonenemys[i].rect.intersects(missle.rect))
         {
@@ -789,6 +819,12 @@ void MainScene::collisionDetection()
                 continue;
             }
 
+            //清屏判定
+            if (screenclear.screenclearfree == false && shootenemys[i].bullets[j].rect.intersects(screenclear.rect))
+            {
+                shootenemys[i].bullets[j].free = true;
+            }
+
             //如果子弹矩形框和敌机子弹矩形框相交，发生碰撞
             if(shootenemys[i].bullets[j].rect.intersects(plane->rect))
             {
@@ -817,8 +853,15 @@ void MainScene::collisionDetection()
             continue;
         }
 
+        //清屏判定
+        if (screenclear.screenclearfree == false && shootenemys[i].rect.intersects(screenclear.rect))
+        {
+            shootenemys[i].free = true;
+            shootenemys[i].bombfree = false;
+        }
+
         //导弹碰撞判定
-        if (missle.misslefree == false && commonenemys[i].rect.intersects(missle.rect))
+        if (missle.misslefree == false && shootenemys[i].rect.intersects(missle.rect))
         {
             missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
         }
@@ -877,8 +920,15 @@ void MainScene::collisionDetection()
             continue;
         }
 
+        //清屏判定
+        if (screenclear.screenclearfree == false && speedenemys[i].rect.intersects(screenclear.rect))
+        {
+            speedenemys[i].free = true;
+            speedenemys[i].bombfree = false;
+        }
+
         //导弹碰撞判定
-        if (missle.misslefree == false && commonenemys[i].rect.intersects(missle.rect))
+        if (missle.misslefree == false && speedenemys[i].rect.intersects(missle.rect))
         {
             missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
         }

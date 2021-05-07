@@ -56,6 +56,12 @@
         <file>images/laser2.png</file>
         <file>images/laser3.png</file>
         <file>images/laser4.png</file>
+        <file>images/background2.png</file>
+        <file>images/laser5.png</file>
+        <file>images/me1_shield4.png</file>
+        <file>images/me1_shield5.png</file>
+        <file>images/boss.png</file>
+        <file>images/screenclear.png</file>
     </qresource>
     <qresource prefix="/image">
         <file>images/again.png</file>
@@ -103,5 +109,6 @@
         <file>images/enemy4_down2.png</file>
         <file>images/enemy4_down3.png</file>
         <file>images/enemy4_down4.png</file>
+        <file>images/boss.png</file>
     </qresource>
 </RCC>

@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     bomb.cpp \
+    boss.cpp \
     bullet.cpp \
     data.cpp \
     dropobjects.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     bomb.h \
+    boss.h \
     bullet.h \
     config.h \
     data.h \
