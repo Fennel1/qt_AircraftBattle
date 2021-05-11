@@ -10,6 +10,7 @@ class ShootEnemyPlane;
 class ScreenClear;
 class Laser;
 class Missle;
+class Boss;
 
 class Bullet
 { 
@@ -19,6 +20,7 @@ class Bullet
     friend class ScreenClear;
     friend class Laser;
     friend class Missle;
+    friend class Boss;
 public:
     Bullet();
 

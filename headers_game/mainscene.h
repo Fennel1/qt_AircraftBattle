@@ -9,6 +9,7 @@
 #include "data.h"
 #include "skill.h"
 #include "headers_window/dropobjects.h"
+#include "boss.h"
 
 class MainScene : public QWidget
 {
@@ -42,6 +43,7 @@ public:
 
     //碰撞检测
     void collisionDetection();
+    void bosscollisionDetection();
 
     //刷新技能
     void updateSkill();
@@ -65,8 +67,12 @@ private:
     int shootenemynum;
     int speedenemynum;
 
+    //BOSS对象
+    Boss boss;
+
     //地图对象
-    Map map;
+    Map map1;
+    QPixmap map2;
 
     //主机对象
     MyPlane *plane;

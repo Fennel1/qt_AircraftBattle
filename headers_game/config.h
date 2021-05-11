@@ -5,9 +5,11 @@
 #define GAME_HEIGHT 800                     //界面宽高
 #define GAME_RATE 10
 #define BULLET_NUM 30   //弹匣中子弹总数
+#define BOSSBULLET_NUM 40 //BOSS子弹总数
 #define GAME_TITLE "飞机大战 v1.0"           //标题
 #define GAME_ICON ":/images/enemy2.png"     //图标
-#define MAP_PATH ":/images/background2.png"      //地图
+#define BACKGROUND_PATH ":/images/background2.png"      //游戏地图
+#define MAP_PATH ":/images/map.png"      //游戏信息地图
 #define COMMONMYPLANE_PATH ":/images/me1.png"     //玩家飞机图片
 #define COMMONMYPLANESHIELD_PATH ":/images/me1_shield5.png"     //玩家飞机护盾图片
 #define COMMONMYPLANESHIELDSTART_PATH ":/images/me1_shield%1.png"     //玩家飞机出现护盾图片

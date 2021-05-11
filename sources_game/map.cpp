@@ -3,8 +3,8 @@
 
 Map::Map()
 {
-    map1.load(MAP_PATH);
-    map2.load(MAP_PATH);
+    map1.load(BACKGROUND_PATH);
+    map2.load(BACKGROUND_PATH);
 
     map1_posY = -GAME_HEIGHT;
     map2_posY = 0;

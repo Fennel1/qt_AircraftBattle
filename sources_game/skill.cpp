@@ -103,7 +103,7 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
 {
     rect.setWidth(pixArr[index].width());
     rect.setHeight(pixArr[index].height());
-    rect.moveTo(laserx, GAME_HEIGHT-lasery);
+    rect.moveTo(laserx, lasery-GAME_HEIGHT);
     //遍历所有非空闲的普通敌机
     for(int i = 0 ;i < commonenemynum;i++)
     {
@@ -141,6 +141,7 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
             //空闲飞机 跳转下一次循环
             continue;
         }
+
         if (shootenemys[i].rect.intersects(rect))
         {
             shootenemys[i].free = true;

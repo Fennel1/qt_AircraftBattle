@@ -55,7 +55,7 @@ void MainScene::initplane()
     //敌机刷新间隔
     commonrecorder = 0;
     shootrecorder = 0;
-    speedrecorder = 0;
+    speedrecorder= 0;
     commonenemyinterval = 50;
     shootenemyinterval = 200;
     speedenemyinterval = 100;
@@ -83,6 +83,9 @@ void MainScene::initplane()
     {
         bloodbags[i].setObjectPath(BLOODBAG_PATH);
     }
+
+//    boss.free = false;
+//    boss.isanger = true;
 }
 
 void MainScene::initScene()
@@ -90,8 +93,10 @@ void MainScene::initScene()
     //随机数种子
     srand((unsigned int)time(NULL));
 
+    map2.load(MAP_PATH);
+
     //窗口大小
-    setFixedSize(GAME_WIDTH,GAME_HEIGHT);
+    setFixedSize(GAME_WIDTH+400 ,GAME_HEIGHT);
     //窗口标题
     setWindowTitle(GAME_TITLE);
     //窗口图标
@@ -145,14 +150,22 @@ void MainScene::playGame()
         }
         //掉落物出场
         objectToScene();
-        //敌机出场
-        enemyToScene();
+        //BOSS出现
+        if (boss.free)
+        {
+            //敌机出场
+            enemyToScene();
+            //碰撞检测
+            collisionDetection();
+        }
+        else
+        {
+            bosscollisionDetection();
+        }
         //更新游戏元素坐标
         updatePosition();
         //重新绘制图片
         update();
-        //碰撞检测
-        collisionDetection();
         //刷新技能
         updateSkill();
     });
@@ -212,7 +225,7 @@ void MainScene::updateSkill()
 void MainScene::updatePosition()
 {
     //更新地图坐标
-    map.mapPosition();
+    map1.mapPosition();
 
     //计算子弹坐标
     for(int i = 0 ;i < BULLET_NUM;i++)
@@ -224,64 +237,81 @@ void MainScene::updatePosition()
         }
     }
 
-    //敌机坐标计算
-    for(int i = 0 ; i< commonenemynum;i++)
+    //BOSS是否在场
+    if (boss.free)
     {
-        //非空闲敌机 更新坐标
-        if(commonenemys[i].free == false)
+        //敌机坐标计算
+        for(int i = 0 ; i< commonenemynum;i++)
         {
-           commonenemys[i].updatePosition();
-        }
-    }
-    for(int i = 0 ; i< shootenemynum;i++)
-    {
-        //非空闲敌机 更新坐标
-        if(shootenemys[i].free == false)
-        {
-           shootenemys[i].updatePosition();
-           shootenemys[i].shoot();
-        }
-        //更新敌机子弹
-        for(int j=0; j < BULLET_NUM; j++)
-        {
-            if(!shootenemys[i].bullets[j].free)
+            //非空闲敌机 更新坐标
+            if(commonenemys[i].free == false)
             {
-                shootenemys[i].bullets[j].updatePosition();
+               commonenemys[i].updatePosition();
+            }
+        }
+        for(int i = 0 ; i< shootenemynum;i++)
+        {
+            //非空闲敌机 更新坐标
+            if(shootenemys[i].free == false)
+            {
+               shootenemys[i].updatePosition();
+               shootenemys[i].shoot();
+            }
+            //更新敌机子弹
+            for(int j=0; j < BULLET_NUM; j++)
+            {
+                if(!shootenemys[i].bullets[j].free)
+                {
+                    shootenemys[i].bullets[j].updatePosition();
+                }
+            }
+        }
+        for (int i=0; i<speedenemynum; i++)
+        {
+            //非空闲敌机 更新坐标
+            if(speedenemys[i].free == false)
+            {
+               speedenemys[i].updatePosition();
+            }
+        }
+
+        //计算爆炸播放的图片
+        for(int i = 0 ; i < commonenemynum;i++)
+        {
+            //敌机爆炸
+            if(commonenemys[i].bombfree == false)
+            {
+                commonenemys[i].updateInfo();
+            }
+        }
+        for(int i = 0 ; i < shootenemynum;i++)
+        {
+            //敌机爆炸
+            if(shootenemys[i].bombfree == false)
+            {
+                shootenemys[i].updateInfo();
+            }
+        }
+        for(int i = 0 ; i < speedenemynum;i++)
+        {
+            //敌机爆炸
+            if(speedenemys[i].bombfree == false)
+            {
+                speedenemys[i].updateInfo();
             }
         }
     }
-    for (int i=0; i<speedenemynum; i++)
+    else
     {
-        //非空闲敌机 更新坐标
-        if(speedenemys[i].free == false)
+        //BOSS移动
+        boss.updatePosition();
+        boss.shoot();
+        for (int i=0; i<BOSSBULLET_NUM; i++)
         {
-           speedenemys[i].updatePosition();
-        }
-    }
-
-    //计算爆炸播放的图片
-    for(int i = 0 ; i < commonenemynum;i++)
-    {
-        //敌机爆炸
-        if(commonenemys[i].bombfree == false)
-        {
-            commonenemys[i].updateInfo();
-        }
-    }
-    for(int i = 0 ; i < shootenemynum;i++)
-    {
-        //敌机爆炸
-        if(shootenemys[i].bombfree == false)
-        {
-            shootenemys[i].updateInfo();
-        }
-    }
-    for(int i = 0 ; i < speedenemynum;i++)
-    {
-        //敌机爆炸
-        if(speedenemys[i].bombfree == false)
-        {
-            speedenemys[i].updateInfo();
+            if (boss.bullets[i].free == false)
+            {
+                boss.bullets[i].updatePosition();
+            }
         }
     }
 
@@ -323,7 +353,7 @@ void MainScene::updatePosition()
     //掉落物坐标计算
        for(int i = 0 ; i< dropobjectnum;i++)
        {
-           //非空闲敌机 更新坐标
+           //更新坐标
            if(dropobjects[i].free == false)
            {
               dropobjects[i].updatePosition();
@@ -331,7 +361,7 @@ void MainScene::updatePosition()
        }
        for(int i = 0 ; i< bloodbagnum;i++)
        {
-           //非空闲敌机 更新坐标
+           //更新坐标
            if(bloodbags[i].free == false)
            {
               bloodbags[i].updatePosition();
@@ -344,8 +374,10 @@ void MainScene::paintEvent(QPaintEvent *event)
     QPainter painter(this);
 
     //绘制地图
-    painter.drawPixmap(0,map.map1_posY , map.map1);
-    painter.drawPixmap(0,map.map2_posY , map.map2);
+    painter.drawPixmap(0,map1.map1_posY , map1.map1);
+    painter.drawPixmap(0,map1.map2_posY , map1.map2);
+
+    painter.drawPixmap(GAME_WIDTH, 0, map2);
 
     //绘制主机
     if (plane->isdeath == false)
@@ -367,58 +399,72 @@ void MainScene::paintEvent(QPaintEvent *event)
         }
     }
 
-    //绘制敌机
-    for(int i = 0 ; i< commonenemynum;i++)
+    if (boss.free)
     {
-        if(commonenemys[i].free == false)
+        //绘制敌机
+        for(int i = 0 ; i< commonenemynum;i++)
         {
-            painter.drawPixmap(commonenemys[i].X,commonenemys[i].Y,commonenemys[i].enemy);
-        }
-    }
-    for(int i = 0 ; i< shootenemynum;i++)
-    {
-        if(shootenemys[i].free == false)
-        {
-            painter.drawPixmap(shootenemys[i].X,shootenemys[i].Y,shootenemys[i].enemy);
-        }
-        //绘制敌机子弹
-        for(int j = 0 ;j < BULLET_NUM;j++)
+            if(commonenemys[i].free == false)
             {
-                //如果子弹状态为非空闲，计算发射位置
-                if(!shootenemys[i].bullets[j].free)
-                {
-                    painter.drawPixmap(shootenemys[i].bullets[j].X,shootenemys[i].bullets[j].Y,shootenemys[i].bullets[j].bullet);
-                }
+                painter.drawPixmap(commonenemys[i].X,commonenemys[i].Y,commonenemys[i].enemy);
             }
-    }
-    for (int i=0; i<speedenemynum; i++)
-    {
-        if(speedenemys[i].free == false)
-        {
-            painter.drawPixmap(speedenemys[i].X,speedenemys[i].Y,speedenemys[i].enemy);
         }
-    }
+        for(int i = 0 ; i< shootenemynum;i++)
+        {
+            if(shootenemys[i].free == false)
+            {
+                painter.drawPixmap(shootenemys[i].X,shootenemys[i].Y,shootenemys[i].enemy);
+            }
+            //绘制敌机子弹
+            for(int j = 0 ;j < BULLET_NUM;j++)
+                {
+                    //如果子弹状态为非空闲，计算发射位置
+                    if(!shootenemys[i].bullets[j].free)
+                    {
+                        painter.drawPixmap(shootenemys[i].bullets[j].X,shootenemys[i].bullets[j].Y,shootenemys[i].bullets[j].bullet);
+                    }
+                }
+        }
+        for (int i=0; i<speedenemynum; i++)
+        {
+            if(speedenemys[i].free == false)
+            {
+                painter.drawPixmap(speedenemys[i].X,speedenemys[i].Y,speedenemys[i].enemy);
+            }
+        }
 
-    //绘制敌机爆炸图片
-    for(int i = 0 ; i < commonenemynum;i++)
-    {
-        if(commonenemys[i].bombfree == false)
+        //绘制敌机爆炸图片
+        for(int i = 0 ; i < commonenemynum;i++)
         {
-            painter.drawPixmap(commonenemys[i].X, commonenemys[i].Y, commonenemys[i].pixArr[commonenemys[i].index]);
+            if(commonenemys[i].bombfree == false)
+            {
+                painter.drawPixmap(commonenemys[i].X, commonenemys[i].Y, commonenemys[i].pixArr[commonenemys[i].index]);
+            }
+        }
+        for(int i = 0 ; i < shootenemynum;i++)
+        {
+            if(shootenemys[i].bombfree == false)
+            {
+                painter.drawPixmap(shootenemys[i].X, shootenemys[i].Y, shootenemys[i].pixArr[shootenemys[i].index]);
+            }
+        }
+        for(int i = 0 ; i < speedenemynum;i++)
+        {
+            if(speedenemys[i].bombfree == false)
+            {
+                painter.drawPixmap(speedenemys[i].X, speedenemys[i].Y, speedenemys[i].pixArr[speedenemys[i].index]);
+            }
         }
     }
-    for(int i = 0 ; i < shootenemynum;i++)
+    else
     {
-        if(shootenemys[i].bombfree == false)
+        painter.drawPixmap(boss.X, boss.Y, boss.boss);
+        for (int i=0; i<BOSSBULLET_NUM; i++)
         {
-            painter.drawPixmap(shootenemys[i].X, shootenemys[i].Y, shootenemys[i].pixArr[shootenemys[i].index]);
-        }
-    }
-    for(int i = 0 ; i < speedenemynum;i++)
-    {
-        if(speedenemys[i].bombfree == false)
-        {
-            painter.drawPixmap(speedenemys[i].X, speedenemys[i].Y, speedenemys[i].pixArr[speedenemys[i].index]);
+            if (boss.bullets[i].free == false)
+            {
+                painter.drawPixmap(boss.bullets[i].X, boss.bullets[i].Y, boss.bullets[i].bullet);
+            }
         }
     }
 
@@ -481,7 +527,7 @@ void MainScene::objectToScene()
         {
             if(dropobjects[i].free)
             {
-                //敌机空闲状态改为false
+                //状态改为false
                 dropobjects[i].free = false;
                 //设置坐标
                 dropobjects[i].X = rand() % (GAME_WIDTH - dropobjects[i].rect.width());
@@ -513,7 +559,7 @@ void MainScene::objectToScene()
         {
             if(bloodbags[i].free)
             {
-                //敌机空闲状态改为false
+                //状态改为false
                 bloodbags[i].free = false;
                 //设置坐标
                 bloodbags[i].X = rand() % (GAME_WIDTH - bloodbags[i].rect.width());
@@ -1009,6 +1055,11 @@ void MainScene::collisionDetection()
               plane->health++;
           }
       }
+}
+
+void MainScene::bosscollisionDetection()
+{
+
 }
 
 
