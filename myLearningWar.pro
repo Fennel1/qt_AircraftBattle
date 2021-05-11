@@ -9,40 +9,40 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    bomb.cpp \
-    boss.cpp \
-    bullet.cpp \
-    data.cpp \
-    dropobjects.cpp \
-    enemyplane.cpp \
-    gameover.cpp \
-    loginwindow.cpp \
+    sources_game/bomb.cpp \
+    sources_game/boss.cpp \
+    sources_game/bullet.cpp \
+    sources_game/data.cpp \
+    sources_window/dropobjects.cpp \
+    sources_game/enemyplane.cpp \
+    sources_window/gameover.cpp \
+    sources_window/loginwindow.cpp \
     main.cpp \
-    mainscene.cpp \
-    mainwindow.cpp \
-    map.cpp \
-    myplane.cpp \
-    props.cpp \
-    skill.cpp \
-    thehome.cpp
+    sources_game/mainscene.cpp \
+    sources_window/mainwindow.cpp \
+    sources_game/map.cpp \
+    sources_game/myplane.cpp \
+    sources_window/props.cpp \
+    sources_game/skill.cpp \
+    sources_window/thehome.cpp
 
 HEADERS += \
-    bomb.h \
-    boss.h \
-    bullet.h \
-    config.h \
-    data.h \
-    dropobjects.h \
-    enemyplane.h \
-    gameover.h \
-    loginwindow.h \
-    mainscene.h \
-    mainwindow.h \
-    map.h \
-    myplane.h \
-    props.h \
-    skill.h \
-    thehome.h
+    headers_game/bomb.h \
+    headers_game/boss.h \
+    headers_game/bullet.h \
+    headers_game/config.h \
+    headers_game/data.h \
+    headers_window/dropobjects.h \
+    headers_game/enemyplane.h \
+    headers_window/gameover.h \
+    headers_window/loginwindow.h \
+    headers_game/mainscene.h \
+    headers_window/mainwindow.h \
+    headers_game/map.h \
+    headers_game/myplane.h \
+    headers_window/props.h \
+    headers_game/skill.h \
+    headers_window/thehome.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

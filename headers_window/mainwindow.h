@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
-#include "mainscene.h"
+#include "headers_game/mainscene.h"
 
 namespace Ui {
 class MainWindow;

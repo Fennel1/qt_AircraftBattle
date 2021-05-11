@@ -1,5 +1,5 @@
-#include "myplane.h"
-#include "config.h"
+#include "headers_game/myplane.h"
+#include "headers_game/config.h"
 
 MyPlane::MyPlane() : Bomb()
 {

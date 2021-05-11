@@ -59,6 +59,8 @@ private:
 
     //加载图片下标
     int index;
+    //矩形
+    QRect rect;
 };
 
 class Missle : public Skill, public Bomb

@@ -1,4 +1,4 @@
-#include "loginwindow.h"
+#include "headers_window/loginwindow.h"
 
 loginWindow::loginWindow(QWidget *parent) : QWidget(parent)
 {

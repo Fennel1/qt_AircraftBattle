@@ -1,4 +1,4 @@
-#include "bomb.h"
+#include "headers_game/bomb.h"
 
 Bomb::Bomb()
 {

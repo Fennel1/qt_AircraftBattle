@@ -1,5 +1,5 @@
-#include "map.h"
-#include "config.h"
+#include "headers_game/map.h"
+#include "headers_game/config.h"
 
 Map::Map()
 {

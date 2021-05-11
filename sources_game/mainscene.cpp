@@ -1,5 +1,5 @@
-#include "mainscene.h"
-#include "config.h"
+#include "headers_game/mainscene.h"
+#include "headers_game/config.h"
 #include <QIcon>
 #include <QDebug>
 #include <QPainter>

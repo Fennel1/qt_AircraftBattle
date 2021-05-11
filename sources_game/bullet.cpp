@@ -1,4 +1,4 @@
-#include "bullet.h"
+#include "headers_game/bullet.h"
 
 Bullet::Bullet()
 {
@@ -6,7 +6,7 @@ Bullet::Bullet()
     bullet.load(BULLET_PATH);
 
     //子弹坐标 初始坐标可随意设置，后期会重置
-    X = GAME_WIDTH*0.5 - bullet.width()*0.5;
+    X = GAME_WIDTH/2 - bullet.width()/2;
     Y = GAME_HEIGHT;
 
     //子弹状态

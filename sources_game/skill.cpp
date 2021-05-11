@@ -1,4 +1,4 @@
-#include "skill.h"
+#include "headers_game/skill.h"
 
 Skill::Skill()
 {
@@ -8,7 +8,7 @@ Skill::Skill()
 
 ScreenClear::ScreenClear()
 {
-    cd = 10;
+    cd = 1000;
     //加载图片
     clear.load(SCREENCLEAR_PATH);
     //闲置
@@ -101,7 +101,9 @@ void Laser::use()
 void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
                 CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys)
 {
-    QRect laser(laserx-50, 0, 100, lasery);
+    rect.setWidth(pixArr[index].width());
+    rect.setHeight(pixArr[index].height());
+    rect.moveTo(laserx, GAME_HEIGHT-lasery);
     //遍历所有非空闲的普通敌机
     for(int i = 0 ;i < commonenemynum;i++)
     {
@@ -110,7 +112,7 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
             //空闲飞机 跳转下一次循环
             continue;
         }
-        if (commonenemys[i].rect.intersects(laser))
+        if (commonenemys[i].rect.intersects(rect))
         {
             commonenemys[i].free = true;
             commonenemys[i].bombfree = false;
@@ -128,7 +130,7 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
                 //空闲子弹 跳转下一次循环
                 continue;
             }
-            if(shootenemys[i].bullets[j].rect.intersects(laser))
+            if(shootenemys[i].bullets[j].rect.intersects(rect))
             {
                 shootenemys[i].bullets[j].free = true;
             }
@@ -139,7 +141,7 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
             //空闲飞机 跳转下一次循环
             continue;
         }
-        if (shootenemys[i].rect.intersects(laser))
+        if (shootenemys[i].rect.intersects(rect))
         {
             shootenemys[i].free = true;
             shootenemys[i].bombfree = false;
@@ -154,7 +156,7 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
             //空闲飞机 跳转下一次循环
             continue;
         }
-        if (speedenemys[i].rect.intersects(laser))
+        if (speedenemys[i].rect.intersects(rect))
         {
             speedenemys[i].free = true;
             speedenemys[i].bombfree = false;

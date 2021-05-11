@@ -1,5 +1,5 @@
-#include "mainscene.h"
-#include "thehome.h"
+#include "headers_window/mainwindow.h"
+#include "headers_window/thehome.h"
 #include <QResource>
 #include <QApplication>
 

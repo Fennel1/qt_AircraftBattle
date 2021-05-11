@@ -1,5 +1,5 @@
-#include "enemyplane.h"
-#include "config.h"
+#include "headers_game/enemyplane.h"
+#include "headers_game/config.h"
 
 EnemyPlane::EnemyPlane() : Bomb()
 {

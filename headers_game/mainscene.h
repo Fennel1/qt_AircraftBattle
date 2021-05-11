@@ -8,7 +8,7 @@
 #include "enemyplane.h"
 #include "data.h"
 #include "skill.h"
-#include "dropobjects.h"
+#include "headers_window/dropobjects.h"
 
 class MainScene : public QWidget
 {

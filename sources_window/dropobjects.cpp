@@ -1,5 +1,5 @@
-#include "dropobjects.h"
-#include "config.h"
+#include "headers_window/dropobjects.h"
+#include "headers_game/config.h"
 
 DropObject::DropObject()
 {
