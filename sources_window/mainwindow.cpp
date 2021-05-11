@@ -1,6 +1,6 @@
-#include "mainwindow.h"
+#include "headers_window/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "config.h"
+#include "headers_game/config.h"
 
 #include <QPainter>
 #include <QProxyStyle>
