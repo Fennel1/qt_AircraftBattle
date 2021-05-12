@@ -29,11 +29,17 @@ Boss::Boss()
     health = 1000;
 
     //射击间隔
-    shootinterval = 50;
+    shootinterval = 30;
     pauseinterval = 500;
     shootrecorder = 0;
     pauserecorder = 0;
     shootpoint = (rand() % 6)*100+50;
+
+    //子弹路径
+    for (int i=0; i<BOSSBULLET_NUM; i++)
+    {
+        bullets[i].setBulletPath(BOSSBULLET_PATH);
+    }
 }
 
 void Boss::updatePosition()

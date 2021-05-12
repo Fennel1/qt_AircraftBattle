@@ -27,6 +27,8 @@ public:
     //更新子弹坐标
     virtual void updatePosition() = 0;
 
+    void setBulletPath(QString path);
+
 protected:
     //子弹资源对象
     QPixmap bullet;

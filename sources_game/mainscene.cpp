@@ -84,8 +84,8 @@ void MainScene::initplane()
         bloodbags[i].setObjectPath(BLOODBAG_PATH);
     }
 
-//    boss.free = false;
-//    boss.isanger = true;
+    boss.free = false;
+    boss.isanger = true;
 }
 
 void MainScene::initScene()
@@ -862,7 +862,7 @@ void MainScene::collisionDetection()
             if(shootenemys[i].bullets[j].free)
             {
                 //空闲子弹 跳转下一次循环
-                continue;
+                continue;#define BULLET_PATH ":/images/bullet1.png"   //子弹图片路径
             }
 
             //清屏判定
@@ -1059,7 +1059,44 @@ void MainScene::collisionDetection()
 
 void MainScene::bosscollisionDetection()
 {
+    //与BOSS碰撞
+    if (boss.rect.intersects(plane->rect))
+    {
+        if (shield.shieldfree == true)
+        {
+            if (plane->health>0)
+            {
+                plane->health--;
+            }
+            else
+            {
+                plane->isdeath = true;
+                plane->bombfree = false;
+            }
+        }
+    }
 
+    //与BOSS子弹碰撞
+    for (int i=0; i<BOSSBULLET_NUM; i++)
+    {
+        if (boss.bullets[i].rect.intersects(plane->rect))
+        {
+            if (shield.shieldfree == true)
+            {
+                if (plane->health>0)
+                {
+                    plane->health--;
+                }
+                else
+                {
+                    plane->isdeath = true;
+                    plane->bombfree = false;
+                }
+            }
+        }
+    }
+
+    //攻击BOSS判定
 }
 
 

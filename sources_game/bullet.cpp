@@ -56,3 +56,8 @@ void EnemyBullet::updatePosition()
         free = true;
     }
 }
+
+void Bullet::setBulletPath(QString path)
+{
+    bullet.load(path);
+}

@@ -14,6 +14,7 @@
 #define COMMONMYPLANESHIELD_PATH ":/images/me1_shield5.png"     //玩家飞机护盾图片
 #define COMMONMYPLANESHIELDSTART_PATH ":/images/me1_shield%1.png"     //玩家飞机出现护盾图片
 #define BULLET_PATH ":/images/bullet1.png"   //子弹图片路径
+#define BOSSBULLET_PATH ":/images/bullet3.png"   //BOSS子弹图片路径
 #define COMMONENEMY_PATH  ":/images/enemy1.png"  //普通敌机资源图片
 #define SHOOTENEMY_PATH ":/images/enemy2.png"     //射击敌机资源图片
 #define SPEEDENEMY_PATH ":/images/enemy4.png"     //射击速度资源图片

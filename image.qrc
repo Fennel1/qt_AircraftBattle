@@ -63,6 +63,8 @@
         <file>images/boss.png</file>
         <file>images/screenclear.png</file>
         <file>images/map.png</file>
+        <file>images/bullet4.png</file>
+        <file>images/bullet3.png</file>
     </qresource>
     <qresource prefix="/image">
         <file>images/again.png</file>
