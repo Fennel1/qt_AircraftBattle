@@ -10,8 +10,12 @@ MainScene::MainScene(QWidget *parent)
 {
     //场景的初始化
     initScene();
+
     //飞机参数初始化
     initplane();
+
+    //文本信息的初始化
+    inittext();
 
 }
 
@@ -83,9 +87,10 @@ void MainScene::initplane()
     {
         bloodbags[i].setObjectPath(BLOODBAG_PATH);
     }
-
-//    boss.free = false;
-//    boss.isanger = true;
+    //BOSS信息
+    isboss = false;
+    bossrecorder = 0;
+    bossinterval = 5000;
 }
 
 void MainScene::initScene()
@@ -107,6 +112,121 @@ void MainScene::initScene()
     playGame();
 }
 
+void MainScene::inittext()
+{
+    //定时器设置
+    QTimer* timer_value_of_life = new QTimer;
+    timer_value_of_life->start(500);
+    connect(timer_value_of_life,&QTimer::timeout,[=](){
+        label_value_of_life.setText(QStringLiteral("生命值: ")+QString::number(plane->health));
+    });
+
+    QTimer* timer_value_of_boss = new QTimer;
+        timer_value_of_boss->start(500);
+        connect(timer_value_of_boss,&QTimer::timeout,[=](){
+            label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(boss.health));
+    });
+
+    QTimer* timer_cd_of_laser = new QTimer;
+    timer_cd_of_laser->start(500);
+    connect(timer_cd_of_laser, &QTimer::timeout,[=](){
+        if(laser.skillrecorder<laser.cd)
+        {
+            label_cd_of_laser.setText(QStringLiteral("玛卡巴卡射线:         ")+QString::number(int(laser.skillrecorder*100/laser.cd))+QString("%"));
+        }
+        if(laser.skillrecorder>=laser.cd)
+        {
+            label_cd_of_laser.setText(QStringLiteral("玛卡巴卡射线:        ")+QString::number(100)+QString("%"));
+        }
+    });
+
+    QTimer* timer_cd_of_missle = new QTimer;
+    timer_cd_of_missle->start(500);
+    connect(timer_cd_of_missle, &QTimer::timeout,[=](){
+        if(missle.skillrecorder<missle.cd)
+        {
+            label_cd_of_missle.setText(QStringLiteral("FOF导弹全弹发射:      ")+QString::number(int(missle.skillrecorder*100/missle.cd))+QString("%"));
+        }
+        if(missle.skillrecorder>=missle.cd)
+        {
+            label_cd_of_missle.setText(QStringLiteral("FOF导弹全弹发射:      ")+QString::number(100)+QString("%"));
+        }
+    });
+
+    QTimer* timer_cd_of_screenclear = new QTimer;
+    timer_cd_of_screenclear->start(500);
+    connect(timer_cd_of_screenclear, &QTimer::timeout,[=](){
+        if(screenclear.skillrecorder<screenclear.cd)
+        {
+            label_cd_of_screenclear.setText(QStringLiteral("大慈大悲渡世人:       ")+QString::number(int(screenclear.skillrecorder*100/screenclear.cd))+QString("%"));
+        }
+        if(screenclear.skillrecorder>=screenclear.cd)
+        {
+            label_cd_of_screenclear.setText(QStringLiteral("大慈大悲渡世人:       ")+QString::number(100)+QString("%"));
+        }
+    });
+
+    QTimer* timer_cd_of_shield = new QTimer;
+    timer_cd_of_shield->start(500);
+    connect(timer_cd_of_shield, &QTimer::timeout,[=](){
+        if(shield.skillrecorder<shield.cd)
+        {
+            label_cd_of_shield.setText(QStringLiteral("用一次就失去无敌的屑:  ")+QString::number(int(shield.skillrecorder*100/shield.cd))+QString("%"));
+        }
+        if(shield.skillrecorder>=shield.cd)
+        {
+            label_cd_of_shield.setText(QStringLiteral("用一次就失去无敌的屑:  ")+QString::number(100)+QString("%"));
+        }
+    });
+
+
+    //文本设置
+    QFont font1("Consolas", 16);
+    QFont font_cd("Consolas", 12);
+
+    label_value_of_life.setParent(this);
+    label_value_of_life.setFont(font1);
+    label_value_of_life.setFrameShape(QFrame::Panel);
+    label_value_of_life.setFrameShadow(QFrame::Plain);
+    label_value_of_life.move(620,20);
+    label_value_of_life.resize(200,80);
+
+    label_value_of_boss.setParent(this);
+    label_value_of_boss.setFont(font_cd);
+    label_value_of_boss.setFrameShape(QFrame::Panel);
+    label_value_of_boss.setFrameShadow(QFrame::Plain);
+    label_value_of_boss.move(620,110);
+    label_value_of_boss.resize(300,80);
+
+    label_cd_of_laser.setParent(this);
+    label_cd_of_laser.setFont(font_cd);
+    label_cd_of_laser.setFrameShape(QFrame::Panel);
+    label_cd_of_laser.setFrameShadow(QFrame::Plain);
+    label_cd_of_laser.move(620,300);
+    label_cd_of_laser.resize(350,60);
+
+    label_cd_of_missle.setParent(this);
+    label_cd_of_missle.setFont(font_cd);
+    label_cd_of_missle.setFrameShape(QFrame::Panel);
+    label_cd_of_missle.setFrameShadow(QFrame::Plain);
+    label_cd_of_missle.move(620,370);
+    label_cd_of_missle.resize(350,60);
+
+    label_cd_of_screenclear.setParent(this);
+    label_cd_of_screenclear.setFont(font_cd);
+    label_cd_of_screenclear.setFrameShape(QFrame::Panel);
+    label_cd_of_screenclear.setFrameShadow(QFrame::Plain);
+    label_cd_of_screenclear.move(620,440);
+    label_cd_of_screenclear.resize(350,60);
+
+    label_cd_of_shield.setParent(this);
+    label_cd_of_shield.setFont(font_cd);
+    label_cd_of_shield.setFrameShape(QFrame::Panel);
+    label_cd_of_shield.setFrameShadow(QFrame::Plain);
+    label_cd_of_shield.move(620,510);
+    label_cd_of_shield.resize(350,60);
+}
+
 void MainScene::playGame()
 {
     //启动定时器
@@ -114,40 +234,8 @@ void MainScene::playGame()
 
     //监听定时器
     connect(&Timer,&QTimer::timeout,[=](){
-        //主机移动
-        if (plane->X >= 0 && plane->X <= GAME_WIDTH - plane->rect.width())
-        {
-            plane->X += (plane->direction_a + plane->direction_d) * plane->speed;
-            data.movingdistance += (plane->direction_a + plane->direction_d) * plane->speed;   //增加移动距离
-        }
-        if (plane->Y >= 0 && plane->Y <= (GAME_HEIGHT - plane->rect.height()))
-        {
-            plane->Y += (plane->direction_w + plane->direction_s) * plane->speed;
-            data.movingdistance += (plane->direction_w + plane->direction_s) * plane->speed;   //增加移动距离
-        }
-        //边界检测
-        if(plane->X <= 0 )
-        {
-            plane->X = 0;
-        }
-        else if(plane->X >= GAME_WIDTH - plane->rect.width())
-        {
-            plane->X = GAME_WIDTH - plane->rect.width();
-        }
-        if(plane->Y <= 0)
-        {
-            plane->Y = 0;
-        }
-        else if(plane->Y >= GAME_HEIGHT - plane->rect.height())
-        {
-            plane->Y = GAME_HEIGHT - plane->rect.height();
-        }
-        plane->rect.moveTo(plane->X, plane->Y);
-        if (plane->shootflag)
-        {
-            plane->shoot();
-            data.myplaneshoottime++;    //射击子弹数加一
-        }
+        //飞机移动射击
+        planeMove();
         //掉落物出场
         objectToScene();
         if (boss.free)
@@ -173,6 +261,44 @@ void MainScene::playGame()
             bosscollisionDetection();
         }
     });
+}
+
+void MainScene::planeMove()
+{
+    //主机移动
+    if (plane->X >= 0 && plane->X <= GAME_WIDTH - plane->rect.width())
+    {
+        plane->X += (plane->direction_a + plane->direction_d) * plane->speed;
+        data.movingdistance += (plane->direction_a + plane->direction_d) * plane->speed;   //增加移动距离
+    }
+    if (plane->Y >= 0 && plane->Y <= (GAME_HEIGHT - plane->rect.height()))
+    {
+        plane->Y += (plane->direction_w + plane->direction_s) * plane->speed;
+        data.movingdistance += (plane->direction_w + plane->direction_s) * plane->speed;   //增加移动距离
+    }
+    //边界检测
+    if(plane->X <= 0 )
+    {
+        plane->X = 0;
+    }
+    else if(plane->X >= GAME_WIDTH - plane->rect.width())
+    {
+        plane->X = GAME_WIDTH - plane->rect.width();
+    }
+    if(plane->Y <= 0)
+    {
+        plane->Y = 0;
+    }
+    else if(plane->Y >= GAME_HEIGHT - plane->rect.height())
+    {
+        plane->Y = GAME_HEIGHT - plane->rect.height();
+    }
+    plane->rect.moveTo(plane->X, plane->Y);
+    if (plane->shootflag)
+    {
+        plane->shoot();
+        data.myplaneshoottime++;    //射击子弹数加一
+    }
 }
 
 void MainScene::updateSkill()
@@ -228,6 +354,18 @@ void MainScene::updateSkill()
 
 void MainScene::updatePosition()
 {
+    //更新BOSS信息
+    if (boss.isanger == false && boss.health < 500)
+    {
+        boss.isanger = true;
+    }
+    bossrecorder++;
+    if (bossrecorder > bossinterval)
+    {
+        boss.free = false;
+    }
+
+
     //更新地图坐标
     map1.mapPosition();
 
@@ -310,11 +448,19 @@ void MainScene::updatePosition()
         //BOSS移动
         boss.updatePosition();
         boss.shoot();
+        //更新BOSS子弹位置
         for (int i=0; i<BOSSBULLET_NUM; i++)
         {
             if (boss.bullets[i].free == false)
             {
                 boss.bullets[i].updatePosition();
+            }
+        }
+        for (int i=0; i<BOSSBULLET_NUM; i++)
+        {
+            if (boss.bossbullets[i].free == false)
+            {
+                boss.bossbullets[i].updatePosition();
             }
         }
     }
@@ -461,12 +607,21 @@ void MainScene::paintEvent(QPaintEvent *event)
     }
     else
     {
+        //绘制BOSS
         painter.drawPixmap(boss.X, boss.Y, boss.boss);
+        //绘制BOSS子弹
         for (int i=0; i<BOSSBULLET_NUM; i++)
         {
             if (boss.bullets[i].free == false)
             {
                 painter.drawPixmap(boss.bullets[i].X, boss.bullets[i].Y, boss.bullets[i].bullet);
+            }
+        }
+        for (int i=0; i<BOSSBULLET_NUM; i++)
+        {
+            if (boss.bossbullets[i].free == false)
+            {
+                painter.drawPixmap(boss.bossbullets[i].X, boss.bossbullets[i].Y, boss.bossbullets[i].bullet);
             }
         }
     }
@@ -493,7 +648,7 @@ void MainScene::paintEvent(QPaintEvent *event)
     if (laser.laserfree == false)
     {
         painter.drawPixmap(plane->X, plane->Y-700, laser.pixArr[laser.index]);
-        laser.shoot(plane->X, plane->Y, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+        laser.shoot(plane->X, plane->Y, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys, boss);
     }
 
     //护盾出现
@@ -1037,11 +1192,11 @@ void MainScene::collisionDetection()
       {
           if(dropobjects[i].free)
           {
-              //空闲飞机 跳转下一次循环
+              //空闲 跳转下一次循环
               continue;
           }
 
-          //判定敌机与主机碰撞
+          //判定与主机碰撞
           if (dropobjects[i].rect.intersects(plane->rect))
           {
               dropobjects[i].free = true;
@@ -1053,7 +1208,7 @@ void MainScene::collisionDetection()
       {
           if(bloodbags[i].free)
           {
-              //空闲飞机 跳转下一次循环
+              //空闲 跳转下一次循环
               continue;
           }
 
@@ -1088,25 +1243,65 @@ void MainScene::bosscollisionDetection()
     //与BOSS子弹碰撞
     for (int i=0; i<BOSSBULLET_NUM; i++)
     {
-        if (boss.bullets[i].free)
+        if (boss.isanger)
         {
-            //空闲子弹 跳转下一次循环
-            continue;
-        }
-
-        if (boss.bullets[i].rect.intersects(plane->rect))
-        {
-            boss.bullets[i].free = true;
-            if (shield.shieldfree == true)
+            if (boss.bullets[i].free)
             {
-                if (plane->health>0)
+                //空闲子弹 跳转下一次循环
+                continue;
+            }
+
+            //清屏判定
+            if (screenclear.screenclearfree == false && boss.bullets[i].rect.intersects(screenclear.rect))
+            {
+                boss.bullets[i].free = true;
+            }
+
+            if (boss.bullets[i].rect.intersects(plane->rect))
+            {
+                boss.bullets[i].free = true;
+                if (shield.shieldfree == true)
                 {
-                    plane->health--;
+                    if (plane->health>0)
+                    {
+                        plane->health--;
+                    }
+                    else
+                    {
+                        plane->isdeath = true;
+                        plane->bombfree = false;
+                    }
                 }
-                else
+            }
+        }
+        else
+        {
+            if (boss.bossbullets[i].free)
+            {
+                //空闲子弹 跳转下一次循环
+                continue;
+            }
+
+            //清屏判定
+            if (screenclear.screenclearfree == false && boss.bossbullets[i].rect.intersects(screenclear.rect))
+            {
+                boss.bossbullets[i].free = true;
+            }
+
+            if (boss.bossbullets[i].rect.intersects(plane->rect))
+            {
+                boss.bossbullets[i].free = true;
+                if (shield.shieldfree == true)
                 {
-                    plane->isdeath = true;
-                    plane->bombfree = false;
+                    if (plane->health>0)
+                    {
+                        plane->health--;
+                    }
+                    else
+                    {
+                        plane->isdeath = true;
+                        plane->bombfree = false;
+                    }
                 }
             }
         }
@@ -1136,7 +1331,52 @@ void MainScene::bosscollisionDetection()
         }
     }
 
+    //导弹碰撞判定
+    if (missle.misslefree == false && missle.rect.intersects(boss.rect))
+    {
+        missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+        if (boss.health > 0)
+        {
+            boss.health -= 30;
+        }
+        else
+        {
+            boss.isdeath = true;
+        }
+    }
 
+    //遍历所有非空闲的掉落物
+      for(int i = 0 ;i < dropobjectnum;i++)
+      {
+          if(dropobjects[i].free)
+          {
+              //空闲 跳转下一次循环
+              continue;
+          }
+
+          //判定与主机碰撞
+          if (dropobjects[i].rect.intersects(plane->rect))
+          {
+              dropobjects[i].free = true;
+          }
+      }
+
+      //遍历所有非空闲的掉落物
+      for(int i = 0 ;i < bloodbagnum;i++)
+      {
+          if(bloodbags[i].free)
+          {
+              //空闲 跳转下一次循环
+              continue;
+          }
+
+          //判定血包与主机碰撞
+          if (bloodbags[i].rect.intersects(plane->rect))
+          {
+              bloodbags[i].free = true;
+              plane->health++;
+          }
+      }
 }
 
 

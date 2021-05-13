@@ -61,3 +61,30 @@ void Bullet::setBulletPath(QString path)
 {
     bullet.load(path);
 }
+
+void BossBUlet::updatePosition()
+{
+    //如果子弹是空闲状态，不需要坐标计算
+    if(free)
+    {
+        return;
+    }
+
+    //子弹向下移动
+    Y  += 2;
+    X  += speed;
+    if(X < 0)
+    {
+        speed = 2;
+    }
+    else if(X > GAME_WIDTH-rect.width())
+    {
+        speed = -2;
+    }
+    rect.moveTo(X,Y);
+
+    if(Y >= GAME_HEIGHT)
+    {
+        free = true;
+    }
+}

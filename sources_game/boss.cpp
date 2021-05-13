@@ -19,7 +19,7 @@ Boss::Boss()
 
     //敌机状态
     free = true;
-    isanger = true;
+    isanger = false;
     isshoot = true;
     isdeath = false;
 
@@ -30,8 +30,10 @@ Boss::Boss()
     health = 1000;
 
     //射击间隔
+    bossshootinterval = 70;
     shootinterval = 30;
     pauseinterval = 500;
+    bossshootrecorder = 0;
     shootrecorder = 0;
     pauserecorder = 0;
     shootpoint = (rand() % 6)*100+50;
@@ -39,7 +41,8 @@ Boss::Boss()
     //子弹路径
     for (int i=0; i<BOSSBULLET_NUM; i++)
     {
-        bullets[i].setBulletPath(BOSSBULLET_PATH);
+        bullets[i].setBulletPath(BOSSBULLET1_PATH);
+        bossbullets[i].setBulletPath(BOSSBULLET2_PATH);
     }
 }
 
@@ -51,7 +54,7 @@ void Boss::updatePosition()
         return;
     }
 
-    if (Y <= 0)
+    if (Y <= -rect.height()/3)
     {
         Y += 0.5;
     }
@@ -104,6 +107,21 @@ void Boss::shoot()
     }
     else
     {
-
+        bossshootrecorder++;
+        if (bossshootrecorder > bossshootinterval)
+        {
+            bossshootrecorder = 0;
+            for (int i=0; i<BOSSBULLET_NUM; i++)
+            {
+                if (bossbullets[i].free)
+                {
+                    bossbullets[i].free = false;
+                    bossbullets[i].X = rand() % GAME_WIDTH;
+                    bossbullets[i].Y = Y + rect.height()-20;
+                    bossbullets[i].speed = rand() % 2 ? 2 : -2;
+                    break;
+                }
+            }
+        }
     }
 }

@@ -99,7 +99,7 @@ void Laser::use()
 }
 
 void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
-                CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys)
+                CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Boss &boss)
 {
     rect.setWidth(pixArr[index].width());
     rect.setHeight(pixArr[index].height());
@@ -163,6 +163,22 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
             speedenemys[i].bombfree = false;
         }
 
+    }
+
+    //BOSS判定
+    if (boss.free == false)
+    {
+        if (boss.rect.intersects(rect))
+        {
+            if (boss.health > 0)
+            {
+                boss.health--;
+            }
+            else
+            {
+                boss.isdeath = true;
+            }
+        }
     }
 }
 
@@ -324,6 +340,7 @@ Shield::Shield()
         pixArr.push_back(QPixmap(str));
     }
     //是否开始出现护盾
+    shieldfree = true;
     shieldstartfree = true;
 }
 

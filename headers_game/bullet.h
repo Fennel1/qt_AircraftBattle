@@ -55,4 +55,10 @@ public:
     void updatePosition();
 };
 
+class BossBUlet : public Bullet
+{
+public:
+    void updatePosition();
+};
+
 #endif // BULLET_H

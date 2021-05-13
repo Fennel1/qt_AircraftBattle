@@ -3,6 +3,10 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <QTextBrowser>
+#include <QLabel>
+#include <QPainter>
+#include <QPushButton>
 #include "map.h"
 #include "myplane.h"
 #include "enemyplane.h"
@@ -22,9 +26,11 @@ public:
     ~MainScene();
     void initScene();
     void initplane();
+    void inittext();
     //启动游戏
     void playGame();
     //更新坐标
+    void planeMove();
     void updatePosition();
     //绘图事件
     void paintEvent(QPaintEvent *event);
@@ -67,8 +73,11 @@ private:
     int shootenemynum;
     int speedenemynum;
 
-    //BOSS对象
+    //BOSS信息
     Boss boss;
+    bool isboss;
+    int bossrecorder;
+    int bossinterval;
 
     //地图对象
     Map map1;
@@ -100,6 +109,15 @@ private:
     //掉落物最大数量
     int dropobjectnum;
     int bloodbagnum;
+
+    //游戏文本信息
+    QLabel label_value_of_life;//飞机生命值
+    QLabel label_value_of_boss;//boss生命值
+    QLabel label_cd_of_laser;
+    QLabel label_cd_of_missle;
+    QLabel label_cd_of_screenclear;
+    QLabel label_cd_of_shield;
+
 };
 
 

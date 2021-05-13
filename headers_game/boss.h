@@ -4,10 +4,12 @@
 #include "headers_game/bullet.h"
 
 class MainScene;
+class Laser;
 
 class Boss
 {
     friend class MainScene;
+    friend class Laser;
 public:
     Boss();
 
@@ -39,14 +41,17 @@ private:
     int health;
 
     //射击间隔
+    int bossshootinterval;
     int shootinterval;
     int pauseinterval;
+    int bossshootrecorder;
     int shootrecorder;
     int pauserecorder;
     int shootpoint;
 
     //子弹
     EnemyBullet bullets[BOSSBULLET_NUM];
+    BossBUlet bossbullets[BOSSBULLET_NUM];
 };
 
 #endif // BOSS_H
