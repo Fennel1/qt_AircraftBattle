@@ -21,6 +21,7 @@ Boss::Boss()
     free = true;
     isanger = true;
     isshoot = true;
+    isdeath = false;
 
     //移动速度
     speed = 1;

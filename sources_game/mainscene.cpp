@@ -84,8 +84,8 @@ void MainScene::initplane()
         bloodbags[i].setObjectPath(BLOODBAG_PATH);
     }
 
-    boss.free = false;
-    boss.isanger = true;
+//    boss.free = false;
+//    boss.isanger = true;
 }
 
 void MainScene::initScene()
@@ -150,17 +150,10 @@ void MainScene::playGame()
         }
         //掉落物出场
         objectToScene();
-        //BOSS出现
         if (boss.free)
         {
             //敌机出场
             enemyToScene();
-            //碰撞检测
-            collisionDetection();
-        }
-        else
-        {
-            bosscollisionDetection();
         }
         //更新游戏元素坐标
         updatePosition();
@@ -168,6 +161,17 @@ void MainScene::playGame()
         update();
         //刷新技能
         updateSkill();
+        //BOSS出现
+        if (boss.free)
+        {
+            //碰撞检测
+            collisionDetection();
+        }
+        else
+        {
+            //BOSS碰撞
+            bosscollisionDetection();
+        }
     });
 }
 
@@ -351,22 +355,22 @@ void MainScene::updatePosition()
     }
 
     //掉落物坐标计算
-       for(int i = 0 ; i< dropobjectnum;i++)
-       {
-           //更新坐标
-           if(dropobjects[i].free == false)
-           {
-              dropobjects[i].updatePosition();
-           }
-       }
-       for(int i = 0 ; i< bloodbagnum;i++)
-       {
-           //更新坐标
-           if(bloodbags[i].free == false)
-           {
-              bloodbags[i].updatePosition();
-           }
-       }
+    for(int i = 0 ; i< dropobjectnum;i++)
+    {
+        //更新坐标
+        if(dropobjects[i].free == false)
+        {
+           dropobjects[i].updatePosition();
+        }
+    }
+    for(int i = 0 ; i< bloodbagnum;i++)
+    {
+        //更新坐标
+        if(bloodbags[i].free == false)
+        {
+           bloodbags[i].updatePosition();
+        }
+    }
 }
 
 void MainScene::paintEvent(QPaintEvent *event)
@@ -376,7 +380,6 @@ void MainScene::paintEvent(QPaintEvent *event)
     //绘制地图
     painter.drawPixmap(0,map1.map1_posY , map1.map1);
     painter.drawPixmap(0,map1.map2_posY , map1.map2);
-
     painter.drawPixmap(GAME_WIDTH, 0, map2);
 
     //绘制主机
@@ -737,10 +740,11 @@ void MainScene::enemyToScene()
     {
         for(int i = 0 ; i< commonenemynum;i++)
         {
-            if(commonenemys[i].free)
+            if(commonenemys[i].free && commonenemys[i].bombfree)
             {
                 //敌机空闲状态改为false
                 commonenemys[i].free = false;
+                commonenemys[i].bombfree = true;
                 //设置坐标
                 commonenemys[i].X = rand() % (GAME_WIDTH - commonenemys[i].rect.width());
                 commonenemys[i].Y = -commonenemys[i].rect.height();
@@ -754,10 +758,11 @@ void MainScene::enemyToScene()
     {
         for(int i = 0 ; i< shootenemynum;i++)
         {
-            if(shootenemys[i].free)
+            if(shootenemys[i].free && shootenemys[i].bombfree)
             {
                 //敌机空闲状态改为false
                 shootenemys[i].free = false;
+                shootenemys[i].bombfree = true;
                 //设置坐标
                 shootenemys[i].X = rand() % (GAME_WIDTH - shootenemys[i].rect.width());
                 shootenemys[i].Y = -shootenemys[i].rect.height();
@@ -771,10 +776,11 @@ void MainScene::enemyToScene()
     {
         for(int i = 0 ; i< speedenemynum;i++)
         {
-            if(speedenemys[i].free)
+            if(speedenemys[i].free && speedenemys[i].bombfree)
             {
                 //敌机空闲状态改为false
                 speedenemys[i].free = false;
+                speedenemys[i].bombfree = true;
                 //设置坐标
                 speedenemys[i].X = rand() % (GAME_WIDTH - speedenemys[i].rect.width());
                 speedenemys[i].Y = -speedenemys[i].rect.height();
@@ -846,11 +852,12 @@ void MainScene::collisionDetection()
                 commonenemys[i].free = true;
                 plane->bullets[j].free = true;
                 //爆炸变为非空闲
+                commonenemys[i].free = true;
                 commonenemys[i].bombfree = false;
 
                 data.destoryshootenemy++;   //击毁普通敌机数加一
             }
-        }       
+        }
     }
 
     //遍历所有非空闲的射击敌机
@@ -862,7 +869,7 @@ void MainScene::collisionDetection()
             if(shootenemys[i].bullets[j].free)
             {
                 //空闲子弹 跳转下一次循环
-                continue;#define BULLET_PATH ":/images/bullet1.png"   //子弹图片路径
+                continue;
             }
 
             //清屏判定
@@ -950,6 +957,7 @@ void MainScene::collisionDetection()
                 shootenemys[i].free = true;
                 plane->bullets[j].free = true;
                 //爆炸变为非空闲
+                shootenemys[i].free = true;
                 shootenemys[i].bombfree = false;
 
                 data.destoryshootenemy++;   //击毁射击敌机数加一
@@ -1017,6 +1025,7 @@ void MainScene::collisionDetection()
                 speedenemys[i].free = true;
                 plane->bullets[j].free = true;
                 //爆炸变为非空闲
+                speedenemys[i].free = true;
                 speedenemys[i].bombfree = false;
 
                 data.destoryshootenemy++;   //击毁普通敌机数加一
@@ -1079,8 +1088,15 @@ void MainScene::bosscollisionDetection()
     //与BOSS子弹碰撞
     for (int i=0; i<BOSSBULLET_NUM; i++)
     {
+        if (boss.bullets[i].free)
+        {
+            //空闲子弹 跳转下一次循环
+            continue;
+        }
+
         if (boss.bullets[i].rect.intersects(plane->rect))
         {
+            boss.bullets[i].free = true;
             if (shield.shieldfree == true)
             {
                 if (plane->health>0)
@@ -1097,6 +1113,30 @@ void MainScene::bosscollisionDetection()
     }
 
     //攻击BOSS判定
+    //射击BOSS
+    for (int i=0; i<BULLET_NUM; i++)
+    {
+        if(plane->bullets[i].free)
+        {
+            //空闲子弹 跳转下一次循环
+            continue;
+        }
+
+        if (plane->bullets[i].rect.intersects(boss.rect))
+        {
+            plane->bullets[i].free = true;
+            if (boss.health > 0)
+            {
+                boss.health--;
+            }
+            else
+            {
+                boss.isdeath = true;
+            }
+        }
+    }
+
+
 }
 
 

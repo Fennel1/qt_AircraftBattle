@@ -30,6 +30,7 @@ private:
     bool free;
     bool isanger;
     bool isshoot;
+    bool isdeath;
 
     //速度
     int speed;

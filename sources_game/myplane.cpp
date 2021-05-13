@@ -108,7 +108,7 @@ void MyPlane::shoot()
             //将改子弹空闲状态改为假
             bullets[i].free = false;
             //设置发射的子弹坐标
-            bullets[i].X = X + rect.width()*0.5;
+            bullets[i].X = X + rect.width()/2;
             bullets[i].Y = Y - 25 ;
             break;
         }

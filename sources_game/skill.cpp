@@ -260,7 +260,7 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
     //遍历所有非空闲的射击敌机
     for(int i = 0 ;i < shootenemynum;i++)
     {
-        //遍历所非空闲的敌机子弹dw
+        //遍历所非空闲的敌机子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
         {
             if(shootenemys[i].bullets[j].free)
