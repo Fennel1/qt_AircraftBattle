@@ -1,4 +1,4 @@
-#include "headers_game/mainscene.h"
+﻿#include "headers_game/mainscene.h"
 #include "headers_game/config.h"
 #include <QIcon>
 #include <QDebug>
@@ -8,11 +8,14 @@
 MainScene::MainScene(QWidget *parent)
     : QWidget(parent)
 {
-    //场景的初始化
-    initScene();
     //飞机参数初始化
     initplane();
 
+    //场景的初始化
+    initScene();
+
+    //文本信息的初始化
+    inittext();
 }
 
 MainScene::~MainScene()
@@ -1137,6 +1140,108 @@ void MainScene::bosscollisionDetection()
     }
 
 
+}
+
+void MainScene::inittext()
+{
+    //定时器设置
+    QTimer* timer_value_of_life = new QTimer;
+    timer_value_of_life->start(500);
+    connect(timer_value_of_life,&QTimer::timeout,[=](){
+        label_value_of_life.setText(QStringLiteral("生命值: ")+QString::number(plane->health));
+    });
+
+    QTimer* timer_cd_of_laser = new QTimer;
+    timer_cd_of_laser->start(500);
+    connect(timer_cd_of_laser, &QTimer::timeout,[=](){
+        if(laser.skillrecorder<laser.cd)
+        {
+            label_cd_of_laser.setText(QStringLiteral("玛卡巴卡射线:         ")+QString::number(int(laser.skillrecorder*100/laser.cd))+QString("%"));
+        }
+        if(laser.skillrecorder>=laser.cd)
+        {
+            label_cd_of_laser.setText(QStringLiteral("玛卡巴卡射线:        ")+QString::number(100)+QString("%"));
+        }
+    });
+
+    QTimer* timer_cd_of_missle = new QTimer;
+    timer_cd_of_missle->start(500);
+    connect(timer_cd_of_missle, &QTimer::timeout,[=](){
+        if(missle.skillrecorder<missle.cd)
+        {
+            label_cd_of_missle.setText(QStringLiteral("FOF导弹全弹发射:      ")+QString::number(int(missle.skillrecorder*100/missle.cd))+QString("%"));
+        }
+        if(missle.skillrecorder>=missle.cd)
+        {
+            label_cd_of_missle.setText(QStringLiteral("FOF导弹全弹发射:      ")+QString::number(100)+QString("%"));
+        }
+    });
+
+    QTimer* timer_cd_of_screenclear = new QTimer;
+    timer_cd_of_screenclear->start(500);
+    connect(timer_cd_of_screenclear, &QTimer::timeout,[=](){
+        if(screenclear.skillrecorder<screenclear.cd)
+        {
+            label_cd_of_screenclear.setText(QStringLiteral("大慈大悲渡世人:       ")+QString::number(int(screenclear.skillrecorder*100/screenclear.cd))+QString("%"));
+        }
+        if(screenclear.skillrecorder>=screenclear.cd)
+        {
+            label_cd_of_screenclear.setText(QStringLiteral("大慈大悲渡世人:       ")+QString::number(100)+QString("%"));
+        }
+    });
+
+    QTimer* timer_cd_of_shield = new QTimer;
+    timer_cd_of_shield->start(500);
+    connect(timer_cd_of_shield, &QTimer::timeout,[=](){
+        if(shield.skillrecorder<shield.cd)
+        {
+            label_cd_of_shield.setText(QStringLiteral("用一次就失去无敌的屑:  ")+QString::number(int(shield.skillrecorder*100/shield.cd))+QString("%"));
+        }
+        if(shield.skillrecorder>=shield.cd)
+        {
+            label_cd_of_shield.setText(QStringLiteral("用一次就失去无敌的屑:  ")+QString::number(100)+QString("%"));
+        }
+    });
+
+
+    //文本设置
+    QFont font1("Consolas", 16);
+    QFont font_cd("Consolas", 12);
+
+    label_value_of_life.setParent(this);
+    label_value_of_life.setFont(font1);
+    label_value_of_life.setFrameShape(QFrame::Panel);
+    label_value_of_life.setFrameShadow(QFrame::Plain);
+    label_value_of_life.move(620,20);
+    label_value_of_life.resize(200,80);
+
+    label_cd_of_laser.setParent(this);
+    label_cd_of_laser.setFont(font_cd);
+    label_cd_of_laser.setFrameShape(QFrame::Panel);
+    label_cd_of_laser.setFrameShadow(QFrame::Plain);
+    label_cd_of_laser.move(620,300);
+    label_cd_of_laser.resize(350,60);
+
+    label_cd_of_missle.setParent(this);
+    label_cd_of_missle.setFont(font_cd);
+    label_cd_of_missle.setFrameShape(QFrame::Panel);
+    label_cd_of_missle.setFrameShadow(QFrame::Plain);
+    label_cd_of_missle.move(620,370);
+    label_cd_of_missle.resize(350,60);
+
+    label_cd_of_screenclear.setParent(this);
+    label_cd_of_screenclear.setFont(font_cd);
+    label_cd_of_screenclear.setFrameShape(QFrame::Panel);
+    label_cd_of_screenclear.setFrameShadow(QFrame::Plain);
+    label_cd_of_screenclear.move(620,440);
+    label_cd_of_screenclear.resize(350,60);
+
+    label_cd_of_shield.setParent(this);
+    label_cd_of_shield.setFont(font_cd);
+    label_cd_of_shield.setFrameShape(QFrame::Panel);
+    label_cd_of_shield.setFrameShadow(QFrame::Plain);
+    label_cd_of_shield.move(620,510);
+    label_cd_of_shield.resize(350,60);
 }
 
 
