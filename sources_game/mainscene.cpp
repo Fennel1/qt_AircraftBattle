@@ -5,8 +5,8 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <ctime>
-MainScene::MainScene(QWidget *parent)
-    : QWidget(parent)
+MainScene::MainScene(int difficulty, int model,QWidget *parent)
+    : QWidget(parent), difficulty(difficulty), model(model)
 {
     //场景的初始化
     initScene();
@@ -26,9 +26,9 @@ MainScene::~MainScene()
 void MainScene::initplane()
 {
     //敌机最大数量
-    commonenemynum = 20;
-    shootenemynum = 10;
-    speedenemynum = 15;
+    commonenemynum = 20 + difficulty;
+    shootenemynum = 10 + difficulty;
+    speedenemynum = 15 + difficulty;
 
     //初始化飞机
     plane = new CommonMyPlane(COMMONMYPLANE_PATH, COMMONMYBOMB_PATH);
@@ -48,6 +48,10 @@ void MainScene::initplane()
         //设置射击敌机参数
         shootenemys[i].setPlanePath(SHOOTENEMY_PATH);
         shootenemys[i].setBombPath(BOMB_SHOOTENEMY_PATH);
+        for (int j=0; j<BULLET_NUM; j++)
+        {
+            shootenemys[i].bullets[j].setBulletPath(ENEMYBULLET_PATH);
+        }
     }
     for (int i=0; i<speedenemynum; i++)
     {
@@ -60,9 +64,9 @@ void MainScene::initplane()
     commonrecorder = 0;
     shootrecorder = 0;
     speedrecorder= 0;
-    commonenemyinterval = 50;
-    shootenemyinterval = 200;
-    speedenemyinterval = 100;
+    commonenemyinterval = 50 - difficulty * 2;
+    shootenemyinterval = 200 - difficulty * 10;
+    speedenemyinterval = 100 - difficulty * 4;
 
     //设置技能参数
     missle.setBombPath(MISSLEBOMB_PATH);
@@ -87,10 +91,26 @@ void MainScene::initplane()
     {
         bloodbags[i].setObjectPath(BLOODBAG_PATH);
     }
+
+    //技能参数
+    screenclear.skillrecorder = screenclear.cd;
+    laser.skillrecorder = laser.cd;
+    missle.skillrecorder = missle.cd;
+    shield.skillrecorder = shield.cd;
+
     //BOSS信息
-    isboss = false;
     bossrecorder = 0;
-    bossinterval = 5000;
+    bossinterval = 5000 + difficulty * 1000;
+    boss.setBombPath(BOMB_BOSS_PATH);
+
+    //暂停参数
+    ispause = false;
+
+    //游戏参数
+    difficultyinterval = 5000;
+    difficultyrecorder = 0;
+    isgameover = false;
+
 }
 
 void MainScene::initScene()
@@ -234,31 +254,41 @@ void MainScene::playGame()
 
     //监听定时器
     connect(&Timer,&QTimer::timeout,[=](){
-        //飞机移动射击
-        planeMove();
-        //掉落物出场
-        objectToScene();
-        if (boss.free)
+
+        if (ispause == false)
         {
-            //敌机出场
-            enemyToScene();
-        }
-        //更新游戏元素坐标
-        updatePosition();
-        //重新绘制图片
-        update();
-        //刷新技能
-        updateSkill();
-        //BOSS出现
-        if (boss.free)
-        {
-            //碰撞检测
-            collisionDetection();
-        }
-        else
-        {
-            //BOSS碰撞
-            bosscollisionDetection();
+            if (isgameover == false)
+            {
+                //飞机移动射击
+                planeMove();
+                //掉落物出场
+                objectToScene();
+                if (boss.free && boss.isdeath == false)
+                {
+                    //敌机出场
+                    enemyToScene();
+                }
+            }
+            //更新游戏元素坐标
+            updatePosition();
+            //重新绘制图片
+            update();
+            if (isgameover == false)
+            {
+                //刷新技能
+                updateSkill();
+                //BOSS出现
+                if (boss.free && boss.isdeath == false)
+                {
+                    //碰撞检测
+                    collisionDetection();
+                }
+                else
+                {
+                    //BOSS碰撞
+                    bosscollisionDetection();
+                }
+            }
         }
     });
 }
@@ -269,12 +299,10 @@ void MainScene::planeMove()
     if (plane->X >= 0 && plane->X <= GAME_WIDTH - plane->rect.width())
     {
         plane->X += (plane->direction_a + plane->direction_d) * plane->speed;
-        data.movingdistance += (plane->direction_a + plane->direction_d) * plane->speed;   //增加移动距离
     }
     if (plane->Y >= 0 && plane->Y <= (GAME_HEIGHT - plane->rect.height()))
     {
         plane->Y += (plane->direction_w + plane->direction_s) * plane->speed;
-        data.movingdistance += (plane->direction_w + plane->direction_s) * plane->speed;   //增加移动距离
     }
     //边界检测
     if(plane->X <= 0 )
@@ -354,17 +382,32 @@ void MainScene::updateSkill()
 
 void MainScene::updatePosition()
 {
-    //更新BOSS信息
-    if (boss.isanger == false && boss.health < 500)
+    if (model == 0)     //为正常模式才刷新BOSS
     {
-        boss.isanger = true;
+        //更新BOSS信息
+        if (boss.isanger == false && boss.health < 500)
+        {
+            boss.isanger = true;
+        }
+        if (boss.free == true)
+        {
+            bossrecorder++;
+        }
+        if (bossrecorder > bossinterval)
+        {
+            bossrecorder = 0;
+            boss.free = false;
+        }
     }
-    bossrecorder++;
-    if (bossrecorder > bossinterval)
+    else    //无尽模式
     {
-        boss.free = false;
+        difficultyrecorder++;
+        if (difficultyrecorder > difficultyinterval)
+        {
+            difficulty++;
+            difficultyrecorder = 0;
+        }
     }
-
 
     //更新地图坐标
     map1.mapPosition();
@@ -380,7 +423,7 @@ void MainScene::updatePosition()
     }
 
     //BOSS是否在场
-    if (boss.free)
+    if (boss.free && boss.isdeath == false)
     {
         //敌机坐标计算
         for(int i = 0 ; i< commonenemynum;i++)
@@ -446,8 +489,11 @@ void MainScene::updatePosition()
     else
     {
         //BOSS移动
-        boss.updatePosition();
-        boss.shoot();
+        if (boss.isdeath == false)
+        {
+            boss.updatePosition();
+            boss.shoot();
+        }
         //更新BOSS子弹位置
         for (int i=0; i<BOSSBULLET_NUM; i++)
         {
@@ -463,6 +509,12 @@ void MainScene::updatePosition()
                 boss.bossbullets[i].updatePosition();
             }
         }
+    }
+
+    //BOSS爆炸
+    if (boss.bombfree == false)
+    {
+        boss.updateInfo();
     }
 
     //主机爆炸
@@ -548,7 +600,7 @@ void MainScene::paintEvent(QPaintEvent *event)
         }
     }
 
-    if (boss.free)
+    if (boss.free && boss.isdeath == false)
     {
         //绘制敌机
         for(int i = 0 ; i< commonenemynum;i++)
@@ -607,8 +659,11 @@ void MainScene::paintEvent(QPaintEvent *event)
     }
     else
     {
-        //绘制BOSS
-        painter.drawPixmap(boss.X, boss.Y, boss.boss);
+        if (boss.isdeath == false)
+        {
+            //绘制BOSS
+            painter.drawPixmap(boss.X, boss.Y, boss.boss);
+        }
         //绘制BOSS子弹
         for (int i=0; i<BOSSBULLET_NUM; i++)
         {
@@ -624,6 +679,12 @@ void MainScene::paintEvent(QPaintEvent *event)
                 painter.drawPixmap(boss.bossbullets[i].X, boss.bossbullets[i].Y, boss.bossbullets[i].bullet);
             }
         }
+    }
+
+    //BOSS爆炸
+    if (boss.bombfree == false)
+    {
+        painter.drawPixmap(boss.X, boss.Y, boss.pixArr[boss.index]);
     }
 
     //绘制导弹
@@ -648,7 +709,7 @@ void MainScene::paintEvent(QPaintEvent *event)
     if (laser.laserfree == false)
     {
         painter.drawPixmap(plane->X, plane->Y-700, laser.pixArr[laser.index]);
-        laser.shoot(plane->X, plane->Y, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys, boss);
+        laser.shoot(plane->X, plane->Y, commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys, boss, data, isgameover);
     }
 
     //护盾出现
@@ -772,12 +833,27 @@ void MainScene::mouseMoveEvent(QMouseEvent *event)
 
 void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判定 持续按住按键控制
 {
+    //暂停
+    if (event->key() == Qt::Key_Escape && !event->isAutoRepeat())
+    {
+        if (ispause == false)
+        {
+            ispause = true;
+        }
+        else
+        {
+            ispause = false;
+        }
+    }
+
     //使用技能
     if (event->key() == Qt::Key_K && !event->isAutoRepeat())
     {
         if (screenclear.free == true)
         {
             screenclear.shoot();
+            screenclear.skillrecorder = 0;
+            data.screencleartime++;
         }
     }
     if (event->key() == Qt::Key_L && !event->isAutoRepeat())
@@ -785,6 +861,8 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
         if (laser.free == true)
         {
             laser.use();
+            laser.skillrecorder = 0;
+            data.lasertime++;
         }
     }
     if (event->key() == Qt::Key_U && !event->isAutoRepeat())
@@ -792,6 +870,8 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
         if (missle.free == true)
         {
             missle.shoot(plane->X + plane->rect.width()/2, plane->Y);
+            missle.skillrecorder = 0;
+            data.missletime++;
         }
     }
     if (event->key() == Qt::Key_I && !event->isAutoRepeat())
@@ -799,6 +879,8 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
         if (shield.free == true)
         {
             shield.use();
+            shield.skillrecorder = 0;
+            data.shieldtime++;
         }
     }
 
@@ -962,11 +1044,13 @@ void MainScene::collisionDetection()
         {
             commonenemys[i].free = true;
             commonenemys[i].bombfree = false;
+            data.screencleardestory++;
+            data.score += 1 + difficulty;
         }
         //导弹碰撞判定
         if (missle.misslefree == false && commonenemys[i].rect.intersects(missle.rect))
         {
-            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys, data);
         }
 
         //判定敌机与主机碰撞
@@ -976,11 +1060,13 @@ void MainScene::collisionDetection()
             commonenemys[i].bombfree = false;
             data.destorycommonenemy++;  //击毁普通敌机数加一
             data.crashtime++;   //与敌机碰撞次数加一
+            data.score += 5 + difficulty;
             if (shield.shieldfree == true)
             {
                 if (plane->health>0)
                 {
                     plane->health--;
+                    data.injury++;
                 }
                 else
                 {
@@ -988,6 +1074,11 @@ void MainScene::collisionDetection()
                     plane->isdeath = true;
                     plane->bombfree = false;
                 }
+            }
+            else
+            {
+                data.shielddefense++;
+                data.score++;
             }
         }
 
@@ -1011,6 +1102,7 @@ void MainScene::collisionDetection()
                 commonenemys[i].bombfree = false;
 
                 data.destoryshootenemy++;   //击毁普通敌机数加一
+                data.score += 5 + difficulty;
             }
         }
     }
@@ -1031,6 +1123,7 @@ void MainScene::collisionDetection()
             if (screenclear.screenclearfree == false && shootenemys[i].bullets[j].rect.intersects(screenclear.rect))
             {
                 shootenemys[i].bullets[j].free = true;
+                data.screencleardestory++;
             }
 
             //如果子弹矩形框和敌机子弹矩形框相交，发生碰撞
@@ -1044,6 +1137,7 @@ void MainScene::collisionDetection()
                     if (plane->health>0)
                     {
                         plane->health--;
+                        data.injury++;
                     }
                     else
                     {
@@ -1051,6 +1145,11 @@ void MainScene::collisionDetection()
                         plane->isdeath = true;
                         plane->bombfree = false;
                     }
+                }
+                else
+                {
+                    data.shielddefense++;
+                    data.score++;
                 }
             }
         }
@@ -1066,12 +1165,14 @@ void MainScene::collisionDetection()
         {
             shootenemys[i].free = true;
             shootenemys[i].bombfree = false;
+            data.screencleardestory++;
+            data.score += 1 + difficulty;
         }
 
         //导弹碰撞判定
         if (missle.misslefree == false && shootenemys[i].rect.intersects(missle.rect))
         {
-            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys, data);
         }
 
         //判定敌机与主机碰撞
@@ -1081,11 +1182,13 @@ void MainScene::collisionDetection()
             shootenemys[i].bombfree = false;
             data.destoryshootenemy++;   //击毁射击敌机数加一
             data.crashtime++;   //与敌机碰撞次数加一
+            data.score += 15 + difficulty;
             if (shield.shieldfree == true)
             {
                 if (plane->health>0)
                 {
                     plane->health--;
+                    data.injury++;
                 }
                 else
                 {
@@ -1093,6 +1196,11 @@ void MainScene::collisionDetection()
                     plane->isdeath = true;
                     plane->bombfree = false;
                 }
+            }
+            else
+            {
+                data.shielddefense++;
+                data.score++;
             }
         }
 
@@ -1116,6 +1224,7 @@ void MainScene::collisionDetection()
                 shootenemys[i].bombfree = false;
 
                 data.destoryshootenemy++;   //击毁射击敌机数加一
+                data.score += 15 + difficulty;
             }
         }
     }
@@ -1134,12 +1243,14 @@ void MainScene::collisionDetection()
         {
             speedenemys[i].free = true;
             speedenemys[i].bombfree = false;
+            data.screencleardestory++;
+            data.score += 1 + difficulty;
         }
 
         //导弹碰撞判定
         if (missle.misslefree == false && speedenemys[i].rect.intersects(missle.rect))
         {
-            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+            missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys, data);
         }
 
         //判定敌机与主机碰撞
@@ -1147,20 +1258,27 @@ void MainScene::collisionDetection()
         {
             speedenemys[i].free = true;
             speedenemys[i].bombfree = false;
-            data.destorycommonenemy++;  //击毁普通敌机数加一
+            data.destoryspeedenemy++;  //击毁普通敌机数加一
             data.crashtime++;   //与敌机碰撞次数加一
+            data.score += 10 + difficulty;
             if (shield.shieldfree == true)
             {
                 if (plane->health>0)
                 {
                     plane->health--;
+                    data.injury++;
                 }
                 else
                 {
-                    data.destroyedbycommonenemy++;   //被普通敌机击毁次数加一
+                    data.destroyedbyspeedenemy++;
                     plane->isdeath = true;
                     plane->bombfree = false;
                 }
+            }
+            else
+            {
+                data.shielddefense++;
+                data.score++;
             }
         }
 
@@ -1183,10 +1301,12 @@ void MainScene::collisionDetection()
                 speedenemys[i].free = true;
                 speedenemys[i].bombfree = false;
 
-                data.destoryshootenemy++;   //击毁普通敌机数加一
+                data.destoryspeedenemy++;   //击毁普通敌机数加一
+                data.score += 10 + difficulty;
             }
         }
     }
+
     //遍历所有非空闲的掉落物
       for(int i = 0 ;i < dropobjectnum;i++)
       {
@@ -1231,12 +1351,19 @@ void MainScene::bosscollisionDetection()
             if (plane->health>0)
             {
                 plane->health--;
+                data.injury++;
             }
             else
             {
                 plane->isdeath = true;
                 plane->bombfree = false;
+                data.destroyedbyboss++;
             }
+        }
+        else
+        {
+            data.shielddefense++;
+            data.score++;
         }
     }
 
@@ -1255,22 +1382,31 @@ void MainScene::bosscollisionDetection()
             if (screenclear.screenclearfree == false && boss.bullets[i].rect.intersects(screenclear.rect))
             {
                 boss.bullets[i].free = true;
+                data.screencleardestory++;
             }
 
             if (boss.bullets[i].rect.intersects(plane->rect))
             {
                 boss.bullets[i].free = true;
+                data.beshottime++;
                 if (shield.shieldfree == true)
                 {
                     if (plane->health>0)
                     {
                         plane->health--;
+                        data.injury++;
                     }
                     else
                     {
                         plane->isdeath = true;
                         plane->bombfree = false;
+                        data.destroyedbyboss++;
                     }
+                }
+                else
+                {
+                    data.shielddefense++;
+                    data.score++;
                 }
             }
         }
@@ -1286,22 +1422,31 @@ void MainScene::bosscollisionDetection()
             if (screenclear.screenclearfree == false && boss.bossbullets[i].rect.intersects(screenclear.rect))
             {
                 boss.bossbullets[i].free = true;
+                data.screencleardestory++;
             }
 
             if (boss.bossbullets[i].rect.intersects(plane->rect))
             {
                 boss.bossbullets[i].free = true;
+                data.beshottime++;
                 if (shield.shieldfree == true)
                 {
                     if (plane->health>0)
                     {
                         plane->health--;
+                        data.injury++;
                     }
                     else
                     {
                         plane->isdeath = true;
                         plane->bombfree = false;
+                        data.destroyedbyboss++;
                     }
+                }
+                else
+                {
+                    data.shielddefense++;
+                    data.score++;
                 }
             }
         }
@@ -1323,10 +1468,16 @@ void MainScene::bosscollisionDetection()
             if (boss.health > 0)
             {
                 boss.health--;
+                data.damageboss++;
             }
             else
             {
                 boss.isdeath = true;
+                boss.free = true;
+                boss.bombfree = false;
+                isgameover = true;
+                data.destoryboss++;
+                data.score += 1000;
             }
         }
     }
@@ -1334,14 +1485,20 @@ void MainScene::bosscollisionDetection()
     //导弹碰撞判定
     if (missle.misslefree == false && missle.rect.intersects(boss.rect))
     {
-        missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys);
+        missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys, data);
         if (boss.health > 0)
         {
             boss.health -= 30;
+            data.damageboss += 30;
         }
         else
         {
             boss.isdeath = true;
+            boss.free = true;
+            boss.bombfree = false;
+            isgameover = true;
+            data.destoryboss++;
+            data.score += 1000;
         }
     }
 
@@ -1378,15 +1535,4 @@ void MainScene::bosscollisionDetection()
           }
       }
 }
-
-
-
-
-
-
-
-
-
-
-
 

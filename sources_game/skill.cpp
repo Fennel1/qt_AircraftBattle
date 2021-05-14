@@ -99,7 +99,7 @@ void Laser::use()
 }
 
 void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
-                CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Boss &boss)
+                CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Boss &boss, Data &data, bool &isgameover)
 {
     rect.setWidth(pixArr[index].width());
     rect.setHeight(pixArr[index].height());
@@ -116,13 +116,16 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
         {
             commonenemys[i].free = true;
             commonenemys[i].bombfree = false;
+            data.laserdestory++;
+            data.destorycommonenemy++;
+            data.score += 5;
         }
     }
 
     //遍历所有非空闲的射击敌机
     for(int i = 0 ;i < shootenemynum;i++)
     {
-        //遍历所非空闲的敌机子弹dw
+        //遍历所非空闲的敌机子弹
         for(int j = 0 ; j < BULLET_NUM;j++)
         {
             if(shootenemys[i].bullets[j].free)
@@ -133,6 +136,8 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
             if(shootenemys[i].bullets[j].rect.intersects(rect))
             {
                 shootenemys[i].bullets[j].free = true;
+                data.laserdestory++;
+                data.score++;
             }
         }
 
@@ -146,6 +151,9 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
         {
             shootenemys[i].free = true;
             shootenemys[i].bombfree = false;
+            data.laserdestory++;
+            data.destoryshootenemy++;
+            data.score += 15;
         }
     }
 
@@ -161,6 +169,9 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
         {
             speedenemys[i].free = true;
             speedenemys[i].bombfree = false;
+            data.laserdestory++;
+            data.destoryspeedenemy++;
+            data.score += 10;
         }
 
     }
@@ -173,10 +184,16 @@ void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum,
             if (boss.health > 0)
             {
                 boss.health--;
+                data.damageboss++;
             }
             else
             {
                 boss.isdeath = true;
+                boss.free = true;
+                boss.bombfree = false;
+                isgameover = true;
+                data.destoryboss++;
+                data.score += 1000;
             }
         }
     }
@@ -253,7 +270,7 @@ void Missle::updatePosition()
 }
 
 void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
-                  CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys)
+                  CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Data &data)
 {
     QRect missle(X-100, Y-100, 200, 200);
     misslefree = true;
@@ -270,6 +287,9 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
         {
             commonenemys[i].free = true;
             commonenemys[i].bombfree = false;
+            data.missledestory++;
+            data.destorycommonenemy++;
+            data.score += 5;
         }
     }
 
@@ -287,6 +307,8 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
             if(shootenemys[i].bullets[j].rect.intersects(missle))
             {
                 shootenemys[i].bullets[j].free = true;
+                data.missledestory++;
+                data.score++;
             }
         }
 
@@ -299,6 +321,9 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
         {
             shootenemys[i].free = true;
             shootenemys[i].bombfree = false;
+            data.missledestory++;
+            data.destoryshootenemy++;
+            data.score += 15;
         }
     }
 
@@ -314,6 +339,9 @@ void Missle::bomb(int commonenemynum, int shootenemynum, int speedenemynum,
         {
             speedenemys[i].free = true;
             speedenemys[i].bombfree = false;
+            data.missledestory++;
+            data.destoryspeedenemy++;
+            data.score += 10;
         }
 
     }

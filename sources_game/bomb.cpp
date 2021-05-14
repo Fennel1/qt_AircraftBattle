@@ -3,7 +3,7 @@
 Bomb::Bomb()
 {
     //爆炸参数
-    bombmax = 4;
+    bombmax = 6;
     bombinterval = 10;
 
     //初始化爆炸图片数组

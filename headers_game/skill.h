@@ -4,6 +4,7 @@
 #include "enemyplane.h"
 #include "myplane.h"
 #include "boss.h"
+#include "data.h"
 
 class Skill
 {
@@ -44,7 +45,7 @@ public:
     Laser();
     void use();
     void shoot(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
-               CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Boss &boss);
+               CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Boss &boss, Data &data, bool &isgameover);
     void updateInfo();
 private:
     //激光资源
@@ -73,7 +74,7 @@ public:
     void shoot(int misslex, int missley);
     void updatePosition();
     void bomb(int commonenemynum, int shootenemynum, int speedenemynum,
-              CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys);
+              CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Data &data);
 
 private:
     //子弹坐标

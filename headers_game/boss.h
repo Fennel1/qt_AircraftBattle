@@ -2,11 +2,12 @@
 #define BOSS_H
 #include <QPixmap>
 #include "headers_game/bullet.h"
+#include "bomb.h"
 
 class MainScene;
 class Laser;
 
-class Boss
+class Boss : public Bomb
 {
     friend class MainScene;
     friend class Laser;

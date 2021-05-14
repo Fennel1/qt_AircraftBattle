@@ -4,26 +4,26 @@
 #include "myplane.h"
 
 class MainScene;
+class Laser;
+class Missle;
 
 class Data : public MyPlane
 {
     friend class MainScene;
+    friend class Laser;
+    friend class Missle;
 public:
     Data();
 
-    Data& operator=(const Data &d);
-    Data operator+=(const Data &d);
+//    Data& operator=(const Data &d);
+//    Data operator+=(const Data &d);
 
 private:
-    //得分
-    int score;
+    int score;    //得分
 
-    //金币
-    int coin;
+    int coin;    //金币
 
     //游戏时长
-    QTime *playtime;
-    bool isstart;
 
     //击毁敌机数
     int destorycommonenemy;
@@ -33,19 +33,36 @@ private:
     //发射子弹数
     int myplaneshoottime;
 
-    //与敌机碰撞次数
-    int crashtime;
-    //被敌机子弹击中次数
-    int beshottime;
+    int crashtime;    //与敌机碰撞次数
+    int beshottime;    //被敌机子弹击中次数
 
     //主机死亡
-    //被普通敌机击毁次数
-    int destroyedbycommonenemy;
-    //被射击敌机击毁次数
-    int destroyedbyshootenemy;
+    int destroyedbycommonenemy;    //被普通敌机击毁次数
+    int destroyedbyshootenemy;    //被射击敌机击毁次数
+    int destroyedbyspeedenemy;      //被速度敌机击毁次数
 
-    //主机移动距离
-    int movingdistance;
+    int injury;    //受到总伤害
+    int cure;   //恢复总血量
+
+    //技能
+    //使用次数
+    int screencleartime;
+    int lasertime;
+    int missletime;
+    int shieldtime;
+
+    //技能效果
+    int screencleardestory;
+    int laserdestory;
+    int missledestory;
+    int shielddefense;
+
+    //BOSS
+    int damageboss;     //对BOSS造成伤害
+    int destroyedbyboss;    //被BOSS击毁次数
+    int destoryboss;     //击毁BOSS次数
+
+    //道具
 };
 
 #endif // DATA_H

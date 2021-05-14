@@ -12,17 +12,18 @@
 #include "enemyplane.h"
 #include "data.h"
 #include "skill.h"
-#include "headers_window/dropobjects.h"
+#include "headers_game/dropobjects.h"
 #include "boss.h"
+#include "player.h"
 
-class MainScene : public QWidget
+class MainScene : public QWidget, public Player
 {
     Q_OBJECT
 
 public:
     QTimer Timer;
 
-    MainScene(QWidget *parent = nullptr);
+    MainScene(int difficulty, int model, QWidget *parent = nullptr);
     ~MainScene();
     void initScene();
     void initplane();
@@ -75,7 +76,6 @@ private:
 
     //BOSS信息
     Boss boss;
-    bool isboss;
     int bossrecorder;
     int bossinterval;
 
@@ -118,6 +118,15 @@ private:
     QLabel label_cd_of_screenclear;
     QLabel label_cd_of_shield;
 
+    //暂停参数
+    bool ispause;
+
+    //游戏参数
+    int difficulty;  //游戏难度
+    int model;      //游戏模式 0为正常模式 1为无尽模式
+    int difficultyrecorder;     //无尽模式难度增长
+    int difficultyinterval;
+    bool isgameover;
 };
 
 

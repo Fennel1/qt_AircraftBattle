@@ -9,15 +9,16 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    player.cpp \
+    main.cpp \
     sources_game/bomb.cpp \
     sources_game/boss.cpp \
     sources_game/bullet.cpp \
     sources_game/data.cpp \
-    sources_window/dropobjects.cpp \
+    sources_game/dropobjects.cpp \
     sources_game/enemyplane.cpp \
     sources_window/gameover.cpp \
     sources_window/loginwindow.cpp \
-    main.cpp \
     sources_game/mainscene.cpp \
     sources_window/mainwindow.cpp \
     sources_game/map.cpp \
@@ -32,7 +33,7 @@ HEADERS += \
     headers_game/bullet.h \
     headers_game/config.h \
     headers_game/data.h \
-    headers_window/dropobjects.h \
+    headers_game/dropobjects.h \
     headers_game/enemyplane.h \
     headers_window/gameover.h \
     headers_window/loginwindow.h \
@@ -42,7 +43,8 @@ HEADERS += \
     headers_game/myplane.h \
     headers_window/props.h \
     headers_game/skill.h \
-    headers_window/thehome.h
+    headers_window/thehome.h \
+    player.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

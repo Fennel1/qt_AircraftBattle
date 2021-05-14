@@ -20,6 +20,12 @@ Bullet::Bullet()
     rect.setHeight(bullet.height());
     rect.moveTo(X,Y);
 }
+
+void Bullet::setBulletPath(QString path)
+{
+    bullet.load(path);
+}
+
 void MyBullet::updatePosition()
 {
     //如果子弹是空闲状态，不需要坐标计算
@@ -55,11 +61,6 @@ void EnemyBullet::updatePosition()
     {
         free = true;
     }
-}
-
-void Bullet::setBulletPath(QString path)
-{
-    bullet.load(path);
 }
 
 void BossBUlet::updatePosition()

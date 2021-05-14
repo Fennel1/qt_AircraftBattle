@@ -108,7 +108,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btn_to_mainscene_clicked()
 {
-    MainScene* win_mainscene = new MainScene;
+    MainScene* win_mainscene = new MainScene(0, 0);
     win_mainscene->setWindowModality(Qt::ApplicationModal);
     win_mainscene->show();
 }
