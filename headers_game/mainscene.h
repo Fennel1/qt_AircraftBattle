@@ -14,9 +14,9 @@
 #include "skill.h"
 #include "headers_game/dropobjects.h"
 #include "boss.h"
-#include "player.h"
+//#include "player.h"
 
-class MainScene : public QWidget, public Player
+class MainScene : public QWidget
 {
     Q_OBJECT
 
@@ -28,6 +28,7 @@ public:
     void initScene();
     void initplane();
     void inittext();
+    void initobject();
     //启动游戏
     void playGame();
     //更新坐标
@@ -51,6 +52,7 @@ public:
     //碰撞检测
     void collisionDetection();
     void bosscollisionDetection();
+    void objectCollisionDetection();
 
     //刷新技能
     void updateSkill();
@@ -96,19 +98,20 @@ private:
     Shield shield;      //护盾
 
     //掉落物数组
-    DropObject *dropobjects;
-    BloodBag *bloodbags;
+      BloodBag *bloodbags;
+      BcdFree *bcdfrees;
+      ScdFree *scdfrees;
+      Coin *coins;
 
-    //掉落物出场间隔
-    int droprecorder;
-    int dropobjectinterval;
-    int bloodbagrecorder;
-    int bloodbaginterval;
+      //掉落物出场间隔
+      int objectrecorder;
+      int objectinterval;
 
-
-    //掉落物最大数量
-    int dropobjectnum;
-    int bloodbagnum;
+      //掉落物最大数量
+      int bloodbagnum;
+      int scdfreenum;
+      int bcdfreenum;
+      int coinnum;
 
     //游戏文本信息
     QLabel label_value_of_life;//飞机生命值
@@ -117,6 +120,8 @@ private:
     QLabel label_cd_of_missle;
     QLabel label_cd_of_screenclear;
     QLabel label_cd_of_shield;
+    QLabel label_score;//得分
+    QLabel label_progress_of_boss;//boss出现的进度
 
     //暂停参数
     bool ispause;

@@ -17,6 +17,9 @@ MainScene::MainScene(int difficulty, int model,QWidget *parent)
     //文本信息的初始化
     inittext();
 
+    //掉落物参数初始化
+    initobject();
+
 }
 
 MainScene::~MainScene()
@@ -71,27 +74,6 @@ void MainScene::initplane()
     //设置技能参数
     missle.setBombPath(MISSLEBOMB_PATH);
 
-    //掉落物最大数量
-    dropobjectnum = 5;
-    bloodbagnum = 1;
-    //掉落物刷新间隔
-    droprecorder = 0;
-    dropobjectinterval = 500;
-    bloodbagrecorder = 0;
-    bloodbaginterval = 100;
-    //初始化掉落物
-    dropobjects = new DropObject[dropobjectnum];
-    bloodbags = new BloodBag[bloodbagnum];
-    //设置掉落物参数
-    for (int i=0; i<dropobjectnum; i++)
-    {
-        dropobjects[i].setObjectPath(DROPOBJECT_PATH);
-    }
-    for (int i=0; i<bloodbagnum; i++)
-    {
-        bloodbags[i].setObjectPath(BLOODBAG_PATH);
-    }
-
     //技能参数
     screenclear.skillrecorder = screenclear.cd;
     laser.skillrecorder = laser.cd;
@@ -110,6 +92,38 @@ void MainScene::initplane()
     difficultyinterval = 5000;
     difficultyrecorder = 0;
     isgameover = false;
+
+}
+
+void MainScene::initobject()
+{
+    //掉落物最大数量
+    scdfreenum = 1;
+    bcdfreenum = 1;
+    bloodbagnum = 1;
+    coinnum = 1;
+    //掉落物刷新间隔
+    objectrecorder = 0;
+    objectinterval = 500;
+    //初始化掉落物
+    scdfrees = new ScdFree[scdfreenum];
+    bcdfrees = new BcdFree[bcdfreenum];
+    bloodbags = new BloodBag[bloodbagnum];
+    coins = new Coin[coinnum];
+    //设置掉落物参数
+
+    for (int i=0; i<bloodbagnum; i++)
+    {
+        bloodbags[i].setObjectPath(BLOODBAG_PATH);
+    }
+    for (int i=0; i<scdfreenum; i++)
+    {
+        scdfrees[i].setObjectPath(SCDFREE_PATH);
+    }
+    for (int i=0; i<bcdfreenum; i++)
+    {
+        bcdfrees[i].setObjectPath(BCDFREE_PATH);
+    }
 
 }
 
@@ -144,7 +158,38 @@ void MainScene::inittext()
     QTimer* timer_value_of_boss = new QTimer;
         timer_value_of_boss->start(500);
         connect(timer_value_of_boss,&QTimer::timeout,[=](){
-            label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(boss.health));
+            if(boss.health>0)
+            {
+                label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(boss.health));
+            }
+            else
+            {
+                label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(0));
+            }
+    });
+
+    QTimer* timer_score = new QTimer;
+        timer_score->start(500);
+        connect(timer_score,&QTimer::timeout,[=](){
+            label_score.setText(QStringLiteral("得分:")+QString::number(data.score));
+    });
+
+    QTimer* timer_progress_of_boss = new QTimer;
+        timer_progress_of_boss->start(500);
+        connect(timer_progress_of_boss,&QTimer::timeout,[=](){
+            if(bossrecorder*100/bossinterval<99)
+            {
+                label_progress_of_boss.setText(QStringLiteral("boss出现进度:")+QString::number(bossrecorder*100/bossinterval)+QString("%"));
+            }
+            else
+            {
+                timer_progress_of_boss->stop();
+                label_progress_of_boss.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(255,0,0));
+                label_progress_of_boss.setPalette(palette);
+                label_progress_of_boss.setText(QStringLiteral("boss已出现！"));
+            }
     });
 
     QTimer* timer_cd_of_laser = new QTimer;
@@ -152,11 +197,19 @@ void MainScene::inittext()
     connect(timer_cd_of_laser, &QTimer::timeout,[=](){
         if(laser.skillrecorder<laser.cd)
         {
-            label_cd_of_laser.setText(QStringLiteral("玛卡巴卡射线:         ")+QString::number(int(laser.skillrecorder*100/laser.cd))+QString("%"));
+            label_cd_of_laser.setText(QStringLiteral("L  激光:    ")+QString::number(int(laser.skillrecorder*100/laser.cd))+QString("%"));
+            label_cd_of_laser.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(255,255,255));
+            label_cd_of_laser.setPalette(palette);
         }
         if(laser.skillrecorder>=laser.cd)
         {
-            label_cd_of_laser.setText(QStringLiteral("玛卡巴卡射线:        ")+QString::number(100)+QString("%"));
+            label_cd_of_laser.setText(QStringLiteral("L  激光:    ")+QString::number(100)+QString("%"));
+            label_cd_of_laser.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(0,255,0));
+            label_cd_of_laser.setPalette(palette);
         }
     });
 
@@ -165,11 +218,19 @@ void MainScene::inittext()
     connect(timer_cd_of_missle, &QTimer::timeout,[=](){
         if(missle.skillrecorder<missle.cd)
         {
-            label_cd_of_missle.setText(QStringLiteral("FOF导弹全弹发射:      ")+QString::number(int(missle.skillrecorder*100/missle.cd))+QString("%"));
+            label_cd_of_missle.setText(QStringLiteral("U  导弹:    ")+QString::number(int(missle.skillrecorder*100/missle.cd))+QString("%"));
+            label_cd_of_missle.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(255,255,255));
+            label_cd_of_missle.setPalette(palette);
         }
         if(missle.skillrecorder>=missle.cd)
         {
-            label_cd_of_missle.setText(QStringLiteral("FOF导弹全弹发射:      ")+QString::number(100)+QString("%"));
+            label_cd_of_missle.setText(QStringLiteral("U  导弹:    ")+QString::number(100)+QString("%"));
+            label_cd_of_missle.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(0,255,0));
+            label_cd_of_missle.setPalette(palette);
         }
     });
 
@@ -178,11 +239,19 @@ void MainScene::inittext()
     connect(timer_cd_of_screenclear, &QTimer::timeout,[=](){
         if(screenclear.skillrecorder<screenclear.cd)
         {
-            label_cd_of_screenclear.setText(QStringLiteral("大慈大悲渡世人:       ")+QString::number(int(screenclear.skillrecorder*100/screenclear.cd))+QString("%"));
+            label_cd_of_screenclear.setText(QStringLiteral("K  清屏:    ")+QString::number(int(screenclear.skillrecorder*100/screenclear.cd))+QString("%"));
+            label_cd_of_screenclear.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(255,255,255));
+            label_cd_of_screenclear.setPalette(palette);
         }
         if(screenclear.skillrecorder>=screenclear.cd)
         {
-            label_cd_of_screenclear.setText(QStringLiteral("大慈大悲渡世人:       ")+QString::number(100)+QString("%"));
+            label_cd_of_screenclear.setText(QStringLiteral("K  清屏:    ")+QString::number(100)+QString("%"));
+            label_cd_of_screenclear.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(0,255,0));
+            label_cd_of_screenclear.setPalette(palette);
         }
     });
 
@@ -191,17 +260,25 @@ void MainScene::inittext()
     connect(timer_cd_of_shield, &QTimer::timeout,[=](){
         if(shield.skillrecorder<shield.cd)
         {
-            label_cd_of_shield.setText(QStringLiteral("用一次就失去无敌的屑:  ")+QString::number(int(shield.skillrecorder*100/shield.cd))+QString("%"));
+            label_cd_of_shield.setText(QStringLiteral("I  护盾:    ")+QString::number(int(shield.skillrecorder*100/shield.cd))+QString("%"));
+            label_cd_of_shield.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(255,255,255));
+            label_cd_of_shield.setPalette(palette);
         }
         if(shield.skillrecorder>=shield.cd)
         {
-            label_cd_of_shield.setText(QStringLiteral("用一次就失去无敌的屑:  ")+QString::number(100)+QString("%"));
+            label_cd_of_shield.setText(QStringLiteral("I  护盾:    ")+QString::number(100)+QString("%"));
+            label_cd_of_shield.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(0,255,0));
+            label_cd_of_shield.setPalette(palette);
         }
     });
 
 
     //文本设置
-    QFont font1("Consolas", 16);
+    QFont font1("Consolas", 14);
     QFont font_cd("Consolas", 12);
 
     label_value_of_life.setParent(this);
@@ -209,7 +286,14 @@ void MainScene::inittext()
     label_value_of_life.setFrameShape(QFrame::Panel);
     label_value_of_life.setFrameShadow(QFrame::Plain);
     label_value_of_life.move(620,20);
-    label_value_of_life.resize(200,80);
+    label_value_of_life.resize(160,80);
+
+    label_score.setParent(this);
+    label_score.setFont(font_cd);
+    label_score.setFrameShape(QFrame::Panel);
+    label_score.setFrameShadow(QFrame::Plain);
+    label_score.move(800,20);
+    label_score.resize(180,80);
 
     label_value_of_boss.setParent(this);
     label_value_of_boss.setFont(font_cd);
@@ -218,32 +302,39 @@ void MainScene::inittext()
     label_value_of_boss.move(620,110);
     label_value_of_boss.resize(300,80);
 
+    label_progress_of_boss.setParent(this);
+    label_progress_of_boss.setFont(font_cd);
+    label_progress_of_boss.setFrameShape(QFrame::Panel);
+    label_progress_of_boss.setFrameShadow(QFrame::Plain);
+    label_progress_of_boss.move(620,200);
+    label_progress_of_boss.resize(350,50);
+
     label_cd_of_laser.setParent(this);
     label_cd_of_laser.setFont(font_cd);
     label_cd_of_laser.setFrameShape(QFrame::Panel);
     label_cd_of_laser.setFrameShadow(QFrame::Plain);
-    label_cd_of_laser.move(620,300);
+    label_cd_of_laser.move(620,360);
     label_cd_of_laser.resize(350,60);
 
     label_cd_of_missle.setParent(this);
     label_cd_of_missle.setFont(font_cd);
     label_cd_of_missle.setFrameShape(QFrame::Panel);
     label_cd_of_missle.setFrameShadow(QFrame::Plain);
-    label_cd_of_missle.move(620,370);
+    label_cd_of_missle.move(620,430);
     label_cd_of_missle.resize(350,60);
 
     label_cd_of_screenclear.setParent(this);
     label_cd_of_screenclear.setFont(font_cd);
     label_cd_of_screenclear.setFrameShape(QFrame::Panel);
     label_cd_of_screenclear.setFrameShadow(QFrame::Plain);
-    label_cd_of_screenclear.move(620,440);
+    label_cd_of_screenclear.move(620,500);
     label_cd_of_screenclear.resize(350,60);
 
     label_cd_of_shield.setParent(this);
     label_cd_of_shield.setFont(font_cd);
     label_cd_of_shield.setFrameShape(QFrame::Panel);
     label_cd_of_shield.setFrameShadow(QFrame::Plain);
-    label_cd_of_shield.move(620,510);
+    label_cd_of_shield.move(620,570);
     label_cd_of_shield.resize(350,60);
 }
 
@@ -272,7 +363,7 @@ void MainScene::playGame()
             //更新游戏元素坐标
             updatePosition();
             //重新绘制图片
-            update();
+            update ();
             if (isgameover == false)
             {
                 //刷新技能
@@ -553,14 +644,6 @@ void MainScene::updatePosition()
     }
 
     //掉落物坐标计算
-    for(int i = 0 ; i< dropobjectnum;i++)
-    {
-        //更新坐标
-        if(dropobjects[i].free == false)
-        {
-           dropobjects[i].updatePosition();
-        }
-    }
     for(int i = 0 ; i< bloodbagnum;i++)
     {
         //更新坐标
@@ -569,6 +652,40 @@ void MainScene::updatePosition()
            bloodbags[i].updatePosition();
         }
     }
+
+    for(int i = 0 ; i< scdfreenum;i++)
+        {
+            //更新坐标
+            if(scdfrees[i].free == false)
+            {
+               scdfrees[i].updatePosition();
+            }
+        }
+
+        for(int i = 0 ; i< bcdfreenum;i++)
+        {
+            //更新坐标
+            if(bcdfrees[i].free == false)
+            {
+               bcdfrees[i].updatePosition();
+            }
+        }
+        for(int i = 0 ; i< coinnum;i++)
+        {
+            //更新坐标
+            if(coins[i].free == false)
+            {
+               coins[i].updatePosition();
+            }
+        }
+    for(int i = 0 ; i < coinnum;i++)
+        {
+            //敌机爆炸
+            if(coins[i].free == false)
+            {
+                coins[i].updateInfo();
+            }
+        }
 }
 
 void MainScene::paintEvent(QPaintEvent *event)
@@ -719,13 +836,6 @@ void MainScene::paintEvent(QPaintEvent *event)
     }
 
     //绘制掉落物
-        for(int i = 0 ; i< dropobjectnum;i++)
-        {
-            if(dropobjects[i].free == false)
-            {
-                painter.drawPixmap(dropobjects[i].X,dropobjects[i].Y,dropobjects[i].object);
-            }
-        }
         for(int i = 0 ; i< bloodbagnum;i++)
         {
             if(bloodbags[i].free == false)
@@ -733,46 +843,34 @@ void MainScene::paintEvent(QPaintEvent *event)
                 painter.drawPixmap(bloodbags[i].X,bloodbags[i].Y,bloodbags[i].object);
             }
         }
+        for(int i = 0 ; i< scdfreenum;i++)
+        {
+            if(scdfrees[i].free == false)
+            {
+                painter.drawPixmap(scdfrees[i].X,scdfrees[i].Y,scdfrees[i].object);
+            }
+        }
+        for(int i = 0 ; i< bcdfreenum;i++)
+        {
+            if(bcdfrees[i].free == false)
+            {
+                painter.drawPixmap(bcdfrees[i].X,bcdfrees[i].Y,bcdfrees[i].object);
+            }
+        }
+        for(int i = 0 ; i< coinnum;i++)
+        {
+            if(coins[i].free == false)
+            {
+                painter.drawPixmap(coins[i].X,coins[i].Y,coins[i].pixArr[coins[i].index]);
+            }
+        }
 }
 
 void MainScene::objectToScene()
 {
-    droprecorder++;
-    bloodbagrecorder++;
-
-    if (droprecorder > dropobjectinterval )
-    {
-        for(int i = 0 ; i< dropobjectnum;i++)
-        {
-            if(dropobjects[i].free)
-            {
-                //状态改为false
-                dropobjects[i].free = false;
-                //设置坐标
-                dropobjects[i].X = rand() % (GAME_WIDTH - dropobjects[i].rect.width());
-                if(dropobjects[i].X-75<0){
-                    dropobjects[i].widthl = 0;
-                    dropobjects[i].widthr = dropobjects[i].X +75;
-                }
-                else {
-                    dropobjects[i].widthl = dropobjects[i].X -75;
-                    dropobjects[i].widthr = dropobjects[i].X +75;
-                }
-                if(dropobjects[i].X+75>GAME_WIDTH){
-                    dropobjects[i].widthl = dropobjects[i].X -75;
-                    dropobjects[i].widthr = GAME_WIDTH;
-                }
-                else {
-                    dropobjects[i].widthl = dropobjects[i].X -75;
-                    dropobjects[i].widthr = dropobjects[i].X +75;
-                }
-                dropobjects[i].Y = -dropobjects[i].rect.height();
-                break;
-            }
-        }
-        droprecorder = 0;
-    }
-    if (bloodbagrecorder > bloodbaginterval )
+    objectrecorder++;
+    int odds=rand() % 8;
+    if (objectrecorder > objectinterval &&odds==0)
     {
         for(int i = 0 ; i< bloodbagnum;i++)
         {
@@ -782,15 +880,11 @@ void MainScene::objectToScene()
                 bloodbags[i].free = false;
                 //设置坐标
                 bloodbags[i].X = rand() % (GAME_WIDTH - bloodbags[i].rect.width());
-                if(bloodbags[i].X-75<0){
+                if(bloodbags[i].X-75<=0){
                     bloodbags[i].widthl = 0;
                     bloodbags[i].widthr = bloodbags[i].X +75;
                 }
-                else {
-                    bloodbags[i].widthl = bloodbags[i].X -75;
-                    bloodbags[i].widthr = bloodbags[i].X +75;
-                }
-                if(bloodbags[i].X+75>GAME_WIDTH){
+                else if(bloodbags[i].X+75>=GAME_WIDTH){
                     bloodbags[i].widthl = bloodbags[i].X -75;
                     bloodbags[i].widthr = GAME_WIDTH;
                 }
@@ -802,7 +896,106 @@ void MainScene::objectToScene()
                 break;
             }
         }
-        bloodbagrecorder = 0;
+        objectrecorder = 0;
+    }
+
+    if (objectrecorder > objectinterval&&(odds==1||odds==2))
+    {
+        for(int i = 0 ; i< scdfreenum;i++)
+        {
+            if(scdfrees[i].free)
+            {
+                //状态改为false
+                scdfrees[i].free = false;
+                //设置坐标
+                scdfrees[i].X = rand() % (GAME_WIDTH - scdfrees[i].rect.width());
+                if(scdfrees[i].X-75<0){
+                    scdfrees[i].widthl = 0;
+                    scdfrees[i].widthr = scdfrees[i].X +75;
+                }
+                else {
+                    scdfrees[i].widthl = scdfrees[i].X -75;
+                    scdfrees[i].widthr = scdfrees[i].X +75;
+                }
+                if(scdfrees[i].X+75>GAME_WIDTH){
+                    scdfrees[i].widthl = scdfrees[i].X -75;
+                    scdfrees[i].widthr = GAME_WIDTH;
+                }
+                else {
+                    scdfrees[i].widthl = scdfrees[i].X -75;
+                    scdfrees[i].widthr = scdfrees[i].X +75;
+                }
+                scdfrees[i].Y = -scdfrees[i].rect.height();
+                break;
+            }
+        }
+        objectrecorder = 0;
+    }
+
+    if (objectrecorder > objectinterval &&odds==3)
+    {
+        for(int i = 0 ; i< bcdfreenum;i++)
+        {
+            if(bcdfrees[i].free)
+            {
+                //状态改为false
+                bcdfrees[i].free = false;
+                //设置坐标
+                bcdfrees[i].X = rand() % (GAME_WIDTH - bcdfrees[i].rect.width());
+                if(bcdfrees[i].X-75<0){
+                    bcdfrees[i].widthl = 0;
+                    bcdfrees[i].widthr = bcdfrees[i].X +75;
+                }
+                else {
+                    bcdfrees[i].widthl = bcdfrees[i].X -75;
+                    bcdfrees[i].widthr = bcdfrees[i].X +75;
+                }
+                if(bcdfrees[i].X+75>GAME_WIDTH){
+                    bcdfrees[i].widthl = bcdfrees[i].X -75;
+                    bcdfrees[i].widthr = GAME_WIDTH;
+                }
+                else {
+                    bcdfrees[i].widthl = bcdfrees[i].X -75;
+                    bcdfrees[i].widthr = bcdfrees[i].X +75;
+                }
+                bcdfrees[i].Y = -bcdfrees[i].rect.height();
+                break;
+            }
+        }
+        objectrecorder = 0;
+    }
+
+    if (objectrecorder > objectinterval&&odds>3)
+    {
+        for(int i = 0 ; i< coinnum;i++)
+        {
+            if(coins[i].free)
+            {
+                //状态改为false
+                coins[i].free = false;
+                //设置坐标
+                coins[i].X = rand() % (GAME_WIDTH - coins[i].rect.width());
+                if(coins[i].X-75<0){
+                    coins[i].widthl = 0;
+                    coins[i].widthr = coins[i].X +75;
+                }
+                else {
+                    coins[i].widthl = coins[i].X -75;
+                    coins[i].widthr = coins[i].X +75;
+                }
+                if(coins[i].X+75>GAME_WIDTH){
+                    coins[i].widthl = coins[i].X -75;
+                    coins[i].widthr = GAME_WIDTH;
+                }
+                else {
+                    coins[i].widthl = coins[i].X -75;
+                    coins[i].widthr = coins[i].X +75;
+                }
+                coins[i].Y = -coins[i].rect.height();
+                break;
+            }
+        }
+        objectrecorder = 0;
     }
 }
 
@@ -1308,37 +1501,7 @@ void MainScene::collisionDetection()
     }
 
     //遍历所有非空闲的掉落物
-      for(int i = 0 ;i < dropobjectnum;i++)
-      {
-          if(dropobjects[i].free)
-          {
-              //空闲 跳转下一次循环
-              continue;
-          }
-
-          //判定与主机碰撞
-          if (dropobjects[i].rect.intersects(plane->rect))
-          {
-              dropobjects[i].free = true;
-          }
-      }
-
-      //遍历所有非空闲的掉落物
-      for(int i = 0 ;i < bloodbagnum;i++)
-      {
-          if(bloodbags[i].free)
-          {
-              //空闲 跳转下一次循环
-              continue;
-          }
-
-          //判定血包与主机碰撞
-          if (bloodbags[i].rect.intersects(plane->rect))
-          {
-              bloodbags[i].free = true;
-              plane->health++;
-          }
-      }
+    objectCollisionDetection();
 }
 
 void MainScene::bosscollisionDetection()
@@ -1503,36 +1666,78 @@ void MainScene::bosscollisionDetection()
     }
 
     //遍历所有非空闲的掉落物
-      for(int i = 0 ;i < dropobjectnum;i++)
-      {
-          if(dropobjects[i].free)
-          {
-              //空闲 跳转下一次循环
-              continue;
-          }
+    objectCollisionDetection();
+}
 
-          //判定与主机碰撞
-          if (dropobjects[i].rect.intersects(plane->rect))
-          {
-              dropobjects[i].free = true;
-          }
-      }
+void MainScene::objectCollisionDetection()  //掉落物碰撞检测
+{
+    //遍历所有非空闲的掉落物
+    for(int i = 0 ;i < bloodbagnum;i++)
+    {
+        if(bloodbags[i].free)
+        {
+            //空闲 跳转下一次循环
+            continue;
+        }
 
-      //遍历所有非空闲的掉落物
-      for(int i = 0 ;i < bloodbagnum;i++)
-      {
-          if(bloodbags[i].free)
-          {
-              //空闲 跳转下一次循环
-              continue;
-          }
+        //判定血包与主机碰撞
+        if (bloodbags[i].rect.intersects(plane->rect))
+        {
+            bloodbags[i].free = true;
+            plane->health++;
+        }
+    }
 
-          //判定血包与主机碰撞
-          if (bloodbags[i].rect.intersects(plane->rect))
-          {
-              bloodbags[i].free = true;
-              plane->health++;
-          }
-      }
+    for(int i = 0 ;i < scdfreenum;i++)
+    {
+        if(scdfrees[i].free)
+        {
+            //空闲 跳转下一次循环
+            continue;
+        }
+
+        //判定小CD与主机碰撞
+        if (scdfrees[i].rect.intersects(plane->rect))
+        {
+            scdfrees[i].free = true;
+            laser.skillrecorder = laser.cd;
+            missle.skillrecorder = missle.cd;
+        }
+    }
+
+    for(int i = 0 ;i < bcdfreenum;i++)
+    {
+        if(bcdfrees[i].free)
+        {
+            //空闲 跳转下一次循环
+            continue;
+        }
+
+        //判定大CD与主机碰撞
+        if (bcdfrees[i].rect.intersects(plane->rect))
+        {
+            bcdfrees[i].free = true;
+            screenclear.skillrecorder = screenclear.cd;
+            shield.skillrecorder = shield.cd;
+
+
+        }
+    }
+
+    for(int i = 0 ;i < coinnum;i++)
+    {
+        if(coins[i].free)
+        {
+            //空闲 跳转下一次循环
+            continue;
+        }
+
+        //判定大CD与主机碰撞
+        if (coins[i].rect.intersects(plane->rect))
+        {
+            coins[i].free = true;
+            data.coin += 10;
+        }
+    }
 }
 

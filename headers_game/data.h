@@ -14,9 +14,12 @@ class Data : public MyPlane
     friend class Missle;
 public:
     Data();
-
-//    Data& operator=(const Data &d);
-//    Data operator+=(const Data &d);
+    Data(int score, int coin, int destorycommonenemy, int destoryshootenemy, int destoryspeedenemy, int myplaneshoottime,
+         int crashtime, int beshottime, int destroyedbycommonenemy, int destroyedbyshootenemy, int destroyedbyspeedenemy,
+         int injury, int cure, int screencleartime, int lasertime, int missletime, int shieldtime, int screencleardestory,
+         int laserdestory, int missledestory, int shielddefense, int damageboss, int destroyedbyboss, int destoryboss);
+    Data& operator=(const Data &d);
+    void update(const Data &d);
 
 private:
     int score;    //得分

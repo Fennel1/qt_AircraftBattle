@@ -51,18 +51,49 @@ public:
     BloodBag(QString objectpath);
     void updatePosition();
     void setObjectPath(QString objectpath);
-private:
-    int bloodup;      //加血量
 };
 
+class BcdFree :public DropObject{
+public:
+    BcdFree();
+    BcdFree(QString objectpath);
+    void updatePosition();
+    void setObjectPath(QString objectpath);
+};
 
+class ScdFree :public DropObject{
+public:
+    ScdFree();
+    ScdFree(QString objectpath);
+    void updatePosition();
+    void setObjectPath(QString objectpath);
+};
 
+class Coin :public DropObject{
+    friend class MainScene;
+public:
+    Coin();
+    Coin(QString objectpath);
+    void updatePosition();
+    void setObjectPath(QString objectpath);
+    void updateInfo();
+    void setBombPath(QString path);
+protected:
+    //放爆炸资源数组
+    QVector<QPixmap> pixArr;
 
+    //爆炸状态
+    bool bombfree;
 
+    //爆炸切图的时间间隔
+    int recoder;
 
+    //爆炸时加载的图片下标
+    int index;
 
-
-
-
+    //爆炸参数
+    int bombmax;
+    int bombinterval;
+};
 
 #endif // DROPOBJECTS_H

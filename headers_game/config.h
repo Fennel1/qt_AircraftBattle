@@ -31,6 +31,11 @@
 #define SCREENCLEAR_PATH ":/images/screenclear.png"   //清屏资源图片
 #define DROPOBJECT_PATH ":/images/bullet_supply.png"  //掉落物资源图片
 #define BLOODBAG_PATH ":/images/bomb_supply.png"  //血包资源图片
+#define BCDFREE_PATH ":/images/bcd.png" //大CD刷新资源图片
+#define SCDFREE_PATH ":/images/scd.png" //小CD刷新资源图片
+#define BOSS_PATH ":/images/boss.png"   //boss资源图片
+#define COIN_ANIMAPATH ":/images/coin_%1.png"    //金币掉落物动态资源
+#define COIN_PATH ":/images/coin_1.png"   //金币掉落物静态资源
 
 #define BOSS_PATH ":/images/boss.png"   //boss资源图片
 

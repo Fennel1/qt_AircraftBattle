@@ -65,6 +65,16 @@
         <file>images/map.png</file>
         <file>images/bullet4.png</file>
         <file>images/bullet3.png</file>
+        <file>images/coin_1.png</file>
+        <file>images/coin_2.png</file>
+        <file>images/coin_3.png</file>
+        <file>images/coin_4.png</file>
+        <file>images/coin_5.png</file>
+        <file>images/coin_6.png</file>
+        <file>images/coin_7.png</file>
+        <file>images/coin_8.png</file>
+        <file>images/bcd.png</file>
+        <file>images/scd.png</file>
     </qresource>
     <qresource prefix="/image">
         <file>images/again.png</file>
