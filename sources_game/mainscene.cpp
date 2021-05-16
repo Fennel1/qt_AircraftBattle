@@ -5,9 +5,12 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <ctime>
-MainScene::MainScene(int difficulty, int model,QWidget *parent)
+MainScene::MainScene(int difficulty, int model, const Player &p, QWidget *parent)
     : QWidget(parent), difficulty(difficulty), model(model)
 {
+    //用户
+    player = new Player(p);
+
     //场景的初始化
     initScene();
 
@@ -725,7 +728,7 @@ void MainScene::paintEvent(QPaintEvent *event)
         QFont font1("Consolas", 35);
         QFont font2("Consolas", 20);
 
-        if (model == 0)     //正藏模式
+        if (model == 0)     //正常模式
         {
             painter.setFont(font1);
             if (plane->isdeath == false)
@@ -749,6 +752,7 @@ void MainScene::paintEvent(QPaintEvent *event)
         {
             painter.setFont(font1);
             painter.drawText(160, 300, "TRY AGAIN!");
+            painter.setFont(font2);
             painter.drawText(170, 400, QStringLiteral("得分:")+QString::number(data.score));
             painter.drawText(340, 400, QStringLiteral("金币:")+QString::number(data.coin + data.score/20));
             revive.setParent(this);

@@ -34,7 +34,7 @@ QTabBar::tab{height:60}</string>
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <property name="elideMode">
      <enum>Qt::ElideNone</enum>
@@ -131,72 +131,81 @@ QTabBar::tab{height:60}</string>
      <attribute name="title">
       <string>仓库</string>
      </attribute>
-     <widget class="QTabWidget" name="tabWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>850</width>
-        <height>800</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
-      </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="tab_6">
-       <attribute name="title">
-        <string>ALL</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_7">
-       <attribute name="title">
-        <string>消耗道具</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_10">
-       <attribute name="title">
-        <string>技能书</string>
-       </attribute>
-      </widget>
-     </widget>
     </widget>
-    <widget class="QWidget" name="tab_4">
+    <widget class="QWidget" name="tab_store">
      <attribute name="title">
       <string>商店</string>
      </attribute>
-     <widget class="QTabWidget" name="tabWidget_3">
+     <widget class="QPushButton" name="btn_skill_missle">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>850</width>
-        <height>800</height>
+        <x>60</x>
+        <y>30</y>
+        <width>181</width>
+        <height>61</height>
        </rect>
       </property>
-      <property name="currentIndex">
-       <number>0</number>
+      <property name="text">
+       <string>missle</string>
       </property>
-      <widget class="QWidget" name="tab_8">
-       <attribute name="title">
-        <string>ALL</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_9">
-       <attribute name="title">
-        <string>消耗道具</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_11">
-       <attribute name="title">
-        <string>技能书</string>
-       </attribute>
-      </widget>
+     </widget>
+     <widget class="QPushButton" name="btn_skill_laser">
+      <property name="geometry">
+       <rect>
+        <x>59</x>
+        <y>119</y>
+        <width>181</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>laser</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_skill_shield">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>210</y>
+        <width>181</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>shield</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_skill_screenclear">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>300</y>
+        <width>181</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>screenclear</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_value_of_coins">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>40</y>
+        <width>121</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab">
@@ -217,7 +226,7 @@ QTabBar::tab{height:60}</string>
      <x>0</x>
      <y>0</y>
      <width>720</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

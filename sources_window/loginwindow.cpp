@@ -17,9 +17,10 @@ loginWindow::loginWindow(QWidget *parent) : QWidget(parent)
 
     connect(&btn_confirm_login, &QPushButton::clicked, this, &loginWindow::change_window_to_mainwindow);
 
+    player = new Player();
+    win_mainwindow = new MainWindow(*player);
     //处理子界面信号
-    connect(&win_mainwindow, &MainWindow::signal_back, this, &loginWindow::deal_slot_from_mainwindow);
-
+    connect(&*win_mainwindow, &MainWindow::signal_back, this, &loginWindow::deal_slot_from_mainwindow);
 }
 
 void loginWindow::sendslot_back()
@@ -29,12 +30,12 @@ void loginWindow::sendslot_back()
 
 void loginWindow::change_window_to_mainwindow()
 {
-    win_mainwindow.show();
+    win_mainwindow->show();
     this->hide();
 }
 
 void loginWindow::deal_slot_from_mainwindow()
 {
-    win_mainwindow.hide();
+    win_mainwindow->hide();
     show();
 }

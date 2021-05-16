@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include "mainwindow.h"
+#include "player.h"
 
 class loginWindow : public QWidget
 {
@@ -21,7 +22,9 @@ private:
     QPushButton btn_back;
     QPushButton btn_confirm_login;
 
-    MainWindow win_mainwindow;
+    Player *player;
+
+    MainWindow *win_mainwindow;
 
 };
 

@@ -56,10 +56,13 @@ public:
     }
 };
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(const Player &p, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
-{
+{    
+    //初始化用户
+    player = new Player(p);
+
     ui->setupUi(this);
     ui->tabWidget->setTabPosition(QTabWidget::West);
     ui->tabWidget->tabBar()->setStyle(new CustomTabStyle);
@@ -108,7 +111,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btn_to_mainscene_clicked()
 {
-    MainScene* win_mainscene = new MainScene(0, 0);
+    MainScene* win_mainscene = new MainScene(0, 0, *player);
     win_mainscene->setWindowModality(Qt::ApplicationModal);
     win_mainscene->show();
 }

@@ -3,12 +3,20 @@
 #include <QPixmap>
 #include "headers_game/data.h"
 
+class MainScene;
+class MainWindow;
+class loginWindow;
+
 class Player
 {
+    friend class MainScene;
+    friend class MainWindow;
+    friend class loginWindow;
 public:
     Player();
     Player(QString id, QString password, Data mydata, int coins, int myplane_health, int myplane_speed, int myplane_bulletinterval,
            QString myplane_path, bool has_screenclear, bool has_laser, bool has_missle, bool has_shield, int revivetokens_num);
+    Player(const Player &p);
 protected:
     QString id;         //账户
     QString password;   //密码

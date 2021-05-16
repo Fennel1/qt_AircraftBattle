@@ -15,7 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(const Player &p, QWidget *parent = nullptr);
     ~MainWindow();
     void sendslot_back();
     void change_window_to_mainscene();
@@ -30,6 +30,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QPushButton btn_back;
+
+    Player *player;
 };
 
 #endif // MAINWINDOW_H

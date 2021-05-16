@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QPushButton>
+#include <QSound>
 #include "map.h"
 #include "myplane.h"
 #include "enemyplane.h"
@@ -14,7 +15,7 @@
 #include "skill.h"
 #include "headers_game/dropobjects.h"
 #include "boss.h"
-//#include "player.h"
+#include "player.h"
 
 class MainScene : public QWidget
 {
@@ -23,7 +24,7 @@ class MainScene : public QWidget
 public:
     QTimer Timer;
 
-    MainScene(int difficulty, int model, QWidget *parent = nullptr);
+    MainScene(int difficulty, int model, const Player &p, QWidget *parent = nullptr);
     ~MainScene();
     //初始化
     void initScene();
@@ -143,6 +144,15 @@ private:
     QRect settlement;
     QPushButton revive;
     QPushButton returnhome;
+
+    //音效
+    QSound *bgm1;
+    QSound *bgm2;
+    QSound *shoot;
+    QSound *bomb;
+
+    //用户
+    Player *player;
 };
 
 
