@@ -25,10 +25,12 @@ public:
 
     MainScene(int difficulty, int model, QWidget *parent = nullptr);
     ~MainScene();
+    //初始化
     void initScene();
     void initplane();
     void inittext();
     void initobject();
+    void initmenu();
     //启动游戏
     void playGame();
     //更新坐标
@@ -56,6 +58,10 @@ public:
 
     //刷新技能
     void updateSkill();
+
+    //按钮
+    void return_home();
+    void revive_plane();
 
 private:
     //敌机数组
@@ -132,6 +138,11 @@ private:
     int difficultyrecorder;     //无尽模式难度增长
     int difficultyinterval;
     bool isgameover;
+
+    //结算界面
+    QRect settlement;
+    QPushButton revive;
+    QPushButton returnhome;
 };
 
 

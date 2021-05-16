@@ -20,6 +20,8 @@ MainScene::MainScene(int difficulty, int model,QWidget *parent)
     //掉落物参数初始化
     initobject();
 
+    //界面组件初始化
+    initmenu();
 }
 
 MainScene::~MainScene()
@@ -92,7 +94,6 @@ void MainScene::initplane()
     difficultyinterval = 5000;
     difficultyrecorder = 0;
     isgameover = false;
-
 }
 
 void MainScene::initobject()
@@ -338,6 +339,20 @@ void MainScene::inittext()
     label_cd_of_shield.resize(350,60);
 }
 
+void MainScene::initmenu()
+{
+    settlement.setRect(100, 150, 400, 500);
+    revive.setText("复活");
+    revive.move(200, 500);
+    revive.resize(100, 50);
+    returnhome.setText("返回主菜单");
+    returnhome.move(350, 500);
+    returnhome.resize(100, 50);
+
+    connect(&revive, &QPushButton::clicked, this, &MainScene::revive_plane);
+    connect(&returnhome, &QPushButton::clicked, this, &MainScene::return_home);
+}
+
 void MainScene::playGame()
 {
     //启动定时器
@@ -473,30 +488,33 @@ void MainScene::updateSkill()
 
 void MainScene::updatePosition()
 {
-    if (model == 0)     //为正常模式才刷新BOSS
+    if (isgameover == false)
     {
-        //更新BOSS信息
-        if (boss.isanger == false && boss.health < 500)
+        if (model == 0)     //为正常模式才刷新BOSS
         {
-            boss.isanger = true;
+            //更新BOSS信息
+            if (boss.isanger == false && boss.health < 500)
+            {
+                boss.isanger = true;
+            }
+            if (boss.free == true)
+            {
+                bossrecorder++;
+            }
+            if (bossrecorder > bossinterval)
+            {
+                bossrecorder = 0;
+                boss.free = false;
+            }
         }
-        if (boss.free == true)
+        else    //无尽模式
         {
-            bossrecorder++;
-        }
-        if (bossrecorder > bossinterval)
-        {
-            bossrecorder = 0;
-            boss.free = false;
-        }
-    }
-    else    //无尽模式
-    {
-        difficultyrecorder++;
-        if (difficultyrecorder > difficultyinterval)
-        {
-            difficulty++;
-            difficultyrecorder = 0;
+            difficultyrecorder++;
+            if (difficultyrecorder > difficultyinterval)
+            {
+                difficulty++;
+                difficultyrecorder = 0;
+            }
         }
     }
 
@@ -696,6 +714,49 @@ void MainScene::paintEvent(QPaintEvent *event)
     painter.drawPixmap(0,map1.map1_posY , map1.map1);
     painter.drawPixmap(0,map1.map2_posY , map1.map2);
     painter.drawPixmap(GAME_WIDTH, 0, map2);
+
+    if (isgameover == true)
+    {
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(QColor(0,170,255, 100)); // 最后一项为透明度
+        painter.drawRoundRect(settlement);// 画圆角矩形
+        painter.setPen(QColor(0, 0, 0));
+
+        QFont font1("Consolas", 35);
+        QFont font2("Consolas", 20);
+
+        if (model == 0)     //正藏模式
+        {
+            painter.setFont(font1);
+            if (plane->isdeath == false)
+            {
+                painter.drawText(200, 300, "YOU WIN!");
+            }
+            else
+            {
+                 painter.drawText(160, 300, "TRY AGAIN!");
+                 revive.setParent(this);
+                 revive.show();
+
+            }
+            painter.setFont(font2);
+            painter.drawText(170, 400, QStringLiteral("得分:")+QString::number(data.score));
+            painter.drawText(340, 400, QStringLiteral("金币:")+QString::number(data.coin + data.score/20));
+            returnhome.setParent(this);
+            returnhome.show();
+        }
+        else        //无尽模式
+        {
+            painter.setFont(font1);
+            painter.drawText(160, 300, "TRY AGAIN!");
+            painter.drawText(170, 400, QStringLiteral("得分:")+QString::number(data.score));
+            painter.drawText(340, 400, QStringLiteral("金币:")+QString::number(data.coin + data.score/20));
+            revive.setParent(this);
+            returnhome.setParent(this);
+            revive.show();
+            returnhome.show();
+        }
+    }
 
     //绘制主机
     if (plane->isdeath == false)
@@ -1001,6 +1062,7 @@ void MainScene::objectToScene()
 
 void MainScene::mouseMoveEvent(QMouseEvent *event)
 {
+    if (isgameover) return;
     int x = event->x() - plane->rect.width()/2;      //鼠标位置 - 飞机矩形的一半
     int y = event->y() - plane->rect.height()/2;
 
@@ -1026,6 +1088,7 @@ void MainScene::mouseMoveEvent(QMouseEvent *event)
 
 void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判定 持续按住按键控制
 {
+    if (isgameover) return;
     //暂停
     if (event->key() == Qt::Key_Escape && !event->isAutoRepeat())
     {
@@ -1121,6 +1184,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
 
 void MainScene::keyReleaseEvent(QKeyEvent *event)       //键盘按键抬起判定 持续按住按键控制
 {
+    if (isgameover) return;
     if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
         plane->shootflag = false;
@@ -1266,6 +1330,7 @@ void MainScene::collisionDetection()
                     data.destroyedbycommonenemy++;   //被普通敌机击毁次数加一
                     plane->isdeath = true;
                     plane->bombfree = false;
+                    isgameover = true;
                 }
             }
             else
@@ -1337,6 +1402,7 @@ void MainScene::collisionDetection()
                         data.destroyedbyshootenemy++;   //被射击敌机击毁次数加一
                         plane->isdeath = true;
                         plane->bombfree = false;
+                        isgameover = true;
                     }
                 }
                 else
@@ -1388,6 +1454,7 @@ void MainScene::collisionDetection()
                     data.destroyedbyshootenemy++;   //被射击敌机击毁次数加一
                     plane->isdeath = true;
                     plane->bombfree = false;
+                    isgameover = true;
                 }
             }
             else
@@ -1466,6 +1533,7 @@ void MainScene::collisionDetection()
                     data.destroyedbyspeedenemy++;
                     plane->isdeath = true;
                     plane->bombfree = false;
+                    isgameover = true;
                 }
             }
             else
@@ -1521,6 +1589,7 @@ void MainScene::bosscollisionDetection()
                 plane->isdeath = true;
                 plane->bombfree = false;
                 data.destroyedbyboss++;
+                isgameover = true;
             }
         }
         else
@@ -1564,6 +1633,7 @@ void MainScene::bosscollisionDetection()
                         plane->isdeath = true;
                         plane->bombfree = false;
                         data.destroyedbyboss++;
+                        isgameover = true;
                     }
                 }
                 else
@@ -1604,6 +1674,7 @@ void MainScene::bosscollisionDetection()
                         plane->isdeath = true;
                         plane->bombfree = false;
                         data.destroyedbyboss++;
+                        isgameover = true;
                     }
                 }
                 else
@@ -1719,8 +1790,6 @@ void MainScene::objectCollisionDetection()  //掉落物碰撞检测
             bcdfrees[i].free = true;
             screenclear.skillrecorder = screenclear.cd;
             shield.skillrecorder = shield.cd;
-
-
         }
     }
 
@@ -1739,5 +1808,33 @@ void MainScene::objectCollisionDetection()  //掉落物碰撞检测
             data.coin += 10;
         }
     }
+}
+
+void MainScene::return_home()
+{
+    this->close();
+}
+
+void MainScene::revive_plane()
+{
+    plane->isdeath = false;
+    isgameover = false;
+    plane->health = 5;
+    plane->X = GAME_WIDTH / 2  - plane->Plane.width() / 2;
+    plane->Y = GAME_HEIGHT - plane->Plane.height();
+    plane->pressflag_w = false;
+    plane->pressflag_a = false;
+    plane->pressflag_s = false;
+    plane->pressflag_d = false;
+    plane->direction_w = 0;
+    plane->direction_a = 0;
+    plane->direction_s = 0;
+    plane->direction_d = 0;
+    plane->shootflag = false;
+
+    screenclear.shoot();
+
+    revive.close();
+    returnhome.close();
 }
 

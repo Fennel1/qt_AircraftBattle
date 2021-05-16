@@ -7,7 +7,7 @@ MyPlane::MyPlane() : Bomb()
     Plane.load(COMMONMYPLANE_PATH);
 
     //初始化坐标
-    X = GAME_WIDTH * 0.5 - Plane.width() * 0.5;
+    X = GAME_WIDTH / 2 - Plane.width() / 2;
     Y = GAME_HEIGHT - Plane.height();
 
     //初始化矩形框
@@ -46,7 +46,7 @@ MyPlane::MyPlane(QString planepath,QString bombPath) : Bomb(bombPath)
     Plane.load(planepath);
 
     //初始化坐标
-    X = GAME_WIDTH * 0.5 - Plane.width() * 0.5;
+    X = GAME_WIDTH / 2 - Plane.width() / 2;
     Y = GAME_HEIGHT - Plane.height();
 
     //初始化矩形框
