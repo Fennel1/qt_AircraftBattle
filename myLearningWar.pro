@@ -18,6 +18,8 @@ SOURCES += \
     sources_game/data.cpp \
     sources_game/dropobjects.cpp \
     sources_game/enemyplane.cpp \
+    sources_window/forgetpw.cpp \
+    sources_window/gamehelp.cpp \
     sources_window/gameover.cpp \
     sources_window/loginwindow.cpp \
     sources_game/mainscene.cpp \
@@ -26,7 +28,8 @@ SOURCES += \
     sources_game/myplane.cpp \
     sources_window/props.cpp \
     sources_game/skill.cpp \
-    sources_window/thehome.cpp\
+    sources_window/regwindow.cpp \
+    sources_window/thehome.cpp
 
 HEADERS += \
     headers_game/bomb.h \
@@ -36,6 +39,7 @@ HEADERS += \
     headers_game/data.h \
     headers_game/dropobjects.h \
     headers_game/enemyplane.h \
+    headers_window/gamehelp.h \
     headers_window/gameover.h \
     headers_window/loginwindow.h \
     headers_game/mainscene.h \
@@ -45,7 +49,9 @@ HEADERS += \
     headers_window/props.h \
     headers_game/skill.h \
     headers_window/thehome.h \
-    player.h
+    player.h \
+    headers_window/forgetpw.h \
+    headers_window/regwindow.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

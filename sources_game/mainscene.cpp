@@ -5,11 +5,11 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <ctime>
-MainScene::MainScene(int difficulty, int model, const Player &p, QWidget *parent)
+MainScene::MainScene(int difficulty, int model,Player *p, QWidget *parent)
     : QWidget(parent), difficulty(difficulty), model(model)
 {
     //用户
-    player = new Player(p);
+    player = p;
 
     //飞机参数初始化
     initplane();

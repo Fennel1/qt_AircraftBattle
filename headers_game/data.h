@@ -7,6 +7,8 @@ class MainScene;
 class Laser;
 class Missle;
 class loginWindow;
+class RegWindow;
+class ForgetPW;
 
 class Data : public MyPlane
 {
@@ -14,6 +16,8 @@ class Data : public MyPlane
     friend class Laser;
     friend class Missle;
     friend class loginWindow;
+    friend class RegWindow;
+    friend class ForgetPW;
 public:
     Data();
     Data(const Data & d);

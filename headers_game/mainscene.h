@@ -24,7 +24,7 @@ class MainScene : public QWidget
 public:
     QTimer Timer;
 
-    MainScene(int difficulty, int model, const Player &p, QWidget *parent = nullptr);
+    MainScene(int difficulty, int model, Player *p, QWidget *parent = nullptr);
     ~MainScene();
     //初始化
     void initScene();

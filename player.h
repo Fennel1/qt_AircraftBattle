@@ -6,21 +6,26 @@
 class MainScene;
 class MainWindow;
 class loginWindow;
+class RegWindow;
+class ForgetPW;
 
 class Player
 {
+    friend class RegWindow;
     friend class MainScene;
     friend class MainWindow;
     friend class loginWindow;
+    friend class ForgetPW;
 public:
     Player();
-    Player(QString id, QString password, Data mydata, int coins, int myplane_health, int myplane_speed, int myplane_bulletinterval,
+    Player(QString id, QString password, QString phone,Data mydata, int coins, int myplane_health, int myplane_speed, int myplane_bulletinterval,
            QString myplane_path, bool has_screenclear, bool has_laser, bool has_missle, bool has_shield, int revivetokens_num);
     Player(const Player &p);
+    Player& operator=(const Player &p);
 protected:
     QString id;         //账户
     QString password;   //密码
-
+    QString phone;
     Data mydata;    //数据
 
     int coins;  //金币
