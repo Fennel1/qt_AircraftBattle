@@ -26,7 +26,7 @@ SOURCES += \
     sources_game/myplane.cpp \
     sources_window/props.cpp \
     sources_game/skill.cpp \
-    sources_window/thehome.cpp
+    sources_window/thehome.cpp\
 
 HEADERS += \
     headers_game/bomb.h \
@@ -53,7 +53,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    image.qrc
+    image.qrc\
+    playerFile.dat\
 
 FORMS += \
     gameover.ui \

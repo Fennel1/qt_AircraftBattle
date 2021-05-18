@@ -11,9 +11,6 @@ MainScene::MainScene(int difficulty, int model, const Player &p, QWidget *parent
     //用户
     player = new Player(p);
 
-    //场景的初始化
-    initScene();
-
     //飞机参数初始化
     initplane();
 
@@ -25,6 +22,9 @@ MainScene::MainScene(int difficulty, int model, const Player &p, QWidget *parent
 
     //界面组件初始化
     initmenu();
+
+    //场景的初始化
+    initScene();
 }
 
 MainScene::~MainScene()
@@ -345,15 +345,24 @@ void MainScene::inittext()
 void MainScene::initmenu()
 {
     settlement.setRect(100, 150, 400, 500);
+
     revive.setText("复活");
     revive.move(200, 500);
     revive.resize(100, 50);
+
     returnhome.setText("返回主菜单");
     returnhome.move(350, 500);
     returnhome.resize(100, 50);
 
+    pause.setParent(this);
+    pause.setText("暂停");
+    pause.move(650, 700);
+    pause.resize(100, 50);
+
     connect(&revive, &QPushButton::clicked, this, &MainScene::revive_plane);
     connect(&returnhome, &QPushButton::clicked, this, &MainScene::return_home);
+    connect(&pause, &QPushButton::clicked, this, &MainScene::game_pause);
+
 }
 
 void MainScene::playGame()
@@ -1096,14 +1105,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
     //暂停
     if (event->key() == Qt::Key_Escape && !event->isAutoRepeat())
     {
-        if (ispause == false)
-        {
-            ispause = true;
-        }
-        else
-        {
-            ispause = false;
-        }
+        game_pause();
     }
 
     //使用技能
@@ -1840,5 +1842,17 @@ void MainScene::revive_plane()
 
     revive.close();
     returnhome.close();
+}
+
+void MainScene::game_pause()
+{
+    if (ispause == false)
+    {
+        ispause = true;
+    }
+    else
+    {
+        ispause = false;
+    }
 }
 

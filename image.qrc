@@ -75,6 +75,7 @@
         <file>images/coin_8.png</file>
         <file>images/bcd.png</file>
         <file>images/scd.png</file>
+        <file>images/pause.png</file>
     </qresource>
     <qresource prefix="/image">
         <file>images/again.png</file>

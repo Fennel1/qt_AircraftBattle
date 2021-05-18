@@ -9,5 +9,8 @@ int main(int argc, char *argv[])
     theHome w;    //界面
 //    MainScene w(1, 5);    //游戏
     w.show();
+
     return a.exec();
 }
+
+

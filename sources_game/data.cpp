@@ -48,6 +48,52 @@ Data::Data()
     //道具
 }
 
+Data::Data(const Data &d)
+{
+    score = d.score;    //得分
+
+    coin = d.coin;    //金币
+
+    //游戏时长
+
+    //击毁敌机数
+    destorycommonenemy = d.destorycommonenemy;
+    destoryshootenemy = d.destoryshootenemy;
+    destoryspeedenemy = d.destoryspeedenemy;
+
+    //发射子弹数
+    myplaneshoottime = d.myplaneshoottime;
+
+    crashtime = d.crashtime;    //与敌机碰撞次数
+    beshottime = d.beshottime;    //被敌机子弹击中次数
+
+    //主机死亡
+    destroyedbycommonenemy = d.destroyedbycommonenemy;    //被普通敌机击毁次数
+    destroyedbyshootenemy = d.destroyedbyshootenemy;    //被射击敌机击毁次数
+    destroyedbyspeedenemy = d.destroyedbyspeedenemy;      //被速度敌机击毁次数
+
+    injury = d.injury;    //受到总伤害
+    cure = d.cure;   //恢复总血量
+
+    //技能
+    //使用次数
+    screencleartime = d.screencleartime;
+    lasertime = d.lasertime;
+    missletime = d.missletime;
+    shieldtime = d.shieldtime;
+
+    //技能效果
+    screencleardestory = d.screencleardestory;
+    laserdestory = d.laserdestory;
+    missledestory = d.missledestory;
+    shielddefense = d.shielddefense;
+
+    //BOSS
+    damageboss = d.damageboss;     //对BOSS造成伤害
+    destroyedbyboss = d.destroyedbyboss;    //被BOSS击毁次数
+    destoryboss = d.destoryboss;     //击毁BOSS次数
+}
+
 Data::Data(int score, int coin, int destorycommonenemy, int destoryshootenemy, int destoryspeedenemy, int myplaneshoottime,
            int crashtime, int beshottime, int destroyedbycommonenemy, int destroyedbyshootenemy, int destroyedbyspeedenemy,
            int injury, int cure, int screencleartime, int lasertime, int missletime, int shieldtime, int screencleardestory,

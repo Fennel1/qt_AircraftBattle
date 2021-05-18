@@ -2,9 +2,13 @@
 #define LOGINWINDOW_H
 
 #include <QWidget>
+#include <QDebug>
 #include <QPushButton>
+#include <iostream>
+#include <QFile>
 #include "mainwindow.h"
 #include "player.h"
+using namespace std;
 
 class loginWindow : public QWidget
 {

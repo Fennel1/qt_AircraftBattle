@@ -6,14 +6,17 @@
 class MainScene;
 class Laser;
 class Missle;
+class loginWindow;
 
 class Data : public MyPlane
 {
     friend class MainScene;
     friend class Laser;
     friend class Missle;
+    friend class loginWindow;
 public:
     Data();
+    Data(const Data & d);
     Data(int score, int coin, int destorycommonenemy, int destoryshootenemy, int destoryspeedenemy, int myplaneshoottime,
          int crashtime, int beshottime, int destroyedbycommonenemy, int destroyedbyshootenemy, int destroyedbyspeedenemy,
          int injury, int cure, int screencleartime, int lasertime, int missletime, int shieldtime, int screencleardestory,

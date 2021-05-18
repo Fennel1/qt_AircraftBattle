@@ -63,6 +63,7 @@ public:
     //按钮
     void return_home();
     void revive_plane();
+    void game_pause();
 
 private:
     //敌机数组
@@ -144,6 +145,7 @@ private:
     QRect settlement;
     QPushButton revive;
     QPushButton returnhome;
+    QPushButton pause;
 
     //音效
     QSound *bgm1;
