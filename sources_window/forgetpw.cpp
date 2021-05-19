@@ -177,6 +177,8 @@ void ForgetPW::changePW()
                    player_list[i].myplane_path << player_list[i].has_screenclear << player_list[i].has_laser << player_list[i].has_missle << player_list[i].has_shield << player_list[i].revivetokens_num;
         }
         playerFile.close();
+        QMessageBox::warning(this, tr("成功！"),tr("密码已修改！"),QMessageBox::Yes);
+        sendslot_back();
         return;
     }
 
