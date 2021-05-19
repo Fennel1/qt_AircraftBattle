@@ -99,7 +99,7 @@ void Laser::use()
 }
 
 void Laser::shoot(int laserx, int lasery, int commonenemynum, int shootenemynum, int speedenemynum,
-                CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Boss &boss, Data &data, bool &isgameover)
+                  CommonEnemyPlane *commonenemys, ShootEnemyPlane *shootenemys, SpeedEnemyPlane *speedenemys, Boss &boss, Data &data, bool &isgameover)
 {
     rect.setWidth(pixArr[index].width());
     rect.setHeight(pixArr[index].height());

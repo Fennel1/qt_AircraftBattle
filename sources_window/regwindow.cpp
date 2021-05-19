@@ -82,9 +82,9 @@ void RegWindow::reg()
     //文件设置
     QFile playerFile(PLAYERFILE_PATH);
     QDataStream txt(&playerFile);
-//    playerFile.open(QIODevice::WriteOnly);
-//    txt << 0;
-//    playerFile.close();
+    //    playerFile.open(QIODevice::WriteOnly);
+    //    txt << 0;
+    //    playerFile.close();
     playerFile.open(QIODevice::ReadOnly);
     int player_num;
     txt >> player_num;
@@ -168,11 +168,11 @@ void RegWindow::reg()
                     myplane_path >> has_screenclear >> has_laser >> has_missle >> has_shield >> revivetokens_num;
             qDebug() << player_num << id << password  << has_laser << endl;
             Data mydata(score, coin,destorycommonenemy, destoryshootenemy,  destoryspeedenemy,  myplaneshoottime,
-                             crashtime,  beshottime,  destroyedbycommonenemy,  destroyedbyshootenemy,  destroyedbyspeedenemy,
-                             injury,  cure,  screencleartime,  lasertime,  missletime,  shieldtime,  screencleardestory,
-                             laserdestory,  missledestory,  shielddefense,  damageboss,  destroyedbyboss,  destoryboss);
+                        crashtime,  beshottime,  destroyedbycommonenemy,  destroyedbyshootenemy,  destroyedbyspeedenemy,
+                        injury,  cure,  screencleartime,  lasertime,  missletime,  shieldtime,  screencleardestory,
+                        laserdestory,  missledestory,  shielddefense,  damageboss,  destroyedbyboss,  destoryboss);
             player_list[i] = Player(id,  password, phone , mydata,  coins,  myplane_health,  myplane_speed,  myplane_bulletinterval,
-                                        myplane_path,  has_screenclear,  has_laser,  has_missle,  has_shield,  revivetokens_num);
+                                    myplane_path,  has_screenclear,  has_laser,  has_missle,  has_shield,  revivetokens_num);
             if(id==userNameLEd->text())
             {
                 isreg = true;

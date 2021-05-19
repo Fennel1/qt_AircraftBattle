@@ -156,11 +156,11 @@ void ForgetPW::changePW()
         }
 
         Data mydata(score, coin,destorycommonenemy, destoryshootenemy,  destoryspeedenemy,  myplaneshoottime,
-                         crashtime,  beshottime,  destroyedbycommonenemy,  destroyedbyshootenemy,  destroyedbyspeedenemy,
-                         injury,  cure,  screencleartime,  lasertime,  missletime,  shieldtime,  screencleardestory,
-                         laserdestory,  missledestory,  shielddefense,  damageboss,  destroyedbyboss,  destoryboss);
+                    crashtime,  beshottime,  destroyedbycommonenemy,  destroyedbyshootenemy,  destroyedbyspeedenemy,
+                    injury,  cure,  screencleartime,  lasertime,  missletime,  shieldtime,  screencleardestory,
+                    laserdestory,  missledestory,  shielddefense,  damageboss,  destroyedbyboss,  destoryboss);
         player_list[i] = Player(id,  password, phone , mydata,  coins,  myplane_health,  myplane_speed,  myplane_bulletinterval,
-                                    myplane_path,  has_screenclear,  has_laser,  has_missle,  has_shield,  revivetokens_num);
+                                myplane_path,  has_screenclear,  has_laser,  has_missle,  has_shield,  revivetokens_num);
     }
     playerFile.close();
     if(flag)
@@ -177,6 +177,8 @@ void ForgetPW::changePW()
                    player_list[i].myplane_path << player_list[i].has_screenclear << player_list[i].has_laser << player_list[i].has_missle << player_list[i].has_shield << player_list[i].revivetokens_num;
         }
         playerFile.close();
+        QMessageBox::warning(this, tr("成功！"),tr("密码已修改！"),QMessageBox::Yes);
+        sendslot_back();
         return;
     }
 

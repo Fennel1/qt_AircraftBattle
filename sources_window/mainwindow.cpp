@@ -13,7 +13,7 @@ class CustomTabStyle : public QProxyStyle
 {
 public:
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,
-        const QSize &size, const QWidget *widget) const
+                           const QSize &size, const QWidget *widget) const
     {
         QSize s = QProxyStyle::sizeFromContents(type, option, size, widget);
         if (type == QStyle::CT_TabBarTab) {
@@ -255,8 +255,8 @@ MainWindow::MainWindow(Player *p, QWidget *parent) :
 
 #if 0
     ui->tabWidget->setStyleSheet("QTabWidget::pane{ \
-            border-left: 1px solid #eeeeee;\
-        }");
+                                 border-left: 1px solid #eeeeee;\
+}");
 #endif
 }
 
@@ -275,7 +275,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     if(is_laser == true||is_missle == true||is_reborn == true||is_screenclear == true||is_shield == true)
     {
-//        painter.begin(this);
+        //        painter.begin(this);
         painter.setPen(Qt::NoPen);
         painter.setBrush(QColor(0,170,255,100));
         painter.drawRoundRect(rect_ok_and_cancel);

@@ -148,11 +148,11 @@ void loginWindow::login()
                 delete player;
             }
             Data mydata(score, coin,destorycommonenemy, destoryshootenemy,  destoryspeedenemy,  myplaneshoottime,
-                             crashtime,  beshottime,  destroyedbycommonenemy,  destroyedbyshootenemy,  destroyedbyspeedenemy,
-                             injury,  cure,  screencleartime,  lasertime,  missletime,  shieldtime,  screencleardestory,
-                             laserdestory,  missledestory,  shielddefense,  damageboss,  destroyedbyboss,  destoryboss);
+                        crashtime,  beshottime,  destroyedbycommonenemy,  destroyedbyshootenemy,  destroyedbyspeedenemy,
+                        injury,  cure,  screencleartime,  lasertime,  missletime,  shieldtime,  screencleardestory,
+                        laserdestory,  missledestory,  shielddefense,  damageboss,  destroyedbyboss,  destoryboss);
             player = new Player(id,  password, phone , mydata,  coins,  myplane_health,  myplane_speed,  myplane_bulletinterval,
-                           myplane_path,  has_screenclear,  has_laser,  has_missle,  has_shield,  revivetokens_num);
+                                myplane_path,  has_screenclear,  has_laser,  has_missle,  has_shield,  revivetokens_num);
             mainWindow->show();
             this->hide();
             playerFile.close();

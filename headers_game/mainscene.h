@@ -16,6 +16,7 @@
 #include "headers_game/dropobjects.h"
 #include "boss.h"
 #include "player.h"
+#include "gamerecord.h"
 
 class MainScene : public QWidget
 {
@@ -106,20 +107,20 @@ private:
     Shield shield;      //护盾
 
     //掉落物数组
-      BloodBag *bloodbags;
-      BcdFree *bcdfrees;
-      ScdFree *scdfrees;
-      Coin *coins;
+    BloodBag *bloodbags;
+    BcdFree *bcdfrees;
+    ScdFree *scdfrees;
+    Coin *coins;
 
-      //掉落物出场间隔
-      int objectrecorder;
-      int objectinterval;
+    //掉落物出场间隔
+    int objectrecorder;
+    int objectinterval;
 
-      //掉落物最大数量
-      int bloodbagnum;
-      int scdfreenum;
-      int bcdfreenum;
-      int coinnum;
+    //掉落物最大数量
+    int bloodbagnum;
+    int scdfreenum;
+    int bcdfreenum;
+    int coinnum;
 
     //游戏文本信息
     QLabel label_value_of_life;//飞机生命值

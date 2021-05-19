@@ -93,7 +93,7 @@ void MyPlane::shoot()
     //判断如果记录数字 未达到发射间隔，直接return
     if(recorder < bulletinterval)
     {
-       return;
+        return;
     }
     //到达发射时间处理
     //重置发射时间间隔记录

@@ -11,7 +11,7 @@ Bomb::Bomb()
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(BOMB_COMMONENEMY_PATH).arg(i);
-         pixArr.push_back(QPixmap(str));
+        pixArr.push_back(QPixmap(str));
     }
 
 
@@ -36,7 +36,7 @@ Bomb::Bomb(QString path)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(path).arg(i);
-         pixArr.push_back(QPixmap(str));
+        pixArr.push_back(QPixmap(str));
     }
 
 
@@ -85,6 +85,6 @@ void Bomb::setBombPath(QString path)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(path).arg(i);
-         pixArr.push_back(QPixmap(str));
+        pixArr.push_back(QPixmap(str));
     }
 }

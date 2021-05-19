@@ -160,40 +160,40 @@ void MainScene::inittext()
     });
 
     QTimer* timer_value_of_boss = new QTimer;
-        timer_value_of_boss->start(500);
-        connect(timer_value_of_boss,&QTimer::timeout,[=](){
-            if(boss.health>0)
-            {
-                label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(boss.health));
-            }
-            else
-            {
-                label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(0));
-            }
+    timer_value_of_boss->start(500);
+    connect(timer_value_of_boss,&QTimer::timeout,[=](){
+        if(boss.health>0)
+        {
+            label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(boss.health));
+        }
+        else
+        {
+            label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(0));
+        }
     });
 
     QTimer* timer_score = new QTimer;
-        timer_score->start(500);
-        connect(timer_score,&QTimer::timeout,[=](){
-            label_score.setText(QStringLiteral("得分:")+QString::number(data.score));
+    timer_score->start(500);
+    connect(timer_score,&QTimer::timeout,[=](){
+        label_score.setText(QStringLiteral("得分:")+QString::number(data.score));
     });
 
     QTimer* timer_progress_of_boss = new QTimer;
-        timer_progress_of_boss->start(500);
-        connect(timer_progress_of_boss,&QTimer::timeout,[=](){
-            if(bossrecorder*100/bossinterval<99)
-            {
-                label_progress_of_boss.setText(QStringLiteral("boss出现进度:")+QString::number(bossrecorder*100/bossinterval)+QString("%"));
-            }
-            else
-            {
-                timer_progress_of_boss->stop();
-                label_progress_of_boss.setAutoFillBackground(true);
-                QPalette palette;
-                palette.setColor(QPalette::Background, QColor(255,0,0));
-                label_progress_of_boss.setPalette(palette);
-                label_progress_of_boss.setText(QStringLiteral("boss已出现！"));
-            }
+    timer_progress_of_boss->start(500);
+    connect(timer_progress_of_boss,&QTimer::timeout,[=](){
+        if(bossrecorder*100/bossinterval<99)
+        {
+            label_progress_of_boss.setText(QStringLiteral("boss出现进度:")+QString::number(bossrecorder*100/bossinterval)+QString("%"));
+        }
+        else
+        {
+            timer_progress_of_boss->stop();
+            label_progress_of_boss.setAutoFillBackground(true);
+            QPalette palette;
+            palette.setColor(QPalette::Background, QColor(255,0,0));
+            label_progress_of_boss.setPalette(palette);
+            label_progress_of_boss.setText(QStringLiteral("boss已出现！"));
+        }
     });
 
     QTimer* timer_cd_of_laser = new QTimer;
@@ -552,7 +552,7 @@ void MainScene::updatePosition()
             //非空闲敌机 更新坐标
             if(commonenemys[i].free == false)
             {
-               commonenemys[i].updatePosition();
+                commonenemys[i].updatePosition();
             }
         }
         for(int i = 0 ; i< shootenemynum;i++)
@@ -560,8 +560,8 @@ void MainScene::updatePosition()
             //非空闲敌机 更新坐标
             if(shootenemys[i].free == false)
             {
-               shootenemys[i].updatePosition();
-               shootenemys[i].shoot();
+                shootenemys[i].updatePosition();
+                shootenemys[i].shoot();
             }
             //更新敌机子弹
             for(int j=0; j < BULLET_NUM; j++)
@@ -577,7 +577,7 @@ void MainScene::updatePosition()
             //非空闲敌机 更新坐标
             if(speedenemys[i].free == false)
             {
-               speedenemys[i].updatePosition();
+                speedenemys[i].updatePosition();
             }
         }
 
@@ -679,43 +679,43 @@ void MainScene::updatePosition()
         //更新坐标
         if(bloodbags[i].free == false)
         {
-           bloodbags[i].updatePosition();
+            bloodbags[i].updatePosition();
         }
     }
 
     for(int i = 0 ; i< scdfreenum;i++)
+    {
+        //更新坐标
+        if(scdfrees[i].free == false)
         {
-            //更新坐标
-            if(scdfrees[i].free == false)
-            {
-               scdfrees[i].updatePosition();
-            }
+            scdfrees[i].updatePosition();
         }
+    }
 
-        for(int i = 0 ; i< bcdfreenum;i++)
+    for(int i = 0 ; i< bcdfreenum;i++)
+    {
+        //更新坐标
+        if(bcdfrees[i].free == false)
         {
-            //更新坐标
-            if(bcdfrees[i].free == false)
-            {
-               bcdfrees[i].updatePosition();
-            }
+            bcdfrees[i].updatePosition();
         }
-        for(int i = 0 ; i< coinnum;i++)
+    }
+    for(int i = 0 ; i< coinnum;i++)
+    {
+        //更新坐标
+        if(coins[i].free == false)
         {
-            //更新坐标
-            if(coins[i].free == false)
-            {
-               coins[i].updatePosition();
-            }
+            coins[i].updatePosition();
         }
+    }
     for(int i = 0 ; i < coinnum;i++)
+    {
+        //敌机爆炸
+        if(coins[i].free == false)
         {
-            //敌机爆炸
-            if(coins[i].free == false)
-            {
-                coins[i].updateInfo();
-            }
+            coins[i].updateInfo();
         }
+    }
 }
 
 void MainScene::paintEvent(QPaintEvent *event)
@@ -746,9 +746,9 @@ void MainScene::paintEvent(QPaintEvent *event)
             }
             else
             {
-                 painter.drawText(160, 300, "TRY AGAIN!");
-                 revive.setParent(this);
-                 revive.show();
+                painter.drawText(160, 300, "TRY AGAIN!");
+                revive.setParent(this);
+                revive.show();
 
             }
             painter.setFont(font2);
@@ -809,13 +809,13 @@ void MainScene::paintEvent(QPaintEvent *event)
             }
             //绘制敌机子弹
             for(int j = 0 ;j < BULLET_NUM;j++)
+            {
+                //如果子弹状态为非空闲，计算发射位置
+                if(!shootenemys[i].bullets[j].free)
                 {
-                    //如果子弹状态为非空闲，计算发射位置
-                    if(!shootenemys[i].bullets[j].free)
-                    {
-                        painter.drawPixmap(shootenemys[i].bullets[j].X,shootenemys[i].bullets[j].Y,shootenemys[i].bullets[j].bullet);
-                    }
+                    painter.drawPixmap(shootenemys[i].bullets[j].X,shootenemys[i].bullets[j].Y,shootenemys[i].bullets[j].bullet);
                 }
+            }
         }
         for (int i=0; i<speedenemynum; i++)
         {
@@ -910,34 +910,34 @@ void MainScene::paintEvent(QPaintEvent *event)
     }
 
     //绘制掉落物
-        for(int i = 0 ; i< bloodbagnum;i++)
+    for(int i = 0 ; i< bloodbagnum;i++)
+    {
+        if(bloodbags[i].free == false)
         {
-            if(bloodbags[i].free == false)
-            {
-                painter.drawPixmap(bloodbags[i].X,bloodbags[i].Y,bloodbags[i].object);
-            }
+            painter.drawPixmap(bloodbags[i].X,bloodbags[i].Y,bloodbags[i].object);
         }
-        for(int i = 0 ; i< scdfreenum;i++)
+    }
+    for(int i = 0 ; i< scdfreenum;i++)
+    {
+        if(scdfrees[i].free == false)
         {
-            if(scdfrees[i].free == false)
-            {
-                painter.drawPixmap(scdfrees[i].X,scdfrees[i].Y,scdfrees[i].object);
-            }
+            painter.drawPixmap(scdfrees[i].X,scdfrees[i].Y,scdfrees[i].object);
         }
-        for(int i = 0 ; i< bcdfreenum;i++)
+    }
+    for(int i = 0 ; i< bcdfreenum;i++)
+    {
+        if(bcdfrees[i].free == false)
         {
-            if(bcdfrees[i].free == false)
-            {
-                painter.drawPixmap(bcdfrees[i].X,bcdfrees[i].Y,bcdfrees[i].object);
-            }
+            painter.drawPixmap(bcdfrees[i].X,bcdfrees[i].Y,bcdfrees[i].object);
         }
-        for(int i = 0 ; i< coinnum;i++)
+    }
+    for(int i = 0 ; i< coinnum;i++)
+    {
+        if(coins[i].free == false)
         {
-            if(coins[i].free == false)
-            {
-                painter.drawPixmap(coins[i].X,coins[i].Y,coins[i].pixArr[coins[i].index]);
-            }
+            painter.drawPixmap(coins[i].X,coins[i].Y,coins[i].pixArr[coins[i].index]);
         }
+    }
 }
 
 void MainScene::objectToScene()
@@ -1109,7 +1109,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
     }
 
     //使用技能
-    if (event->key() == Qt::Key_K && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_K && !event->isAutoRepeat() && player->has_screenclear)
     {
         if (screenclear.free == true)
         {
@@ -1118,7 +1118,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
             data.screencleartime++;
         }
     }
-    if (event->key() == Qt::Key_L && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_L && !event->isAutoRepeat() && player->has_laser)
     {
         if (laser.free == true)
         {
@@ -1127,7 +1127,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
             data.lasertime++;
         }
     }
-    if (event->key() == Qt::Key_U && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_U && !event->isAutoRepeat() && player->has_missle)
     {
         if (missle.free == true)
         {
@@ -1136,7 +1136,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
             data.missletime++;
         }
     }
-    if (event->key() == Qt::Key_I && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_I && !event->isAutoRepeat() && player->has_shield)
     {
         if (shield.free == true)
         {
@@ -1165,7 +1165,7 @@ void MainScene::keyPressEvent(QKeyEvent *event)         //键盘按键按下判�
     {
         if(!plane->pressflag_s)
         {
-           plane->direction_s = 1;
+            plane->direction_s = 1;
         }
         plane->pressflag_s = true;
     }
@@ -1818,30 +1818,148 @@ void MainScene::objectCollisionDetection()  //掉落物碰撞检测
 
 void MainScene::return_home()
 {
+    //更新数据
+    data.coin +=  data.score/20;
+    player->mydata.update(data);
+    player->coins += data.coin;
+
+    //储存记录
+    if (model == 0)     //正常模式
+    {
+        CommonRecord *record = new CommonRecord(player->id, data.score, data.coin);
+        record->update();
+
+    }
+    else        //无尽模式
+    {
+        EndlessRecord * record = new EndlessRecord(player->id, data.score, data.coin, difficulty);
+        record->update();
+    }
+
+    //更新玩家数据文件
+    QFile playerFile(PLAYERFILE_PATH);
+    QDataStream txt(&playerFile);
+    playerFile.open(QIODevice::ReadOnly);
+    int player_num;
+    txt >> player_num;
+    playerFile.close();
+    Player player_list[player_num];
+    //导出数据
+    QString id;         //账户
+    QString password;   //密码
+    QString phone;
+    int coins;  //金币
+    //游戏参数
+    int myplane_health;           //生命值
+    int myplane_speed;            //速度
+    int myplane_bulletinterval;   //射速
+    QString myplane_path;           //皮肤
+    //技能
+    bool has_screenclear;
+    bool has_laser;
+    bool has_missle;
+    bool has_shield;
+    //道具
+    int revivetokens_num;        //复活币
+
+    int score;    //得分
+    int coin;    //金币
+    //击毁敌机数
+    int destorycommonenemy;
+    int destoryshootenemy;
+    int destoryspeedenemy;
+    //发射子弹数
+    int myplaneshoottime;
+    int crashtime;    //与敌机碰撞次数
+    int beshottime;    //被敌机子弹击中次数
+    //主机死亡
+    int destroyedbycommonenemy;    //被普通敌机击毁次数
+    int destroyedbyshootenemy;    //被射击敌机击毁次数
+    int destroyedbyspeedenemy;      //被速度敌机击毁次数
+    int injury;    //受到总伤害
+    int cure;   //恢复总血量
+    //技能
+    //使用次数
+    int screencleartime;
+    int lasertime;
+    int missletime;
+    int shieldtime;
+    //技能效果
+    int screencleardestory;
+    int laserdestory;
+    int missledestory;
+    int shielddefense;
+    //BOSS
+    int damageboss;     //对BOSS造成伤害
+    int destroyedbyboss;    //被BOSS击毁次数
+    int destoryboss;     //击毁BOSS次数
+
+    playerFile.open(QFile::ReadOnly);
+    for(int i=0;i<player_num;i++){
+        //数据从文件导出
+        txt >> player_num >>id >> password  >> phone >> score >> coin >> destorycommonenemy >> destoryshootenemy >> destoryspeedenemy >> myplaneshoottime >>
+                crashtime >> beshottime >> destroyedbycommonenemy >> destroyedbyshootenemy >> destroyedbyspeedenemy >> injury >> cure >>
+                screencleartime >> lasertime >> missletime >> shieldtime >> screencleardestory >> laserdestory >> missledestory >>
+                shielddefense >> damageboss >> destroyedbyboss >> destoryboss >> coins >> myplane_health >> myplane_speed >> myplane_bulletinterval >>
+                myplane_path >> has_screenclear >> has_laser >> has_missle >> has_shield >> revivetokens_num;
+        qDebug() << player_num << id << password  << has_laser << endl;
+        Data mydata(score, coin,destorycommonenemy, destoryshootenemy,  destoryspeedenemy,  myplaneshoottime,
+                    crashtime,  beshottime,  destroyedbycommonenemy,  destroyedbyshootenemy,  destroyedbyspeedenemy,
+                    injury,  cure,  screencleartime,  lasertime,  missletime,  shieldtime,  screencleardestory,
+                    laserdestory,  missledestory,  shielddefense,  damageboss,  destroyedbyboss,  destoryboss);
+        player_list[i] = Player(id,  password, phone , mydata,  coins,  myplane_health,  myplane_speed,  myplane_bulletinterval,
+                                myplane_path,  has_screenclear,  has_laser,  has_missle,  has_shield,  revivetokens_num);
+    }
+    playerFile.close();
+    playerFile.open(QIODevice::WriteOnly);
+    for(int i=0;i<player_num;i++)
+    {
+        if (player->id == player_list[i].id)
+        {
+            txt << player_num << player->id << player->password << player->phone << player->mydata.score << player->mydata.coin << player->mydata.destorycommonenemy << player->mydata.destoryshootenemy << player->mydata.destoryspeedenemy << player->mydata.myplaneshoottime <<
+                   player->mydata.crashtime << player->mydata.beshottime << player->mydata.destroyedbycommonenemy << player->mydata.destroyedbyshootenemy << player->mydata.destroyedbyspeedenemy << player->mydata.injury << player->mydata.cure <<
+                   player->mydata.screencleartime << player->mydata.lasertime << player->mydata.missletime << player->mydata.shieldtime << player->mydata.screencleardestory << player->mydata.laserdestory << player->mydata.missledestory <<
+                   player->mydata.shielddefense << player->mydata.damageboss << player->mydata.destroyedbyboss << player->mydata.destoryboss << player->coins << player->myplane_health << player->myplane_speed << player->myplane_bulletinterval <<
+                   player->myplane_path << player->has_screenclear << player->has_laser << player->has_missle << player->has_shield << player->revivetokens_num;
+        }
+        else
+        {
+            txt << player_num << player_list[i].id << player_list[i].password << player_list[i].phone << player_list[i].mydata.score << player_list[i].mydata.coin << player_list[i].mydata.destorycommonenemy << player_list[i].mydata.destoryshootenemy << player_list[i].mydata.destoryspeedenemy << player_list[i].mydata.myplaneshoottime <<
+                   player_list[i].mydata.crashtime << player_list[i].mydata.beshottime << player_list[i].mydata.destroyedbycommonenemy << player_list[i].mydata.destroyedbyshootenemy << player_list[i].mydata.destroyedbyspeedenemy << player_list[i].mydata.injury << player_list[i].mydata.cure <<
+                   player_list[i].mydata.screencleartime << player_list[i].mydata.lasertime << player_list[i].mydata.missletime << player_list[i].mydata.shieldtime << player_list[i].mydata.screencleardestory << player_list[i].mydata.laserdestory << player_list[i].mydata.missledestory <<
+                   player_list[i].mydata.shielddefense << player_list[i].mydata.damageboss << player_list[i].mydata.destroyedbyboss << player_list[i].mydata.destoryboss << player_list[i].coins << player_list[i].myplane_health << player_list[i].myplane_speed << player_list[i].myplane_bulletinterval <<
+                   player_list[i].myplane_path << player_list[i].has_screenclear << player_list[i].has_laser << player_list[i].has_missle << player_list[i].has_shield << player_list[i].revivetokens_num;
+        }
+    }
+    playerFile.close();
+
     this->close();
 }
 
 void MainScene::revive_plane()
 {
-    plane->isdeath = false;
-    isgameover = false;
-    plane->health = 5;
-    plane->X = GAME_WIDTH / 2  - plane->Plane.width() / 2;
-    plane->Y = GAME_HEIGHT - plane->Plane.height();
-    plane->pressflag_w = false;
-    plane->pressflag_a = false;
-    plane->pressflag_s = false;
-    plane->pressflag_d = false;
-    plane->direction_w = 0;
-    plane->direction_a = 0;
-    plane->direction_s = 0;
-    plane->direction_d = 0;
-    plane->shootflag = false;
+    if (player->revivetokens_num > 0)
+    {
+        plane->isdeath = false;
+        isgameover = false;
+        plane->health = 5;
+        plane->X = GAME_WIDTH / 2  - plane->Plane.width() / 2;
+        plane->Y = GAME_HEIGHT - plane->Plane.height();
+        plane->pressflag_w = false;
+        plane->pressflag_a = false;
+        plane->pressflag_s = false;
+        plane->pressflag_d = false;
+        plane->direction_w = 0;
+        plane->direction_a = 0;
+        plane->direction_s = 0;
+        plane->direction_d = 0;
+        plane->shootflag = false;
 
-    screenclear.shoot();
+        screenclear.shoot();
 
-    revive.close();
-    returnhome.close();
+        revive.close();
+        returnhome.close();
+    }
 }
 
 void MainScene::game_pause()

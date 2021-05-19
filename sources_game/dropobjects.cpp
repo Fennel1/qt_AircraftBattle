@@ -214,7 +214,7 @@ Coin::Coin():DropObject (DROPOBJECT_PATH)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(COIN_ANIMAPATH).arg(i);
-         pixArr.push_back(QPixmap(str));
+        pixArr.push_back(QPixmap(str));
     }
 
 
@@ -238,7 +238,7 @@ Coin::Coin(QString objectpath):DropObject (DROPOBJECT_PATH)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(COIN_ANIMAPATH).arg(i);
-         pixArr.push_back(QPixmap(str));
+        pixArr.push_back(QPixmap(str));
     }
 
 
@@ -286,7 +286,7 @@ void Coin::setBombPath(QString path)
     {
         //字符串拼接，类似  ":/res/bomb-1.png"
         QString str = QString(path).arg(i);
-         pixArr.push_back(QPixmap(str));
+        pixArr.push_back(QPixmap(str));
     }
 }
 

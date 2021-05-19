@@ -10,6 +10,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    gamerecord.cpp \
     player.cpp \
     main.cpp \
     sources_game/bomb.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
     sources_window/thehome.cpp
 
 HEADERS += \
+    gamerecord.h \
     headers_game/bomb.h \
     headers_game/boss.h \
     headers_game/bullet.h \
@@ -61,6 +63,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     image.qrc\
     playerFile.dat\
+    commonrecord.dat\
+    endlessrecord.dat\
 
 FORMS += \
     gameover.ui \
