@@ -48,6 +48,8 @@ RegWindow::RegWindow(QWidget *parent) : QWidget(parent)
     phoneLEd = new QLineEdit(this);
     phoneLEd->move(160,427);
     phoneLEd->setPlaceholderText("请输入电话号码");
+    QRegExp regExp("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]");
+    phoneLEd->setValidator(new QRegExpValidator(regExp,this));
 
     //确认注册按钮
     btnConfirmReg.setParent(this);

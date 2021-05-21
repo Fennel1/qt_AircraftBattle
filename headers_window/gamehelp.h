@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include "mainwindow.h"
 #include "player.h"
-
+#include <QMessageBox>
 #include <QApplication>
 #include <QMainWindow>
 #include <QLabel>
@@ -19,11 +19,14 @@ public:
     void sendslot_back();
 
 
+
+
 signals:
     void signal_back();
 
 private:
     QPushButton btn_back;
+
 
     Player *player;
 
