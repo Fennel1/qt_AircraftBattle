@@ -47,6 +47,8 @@ RegWindow::RegWindow(QWidget *parent) : QWidget(parent)
     //电话输入框
     phoneLEd = new QLineEdit(this);
     phoneLEd->move(160,427);
+    QRegExp regExp("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]");
+    phoneLEd->setValidator(new QRegExpValidator(regExp,this));
     phoneLEd->setPlaceholderText("请输入电话号码");
 
     //确认注册按钮
@@ -82,9 +84,9 @@ void RegWindow::reg()
     //文件设置
     QFile playerFile(PLAYERFILE_PATH);
     QDataStream txt(&playerFile);
-    playerFile.open(QIODevice::WriteOnly);
-    txt << 0;
-    playerFile.close();
+//    playerFile.open(QIODevice::WriteOnly);
+//    txt << 0;
+//    playerFile.close();
     playerFile.open(QIODevice::ReadOnly);
     int player_num;
     txt >> player_num;

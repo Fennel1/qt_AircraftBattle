@@ -25,6 +25,8 @@ ForgetPW::ForgetPW(QWidget *parent) : QWidget(parent)
     //电话输入框
     phoneLEd = new QLineEdit(this);
     phoneLEd->move(160,307);
+    QRegExp regExp("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]");
+    phoneLEd->setValidator(new QRegExpValidator(regExp,this));
     phoneLEd->setPlaceholderText("请输入电话");
 
     pwdLbl = new QLabel(this);

@@ -68,6 +68,7 @@ private:
     QRect rect_ok_and_cancel;
     QPushButton btn_ok;
     QPushButton btn_cancel;
+    QLabel label_rect;
     QLineEdit input_number_of_reborn;
 
     //判断弹窗绘制后显示哪个交互

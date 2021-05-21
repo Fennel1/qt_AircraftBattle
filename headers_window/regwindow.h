@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QLabel>
+#include <QFileDialog>
 #include <QLineEdit>
 #include <QWidget>
 #include <QDebug>

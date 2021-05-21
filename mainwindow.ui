@@ -625,6 +625,28 @@ QTabBar::tab{height:60}</string>
          <string>射速</string>
         </property>
        </widget>
+       <widget class="QLabel" name="label_total_cost">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>600</y>
+          <width>180</width>
+          <height>90</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Panel</enum>
+        </property>
+        <property name="text">
+         <string>label_total_cost</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1644,7 +1666,7 @@ QTabBar::tab{height:60}</string>
      <x>0</x>
      <y>0</y>
      <width>1483</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

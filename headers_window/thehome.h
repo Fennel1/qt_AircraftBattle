@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include "loginwindow.h"
+#include "gamehelp.h"
 
 class theHome : public QWidget
 {
@@ -12,6 +13,8 @@ public:
     explicit theHome(QWidget *parent = nullptr);
     void change_window_to_loginwindow();
     void deal_slot_from_loginwindow();
+    void change_window_to_gamehelp();
+    void deal_slot_from_gamehelp();
 
 signals:
 
@@ -21,6 +24,7 @@ private:
     QPushButton btn_to_help_window;
     //子界面
     loginWindow win_login;
+    GameHelp game_help;
 
 };
 

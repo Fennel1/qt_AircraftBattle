@@ -95,6 +95,13 @@ MainWindow::MainWindow(Player *p, QWidget *parent) :
     is_bulletinterval = false;
     //商店中交互后弹窗的设置
     rect_ok_and_cancel.setRect(100,150,400,500);
+    label_rect.setParent(this);
+    label_rect.setText("");
+    label_rect.setFrameShape(QFrame::Panel);
+    label_rect.setFrameShadow(QFrame::Plain);
+    label_rect.move(380,610);
+    label_rect.resize(290,90);
+    label_rect.hide();
     btn_ok.setParent(this);
     btn_ok.setText(QStringLiteral("确定"));
     btn_ok.move(400, 630);
@@ -105,14 +112,16 @@ MainWindow::MainWindow(Player *p, QWidget *parent) :
     btn_cancel.move(550, 630);
     btn_cancel.resize(100, 50);
     btn_cancel.hide();
-    QValidator *vali_integer = new QIntValidator(1,99,this);
+    QRegExp regExp("[0-9][0-9]");
     input_number_of_reborn.setParent(this);
-    input_number_of_reborn.setValidator(vali_integer);
-    input_number_of_reborn.resize(300,50);
+    input_number_of_reborn.setValidator(new QRegExpValidator(regExp,this));
+    input_number_of_reborn.resize(310,50);
     input_number_of_reborn.move(370,530);
     input_number_of_reborn.setPlaceholderText(QStringLiteral("请输入购买数量(1~99)"));
     input_number_of_reborn.setFont(QFont("consolas",12));
     input_number_of_reborn.hide();
+
+    ui->label_total_cost->hide();
 
     //花费金币的设置
     cost_of_reborn = 50;
@@ -205,6 +214,47 @@ MainWindow::MainWindow(Player *p, QWidget *parent) :
         {
             ui->btn_bulletinterval->setEnabled(false);
         }
+    });
+
+    QTimer * timer_label_total_cost = new QTimer;
+    timer_label_total_cost->start();
+    connect(timer_label_total_cost,&QTimer::timeout,[=](){
+        //设置总费用
+        int cost = 0;
+        if(is_reborn == true)
+        {
+            cost = ((input_number_of_reborn.text()).toInt()) * cost_of_reborn;
+        }
+        else if(is_missle == true)
+        {
+            cost = cost_of_missle;
+        }
+        else if(is_laser == true)
+        {
+            cost = cost_of_laser;
+        }
+        else if(is_shield == true)
+        {
+            cost = cost_of_shield;
+        }
+        else if(is_screenclear == true)
+        {
+            cost = cost_of_screenclear;
+        }
+        else if(is_health == true)
+        {
+            cost = cost_of_health;
+        }
+        else if(is_speed == true)
+        {
+            cost = cost_of_speed;
+        }
+        else if(is_bulletinterval == true)
+        {
+            cost = cost_of_bulletinterval;
+        }
+        //设置显示
+        ui->label_total_cost->setText("花费: "+QString::number(cost));
     });
 
     //仓库中的文字显示
@@ -329,26 +379,26 @@ MainWindow::MainWindow(Player *p, QWidget *parent) :
     QTimer * timer_record = new QTimer;
     timer_record->start();
     connect(timer_record,&QTimer::timeout,this,[=](){
-        ui->label_common_0->setText("1st:  得分:"+QString::number(common_record[0].score)+"   金币:"+QString::number(common_record[0].coins)+"   玩家:"+QString(common_record[0].player_name));
-        ui->label_common_1->setText("2nd:  得分:"+QString::number(common_record[1].score)+"   金币:"+QString::number(common_record[1].coins)+"   玩家:"+QString(common_record[1].player_name));
-        ui->label_common_2->setText("3rd:  得分:"+QString::number(common_record[2].score)+"   金币:"+QString::number(common_record[2].coins)+"   玩家:"+QString(common_record[2].player_name));
-        ui->label_common_3->setText("4th:  得分:"+QString::number(common_record[3].score)+"   金币:"+QString::number(common_record[3].coins)+"   玩家:"+QString(common_record[3].player_name));
-        ui->label_common_4->setText("5th:  得分:"+QString::number(common_record[4].score)+"   金币:"+QString::number(common_record[4].coins)+"   玩家:"+QString(common_record[4].player_name));
-        ui->label_common_5->setText("6th:  得分:"+QString::number(common_record[5].score)+"   金币:"+QString::number(common_record[5].coins)+"   玩家:"+QString(common_record[5].player_name));
-        ui->label_common_6->setText("7th:  得分:"+QString::number(common_record[6].score)+"   金币:"+QString::number(common_record[6].coins)+"   玩家:"+QString(common_record[6].player_name));
-        ui->label_common_7->setText("8th:  得分:"+QString::number(common_record[7].score)+"   金币:"+QString::number(common_record[7].coins)+"   玩家:"+QString(common_record[7].player_name));
-        ui->label_common_8->setText("9th:  得分:"+QString::number(common_record[8].score)+"   金币:"+QString::number(common_record[8].coins)+"   玩家:"+QString(common_record[8].player_name));
-        ui->label_common_9->setText("10th: 得分:"+QString::number(common_record[9].score)+"   金币:"+QString::number(common_record[9].coins)+"   玩家:"+QString(common_record[9].player_name));
-        ui->label_endless_0->setText("1st:  得分:"+QString::number(endless_record[0].score)+"   金币:"+QString::number(endless_record[0].coins)+"   玩家:"+QString(endless_record[0].player_name));
-        ui->label_endless_1->setText("2nd:  得分:"+QString::number(endless_record[1].score)+"   金币:"+QString::number(endless_record[1].coins)+"   玩家:"+QString(endless_record[1].player_name));
-        ui->label_endless_2->setText("3rd:  得分:"+QString::number(endless_record[2].score)+"   金币:"+QString::number(endless_record[2].coins)+"   玩家:"+QString(endless_record[2].player_name));
-        ui->label_endless_3->setText("4th:  得分:"+QString::number(endless_record[3].score)+"   金币:"+QString::number(endless_record[3].coins)+"   玩家:"+QString(endless_record[3].player_name));
-        ui->label_endless_4->setText("5th:  得分:"+QString::number(endless_record[4].score)+"   金币:"+QString::number(endless_record[4].coins)+"   玩家:"+QString(endless_record[4].player_name));
-        ui->label_endless_5->setText("6th:  得分:"+QString::number(endless_record[5].score)+"   金币:"+QString::number(endless_record[5].coins)+"   玩家:"+QString(endless_record[5].player_name));
-        ui->label_endless_6->setText("7th:  得分:"+QString::number(endless_record[6].score)+"   金币:"+QString::number(endless_record[6].coins)+"   玩家:"+QString(endless_record[6].player_name));
-        ui->label_endless_7->setText("8th:  得分:"+QString::number(endless_record[7].score)+"   金币:"+QString::number(endless_record[7].coins)+"   玩家:"+QString(endless_record[7].player_name));
-        ui->label_endless_8->setText("9th:  得分:"+QString::number(endless_record[8].score)+"   金币:"+QString::number(endless_record[8].coins)+"   玩家:"+QString(endless_record[8].player_name));
-        ui->label_endless_9->setText("10th: 得分:"+QString::number(endless_record[9].score)+"   金币:"+QString::number(endless_record[9].coins)+"   玩家:"+QString(endless_record[9].player_name));
+        ui->label_common_0->setText("1st:     得分:"+QString::number(common_record[0].score)+"   金币:"+QString::number(common_record[0].coins)+"   玩家:"+QString(common_record[0].player_name));
+        ui->label_common_1->setText("2nd:     得分:"+QString::number(common_record[1].score)+"   金币:"+QString::number(common_record[1].coins)+"   玩家:"+QString(common_record[1].player_name));
+        ui->label_common_2->setText("3rd:     得分:"+QString::number(common_record[2].score)+"   金币:"+QString::number(common_record[2].coins)+"   玩家:"+QString(common_record[2].player_name));
+        ui->label_common_3->setText("4th:     得分:"+QString::number(common_record[3].score)+"   金币:"+QString::number(common_record[3].coins)+"   玩家:"+QString(common_record[3].player_name));
+        ui->label_common_4->setText("5th:     得分:"+QString::number(common_record[4].score)+"   金币:"+QString::number(common_record[4].coins)+"   玩家:"+QString(common_record[4].player_name));
+        ui->label_common_5->setText("6th:     得分:"+QString::number(common_record[5].score)+"   金币:"+QString::number(common_record[5].coins)+"   玩家:"+QString(common_record[5].player_name));
+        ui->label_common_6->setText("7th:     得分:"+QString::number(common_record[6].score)+"   金币:"+QString::number(common_record[6].coins)+"   玩家:"+QString(common_record[6].player_name));
+        ui->label_common_7->setText("8th:     得分:"+QString::number(common_record[7].score)+"   金币:"+QString::number(common_record[7].coins)+"   玩家:"+QString(common_record[7].player_name));
+        ui->label_common_8->setText("9th:     得分:"+QString::number(common_record[8].score)+"   金币:"+QString::number(common_record[8].coins)+"   玩家:"+QString(common_record[8].player_name));
+        ui->label_common_9->setText("10th:    得分:"+QString::number(common_record[9].score)+"   金币:"+QString::number(common_record[9].coins)+"   玩家:"+QString(common_record[9].player_name));
+        ui->label_endless_0->setText("1st:     得分:"+QString::number(endless_record[0].score)+"   金币:"+QString::number(endless_record[0].coins)+"   玩家:"+QString(endless_record[0].player_name));
+        ui->label_endless_1->setText("2nd:     得分:"+QString::number(endless_record[1].score)+"   金币:"+QString::number(endless_record[1].coins)+"   玩家:"+QString(endless_record[1].player_name));
+        ui->label_endless_2->setText("3rd:     得分:"+QString::number(endless_record[2].score)+"   金币:"+QString::number(endless_record[2].coins)+"   玩家:"+QString(endless_record[2].player_name));
+        ui->label_endless_3->setText("4th:     得分:"+QString::number(endless_record[3].score)+"   金币:"+QString::number(endless_record[3].coins)+"   玩家:"+QString(endless_record[3].player_name));
+        ui->label_endless_4->setText("5th:     得分:"+QString::number(endless_record[4].score)+"   金币:"+QString::number(endless_record[4].coins)+"   玩家:"+QString(endless_record[4].player_name));
+        ui->label_endless_5->setText("6th:     得分:"+QString::number(endless_record[5].score)+"   金币:"+QString::number(endless_record[5].coins)+"   玩家:"+QString(endless_record[5].player_name));
+        ui->label_endless_6->setText("7th:     得分:"+QString::number(endless_record[6].score)+"   金币:"+QString::number(endless_record[6].coins)+"   玩家:"+QString(endless_record[6].player_name));
+        ui->label_endless_7->setText("8th:     得分:"+QString::number(endless_record[7].score)+"   金币:"+QString::number(endless_record[7].coins)+"   玩家:"+QString(endless_record[7].player_name));
+        ui->label_endless_8->setText("9th:     得分:"+QString::number(endless_record[8].score)+"   金币:"+QString::number(endless_record[8].coins)+"   玩家:"+QString(endless_record[8].player_name));
+        ui->label_endless_9->setText("10th:    得分:"+QString::number(endless_record[9].score)+"   金币:"+QString::number(endless_record[9].coins)+"   玩家:"+QString(endless_record[9].player_name));
 
     });
 
@@ -377,8 +427,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
     if(is_laser == true||is_missle == true||is_reborn == true||is_screenclear == true||is_shield == true||is_health == true||is_speed == true||is_bulletinterval == true)
     {
 //        painter.begin(this);
-
-
+        ui->label_total_cost->show();
+        label_rect.show();
         btn_ok.show();
         btn_cancel.show();
         if(is_reborn == true)
@@ -393,9 +443,11 @@ void MainWindow::paintEvent(QPaintEvent *event)
     }
     else
     {
+        label_rect.hide();
         btn_ok.hide();
         btn_cancel.hide();
         input_number_of_reborn.hide();
+        ui->label_total_cost->hide();
     }
 }
 
@@ -579,7 +631,7 @@ void MainWindow::click_ok_button()
         if(player->coins >= cost_of_reborn * (input_number_of_reborn.text()).toInt())
         {
             player->coins -= cost_of_reborn * (input_number_of_reborn.text()).toInt();
-            player->revivetokens_num += cost_of_reborn * (input_number_of_reborn.text()).toInt();
+            player->revivetokens_num += input_number_of_reborn.text().toInt();
             is_reborn = false;
             update_playerfile();
         }

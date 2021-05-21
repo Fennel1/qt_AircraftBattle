@@ -2,6 +2,7 @@
 #define GAMERECORD_H
 
 #include <QString>
+#include <QFileDialog>
 #include <QFile>
 #include <QDebug>
 #include <QDataStream>

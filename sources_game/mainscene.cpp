@@ -1396,7 +1396,7 @@ void MainScene::collisionDetection()
             data.score += 5 + difficulty;
             if (shield.shieldfree == true)
             {
-                if (plane->health>0)
+                if (plane->health>1)
                 {
                     plane->health--;
                     data.injury++;
@@ -1468,7 +1468,7 @@ void MainScene::collisionDetection()
                 data.beshottime++;  //被敌机子弹击中次数加一
                 if (shield.shieldfree == true)
                 {
-                    if (plane->health>0)
+                    if (plane->health>1)
                     {
                         plane->health--;
                         data.injury++;
@@ -1520,7 +1520,7 @@ void MainScene::collisionDetection()
             data.score += 15 + difficulty;
             if (shield.shieldfree == true)
             {
-                if (plane->health>0)
+                if (plane->health>1)
                 {
                     plane->health--;
                     data.injury++;
@@ -1599,7 +1599,7 @@ void MainScene::collisionDetection()
             data.score += 10 + difficulty;
             if (shield.shieldfree == true)
             {
-                if (plane->health>0)
+                if (plane->health>1)
                 {
                     plane->health--;
                     data.injury++;
@@ -1699,7 +1699,7 @@ void MainScene::bosscollisionDetection()
                 data.beshottime++;
                 if (shield.shieldfree == true)
                 {
-                    if (plane->health>0)
+                    if (plane->health>1)
                     {
                         plane->health--;
                         data.injury++;
@@ -1740,7 +1740,7 @@ void MainScene::bosscollisionDetection()
                 data.beshottime++;
                 if (shield.shieldfree == true)
                 {
-                    if (plane->health>0)
+                    if (plane->health>1)
                     {
                         plane->health--;
                         data.injury++;
@@ -1775,7 +1775,7 @@ void MainScene::bosscollisionDetection()
         if (plane->bullets[i].rect.intersects(boss.rect))
         {
             plane->bullets[i].free = true;
-            if (boss.health > 0)
+            if (boss.health > 1)
             {
                 boss.health--;
                 data.damageboss++;
@@ -1796,7 +1796,7 @@ void MainScene::bosscollisionDetection()
     if (missle.misslefree == false && missle.rect.intersects(boss.rect))
     {
         missle.bomb(commonenemynum, shootenemynum, speedenemynum, commonenemys, shootenemys, speedenemys, data);
-        if (boss.health > 0)
+        if (boss.health > 1)
         {
             boss.health -= 30;
             data.damageboss += 30;
@@ -1947,7 +1947,7 @@ void MainScene::return_home()
             File.open(QIODevice::ReadOnly);
             for (int i=0; i<record_num; i++)
             {
-                txt >> record_num >> temp[i].player_name >> temp[i].score >> temp[i].coins;
+                txt >> record_num >> temp[i].player_name >> temp[i].score >> temp[i].coins >> difficulty;
             }
             sort(temp, temp+record_num, cmp);
             for (int i=0; i<record_num && i<10; i++)
@@ -2064,7 +2064,8 @@ void MainScene::revive_plane()
     {
         plane->isdeath = false;
         isgameover = false;
-        plane->health = 5;
+        player->revivetokens_num--;
+        plane->health = player->myplane_health;
         plane->X = GAME_WIDTH / 2  - plane->Plane.width() / 2;
         plane->Y = GAME_HEIGHT - plane->Plane.height();
         plane->pressflag_w = false;
