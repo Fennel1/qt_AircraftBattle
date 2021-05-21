@@ -9,6 +9,7 @@ class Missle;
 class loginWindow;
 class RegWindow;
 class ForgetPW;
+class MainWindow;
 
 class Data : public MyPlane
 {
@@ -18,6 +19,7 @@ class Data : public MyPlane
     friend class loginWindow;
     friend class RegWindow;
     friend class ForgetPW;
+    friend class MainWindow;
 public:
     Data();
     Data(const Data & d);

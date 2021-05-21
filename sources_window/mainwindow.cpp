@@ -13,7 +13,7 @@ class CustomTabStyle : public QProxyStyle
 {
 public:
     QSize sizeFromContents(ContentsType type, const QStyleOption *option,
-                           const QSize &size, const QWidget *widget) const
+        const QSize &size, const QWidget *widget) const
     {
         QSize s = QProxyStyle::sizeFromContents(type, option, size, widget);
         if (type == QStyle::CT_TabBarTab) {
@@ -91,19 +91,19 @@ MainWindow::MainWindow(Player *p, QWidget *parent) :
     rect_ok_and_cancel.setRect(100,150,400,500);
     btn_ok.setParent(this);
     btn_ok.setText(QStringLiteral("确定"));
-    btn_ok.move(200, 500);
+    btn_ok.move(400, 630);
     btn_ok.resize(100, 50);
     btn_ok.hide();
     btn_cancel.setParent(this);
     btn_cancel.setText(QStringLiteral("取消"));
-    btn_cancel.move(350, 500);
+    btn_cancel.move(550, 630);
     btn_cancel.resize(100, 50);
     btn_cancel.hide();
     QValidator *vali_integer = new QIntValidator(1,99,this);
     input_number_of_reborn.setParent(this);
     input_number_of_reborn.setValidator(vali_integer);
     input_number_of_reborn.resize(300,50);
-    input_number_of_reborn.move(170,400);
+    input_number_of_reborn.move(370,530);
     input_number_of_reborn.setPlaceholderText(QStringLiteral("请输入购买数量(1~99)"));
     input_number_of_reborn.setFont(QFont("consolas",12));
     input_number_of_reborn.hide();
@@ -251,12 +251,38 @@ MainWindow::MainWindow(Player *p, QWidget *parent) :
     connect(&btn_ok,&QPushButton::clicked,this,&MainWindow::click_ok_button);
     connect(&btn_cancel,&QPushButton::clicked,this,&MainWindow::click_cancel_button);
 
+    //生涯的显示设置
+    QTimer * timer_data = new QTimer;
+    timer_data->start();
+    connect(timer_data,&QTimer::timeout,[=](){
+        ui->label_score->setText("生涯得分: "+QString::number(player->mydata.score));
+        ui->label_destorycommonenemy->setText("普通敌机: "+QString::number(player->mydata.destorycommonenemy));
+        ui->label_destoryshootenemy->setText("射击型: "+QString::number(player->mydata.destoryshootenemy));
+        ui->label_destoryspeedenemy->setText("撞击型: "+QString::number(player->mydata.destoryspeedenemy));
+        ui->label_myplaneshoottime->setText("发射子弹数: "+QString::number(player->mydata.myplaneshoottime));
+        ui->label_crashtime->setText("被碰撞次数: "+QString::number(player->mydata.crashtime));
+        ui->label_beshottime->setText("被击中次数: "+QString::number(player->mydata.beshottime));
+        ui->label_destoryedbycommonenemy->setText("普通敌机: "+QString::number(player->mydata.destroyedbycommonenemy));
+        ui->label_destroyedbyshootenemy->setText("射击型: "+QString::number(player->mydata.destroyedbyshootenemy));
+        ui->label_destroyedbyspeedenemy->setText("撞击型: "+QString::number(player->mydata.destroyedbyspeedenemy));
+        ui->label_injury->setText("总受到伤害: "+QString::number(player->mydata.injury));
+        ui->label_cure->setText("总回复血量: "+QString::number(player->mydata.cure));
+        ui->label_screencleartime->setText("清屏: "+QString::number(player->mydata.screencleartime));
+        ui->label_lasertime->setText("激光: "+QString::number(player->mydata.lasertime));
+        ui->label_missletime->setText("导弹: "+QString::number(player->mydata.missletime));
+        ui->label_shieldtime->setText("护盾: "+QString::number(player->mydata.shieldtime));
+        ui->label_damageboss->setText("造成伤害: "+QString::number(player->mydata.damageboss));
+        ui->label_destoryboss->setText("击毁次数: "+QString::number(player->mydata.destoryboss));
+        ui->label_destroyedbyboss->setText("被击毁次数: "+QString::number(player->mydata.destroyedbyboss));
+
+    });
+
 
 
 #if 0
     ui->tabWidget->setStyleSheet("QTabWidget::pane{ \
-                                 border-left: 1px solid #eeeeee;\
-}");
+            border-left: 1px solid #eeeeee;\
+        }");
 #endif
 }
 
@@ -275,14 +301,9 @@ void MainWindow::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     if(is_laser == true||is_missle == true||is_reborn == true||is_screenclear == true||is_shield == true)
     {
-        //        painter.begin(this);
-        painter.setPen(Qt::NoPen);
-        painter.setBrush(QColor(0,170,255,100));
-        painter.drawRoundRect(rect_ok_and_cancel);
-        painter.setPen(QColor(0,0,0));
-        QFont font("consolas", 15);
-        painter.setFont(font);
-        painter.drawText(200,300,QStringLiteral("确定购买"));
+//        painter.begin(this);
+
+
         btn_ok.show();
         btn_cancel.show();
         if(is_reborn == true)
@@ -424,5 +445,71 @@ void MainWindow::click_cancel_button()
     else if(is_reborn == true)
     {
         is_reborn = false;
+    }
+}
+
+bool cmp(const Gamerecord &a, const Gamerecord &b)
+{
+    if (a.score > b.score)  return true;
+    else if (a.score == b.score && a.coins > b.coins)   return true;
+    else    return false;
+}
+
+void MainWindow::common_sort()
+{
+    QFile File(COMMONRECORDFILE_PATH);
+    QDataStream txt(&File);
+    int record_num;
+    File.open(QIODevice::ReadOnly);
+    txt >> record_num;
+    File.close();
+    if (record_num == 0)
+    {
+        return;
+    }
+    else
+    {
+        CommonRecord temp[record_num];
+        File.open(QIODevice::ReadOnly);
+        for (int i=0; i<record_num; i++)
+        {
+            txt >> record_num >> temp[i].player_name >> temp[i].score >> temp[i].coins;
+        }
+        sort(temp, temp+record_num, cmp);
+        for (int i=0; i<record_num && i<10; i++)
+        {
+            common_record[i] = temp[i];
+        }
+        File.close();
+    }
+
+}
+
+void MainWindow::endless_sort()
+{
+    QFile File(ENDLESSRECORDFILE_PATH);
+    QDataStream txt(&File);
+    int record_num;
+    File.open(QIODevice::ReadOnly);
+    txt >> record_num;
+    File.close();
+    if (record_num == 0)
+    {
+        return;
+    }
+    else
+    {
+        EndlessRecord temp[record_num];
+        File.open(QIODevice::ReadOnly);
+        for (int i=0; i<record_num; i++)
+        {
+            txt >> record_num >> temp[i].player_name >> temp[i].score >> temp[i].coins;
+        }
+        sort(temp, temp+record_num, cmp);
+        for (int i=0; i<record_num && i<10; i++)
+        {
+            endless_record[i] = temp[i];
+        }
+        File.close();
     }
 }

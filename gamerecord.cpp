@@ -18,9 +18,9 @@ void CommonRecord::update()
     QFile File(COMMONRECORDFILE_PATH);
     QDataStream txt(&File);
     int record_num;
-    File.open(QIODevice::WriteOnly);
-    txt << 0;
-    File.close();
+//    File.open(QIODevice::WriteOnly);
+//    txt << 0;
+//    File.close();
     File.open(QIODevice::ReadOnly);
     txt >> record_num;
     File.close();

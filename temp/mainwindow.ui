@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>720</width>
-    <height>508</height>
+    <height>535</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@ QTabBar::tab{height:60}</string>
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>3</number>
     </property>
     <property name="elideMode">
      <enum>Qt::ElideNone</enum>
@@ -131,6 +131,251 @@ QTabBar::tab{height:60}</string>
      <attribute name="title">
       <string>仓库</string>
      </attribute>
+     <widget class="QLabel" name="label_has_reborn_coin">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>70</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>label_has_reborn_coin</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_missle">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>250</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>导弹(已拥有)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_laser">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>310</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>激光(已拥有)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_shield">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>370</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>护盾(已拥有)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_screenclear">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>430</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>清屏(已拥有)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_coins">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>50</y>
+        <width>200</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>label_has_coins</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_missle_no">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>250</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>导弹(未拥有)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_laser_no">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>310</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>激光(未拥有)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_shield_no">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>370</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>护盾(未拥有)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_has_screenclear_no">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>430</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="text">
+       <string>清屏(未拥有)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_skill">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>170</y>
+        <width>311</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="text">
+       <string>技能拥有情况:</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_store">
      <attribute name="title">
@@ -139,63 +384,69 @@ QTabBar::tab{height:60}</string>
      <widget class="QPushButton" name="btn_skill_missle">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>30</y>
-        <width>181</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>missle</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btn_skill_laser">
-      <property name="geometry">
-       <rect>
-        <x>59</x>
-        <y>119</y>
-        <width>181</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>laser</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btn_skill_shield">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
+        <x>10</x>
         <y>210</y>
         <width>181</width>
         <height>61</height>
        </rect>
       </property>
       <property name="text">
-       <string>shield</string>
+       <string>导弹</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="btn_skill_screenclear">
+     <widget class="QPushButton" name="btn_skill_laser">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>300</y>
+        <x>210</x>
+        <y>210</y>
         <width>181</width>
         <height>61</height>
        </rect>
       </property>
       <property name="text">
-       <string>screenclear</string>
+       <string>激光</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_skill_shield">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>400</y>
+        <width>181</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>护盾</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_skill_screenclear">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>400</y>
+        <width>181</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>清屏</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_value_of_coins">
       <property name="geometry">
        <rect>
-        <x>420</x>
-        <y>40</y>
-        <width>121</width>
-        <height>51</height>
+        <x>680</x>
+        <y>50</y>
+        <width>200</width>
+        <height>50</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>12</pointsize>
+       </font>
       </property>
       <property name="frameShape">
        <enum>QFrame::Panel</enum>
@@ -207,6 +458,76 @@ QTabBar::tab{height:60}</string>
        <string>TextLabel</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>281</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>购买小技能</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>320</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>购买大招</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_reborn_coin">
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>210</y>
+        <width>181</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>购买复活币</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>120</y>
+        <width>281</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>购买复活币</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -216,6 +537,11 @@ QTabBar::tab{height:60}</string>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
       <string>游戏设置</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>页</string>
      </attribute>
     </widget>
    </widget>

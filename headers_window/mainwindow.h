@@ -1,6 +1,7 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <algorithm>
 #include <QMainWindow>
 #include <QPushButton>
 #include <QPainter>
@@ -10,6 +11,7 @@
 #include <QInputDialog>
 #include "headers_game/mainscene.h"
 #include "player.h"
+#include "gamerecord.h"
 using namespace std;
 
 namespace Ui {
@@ -18,6 +20,8 @@ class MainWindow;
 
 class MainWindow : public QMainWindow
 {
+    friend bool cmp(const Gamerecord & a, const Gamerecord & b);
+
     Q_OBJECT
 
 public:
@@ -34,6 +38,8 @@ public:
     void show_screenclear_rect();
     void click_ok_button();
     void click_cancel_button();
+    void common_sort();
+    void endless_sort();
 
 signals:
     void signal_back();
@@ -64,7 +70,13 @@ private:
     bool is_shield;
     bool is_screenclear;
 
+    //记录
+    CommonRecord common_record[10];
+    EndlessRecord endless_record[10];
+
     Player *player;
 };
+
+bool cmp(const Gamerecord & a, const Gamerecord & b);
 
 #endif // MAINWINDOW_H
