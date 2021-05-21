@@ -541,6 +541,7 @@ void MainWindow::click_ok_button()
             player->coins -= cost_of_missle;
             player->has_missle = true;
             is_missle = false;
+            update_playerfile();
         }
     }
     else if(is_laser == true)
@@ -550,6 +551,7 @@ void MainWindow::click_ok_button()
             player->coins -= cost_of_laser;
             player->has_laser = true;
             is_laser = false;
+            update_playerfile();
         }
     }
     else if(is_shield == true)
@@ -559,6 +561,7 @@ void MainWindow::click_ok_button()
             player->coins -= cost_of_shield;
             player->has_shield = true;
             is_shield = false;
+            update_playerfile();
         }
     }
     else if(is_screenclear == true)
@@ -568,6 +571,7 @@ void MainWindow::click_ok_button()
             player->coins -= cost_of_screenclear;
             player->has_screenclear = true;
             is_screenclear = false;
+            update_playerfile();
         }
     }
     else if(is_reborn == true)
@@ -577,6 +581,7 @@ void MainWindow::click_ok_button()
             player->coins -= cost_of_reborn * (input_number_of_reborn.text()).toInt();
             player->revivetokens_num += cost_of_reborn * (input_number_of_reborn.text()).toInt();
             is_reborn = false;
+            update_playerfile();
         }
     }
     else if(is_health == true)
@@ -586,6 +591,7 @@ void MainWindow::click_ok_button()
             player->coins -= cost_of_health;
             player->myplane_health += 1;
             is_health = false;
+            update_playerfile();
         }
     }
     else if(is_speed == true)
@@ -595,6 +601,7 @@ void MainWindow::click_ok_button()
             player->coins -= cost_of_speed;
             player->myplane_speed += 1;
             is_speed = false;
+            update_playerfile();
         }
     }
     else if(is_bulletinterval == true)
@@ -604,6 +611,7 @@ void MainWindow::click_ok_button()
             player->coins -= cost_of_bulletinterval;
             player->myplane_bulletinterval -= 2;
             is_bulletinterval = false;
+            update_playerfile();
         }
     }
 }
@@ -701,6 +709,7 @@ void MainWindow::endless_sort()
         for (int i=0; i<record_num; i++)
         {
             txt >> record_num >> temp[i].player_name >> temp[i].score >> temp[i].coins;
+            qDebug() << temp[i].player_name << temp[i].score << endl;
         }
         sort(temp, temp+record_num, cmp);
         for (int i=0; i<record_num && i<10; i++)
@@ -709,4 +718,104 @@ void MainWindow::endless_sort()
         }
         File.close();
     }
+}
+
+void MainWindow::update_playerfile()
+{
+    //更新玩家数据文件
+    QFile playerFile(PLAYERFILE_PATH);
+    QDataStream txt(&playerFile);
+    playerFile.open(QIODevice::ReadOnly);
+    int player_num;
+    txt >> player_num;
+    playerFile.close();
+    Player player_list[player_num];
+    //导出数据
+    QString id;         //账户
+    QString password;   //密码
+    QString phone;
+    int coins;  //金币
+    //游戏参数
+    int myplane_health;           //生命值
+    int myplane_speed;            //速度
+    int myplane_bulletinterval;   //射速
+    QString myplane_path;           //皮肤
+    //技能
+    bool has_screenclear;
+    bool has_laser;
+    bool has_missle;
+    bool has_shield;
+    //道具
+    int revivetokens_num;        //复活币
+
+    int score;    //得分
+    int coin;    //金币
+    //击毁敌机数
+    int destorycommonenemy;
+    int destoryshootenemy;
+    int destoryspeedenemy;
+    //发射子弹数
+    int myplaneshoottime;
+    int crashtime;    //与敌机碰撞次数
+    int beshottime;    //被敌机子弹击中次数
+    //主机死亡
+    int destroyedbycommonenemy;    //被普通敌机击毁次数
+    int destroyedbyshootenemy;    //被射击敌机击毁次数
+    int destroyedbyspeedenemy;      //被速度敌机击毁次数
+    int injury;    //受到总伤害
+    int cure;   //恢复总血量
+    //技能
+    //使用次数
+    int screencleartime;
+    int lasertime;
+    int missletime;
+    int shieldtime;
+    //技能效果
+    int screencleardestory;
+    int laserdestory;
+    int missledestory;
+    int shielddefense;
+    //BOSS
+    int damageboss;     //对BOSS造成伤害
+    int destroyedbyboss;    //被BOSS击毁次数
+    int destoryboss;     //击毁BOSS次数
+
+    playerFile.open(QFile::ReadOnly);
+    for(int i=0;i<player_num;i++){
+        //数据从文件导出
+        txt >> player_num >>id >> password  >> phone >> score >> coin >> destorycommonenemy >> destoryshootenemy >> destoryspeedenemy >> myplaneshoottime >>
+                crashtime >> beshottime >> destroyedbycommonenemy >> destroyedbyshootenemy >> destroyedbyspeedenemy >> injury >> cure >>
+                screencleartime >> lasertime >> missletime >> shieldtime >> screencleardestory >> laserdestory >> missledestory >>
+                shielddefense >> damageboss >> destroyedbyboss >> destoryboss >> coins >> myplane_health >> myplane_speed >> myplane_bulletinterval >>
+                myplane_path >> has_screenclear >> has_laser >> has_missle >> has_shield >> revivetokens_num;
+        qDebug() << player_num << id << password  << has_laser << endl;
+        Data mydata(score, coin,destorycommonenemy, destoryshootenemy,  destoryspeedenemy,  myplaneshoottime,
+                    crashtime,  beshottime,  destroyedbycommonenemy,  destroyedbyshootenemy,  destroyedbyspeedenemy,
+                    injury,  cure,  screencleartime,  lasertime,  missletime,  shieldtime,  screencleardestory,
+                    laserdestory,  missledestory,  shielddefense,  damageboss,  destroyedbyboss,  destoryboss);
+        player_list[i] = Player(id,  password, phone , mydata,  coins,  myplane_health,  myplane_speed,  myplane_bulletinterval,
+                                myplane_path,  has_screenclear,  has_laser,  has_missle,  has_shield,  revivetokens_num);
+    }
+    playerFile.close();
+    playerFile.open(QIODevice::WriteOnly);
+    for(int i=0;i<player_num;i++)
+    {
+        if (player->id == player_list[i].id)
+        {
+            txt << player_num << player->id << player->password << player->phone << player->mydata.score << player->mydata.coin << player->mydata.destorycommonenemy << player->mydata.destoryshootenemy << player->mydata.destoryspeedenemy << player->mydata.myplaneshoottime <<
+                   player->mydata.crashtime << player->mydata.beshottime << player->mydata.destroyedbycommonenemy << player->mydata.destroyedbyshootenemy << player->mydata.destroyedbyspeedenemy << player->mydata.injury << player->mydata.cure <<
+                   player->mydata.screencleartime << player->mydata.lasertime << player->mydata.missletime << player->mydata.shieldtime << player->mydata.screencleardestory << player->mydata.laserdestory << player->mydata.missledestory <<
+                   player->mydata.shielddefense << player->mydata.damageboss << player->mydata.destroyedbyboss << player->mydata.destoryboss << player->coins << player->myplane_health << player->myplane_speed << player->myplane_bulletinterval <<
+                   player->myplane_path << player->has_screenclear << player->has_laser << player->has_missle << player->has_shield << player->revivetokens_num;
+        }
+        else
+        {
+            txt << player_num << player_list[i].id << player_list[i].password << player_list[i].phone << player_list[i].mydata.score << player_list[i].mydata.coin << player_list[i].mydata.destorycommonenemy << player_list[i].mydata.destoryshootenemy << player_list[i].mydata.destoryspeedenemy << player_list[i].mydata.myplaneshoottime <<
+                   player_list[i].mydata.crashtime << player_list[i].mydata.beshottime << player_list[i].mydata.destroyedbycommonenemy << player_list[i].mydata.destroyedbyshootenemy << player_list[i].mydata.destroyedbyspeedenemy << player_list[i].mydata.injury << player_list[i].mydata.cure <<
+                   player_list[i].mydata.screencleartime << player_list[i].mydata.lasertime << player_list[i].mydata.missletime << player_list[i].mydata.shieldtime << player_list[i].mydata.screencleardestory << player_list[i].mydata.laserdestory << player_list[i].mydata.missledestory <<
+                   player_list[i].mydata.shielddefense << player_list[i].mydata.damageboss << player_list[i].mydata.destroyedbyboss << player_list[i].mydata.destoryboss << player_list[i].coins << player_list[i].myplane_health << player_list[i].myplane_speed << player_list[i].myplane_bulletinterval <<
+                   player_list[i].myplane_path << player_list[i].has_screenclear << player_list[i].has_laser << player_list[i].has_missle << player_list[i].has_shield << player_list[i].revivetokens_num;
+        }
+    }
+    playerFile.close();
 }

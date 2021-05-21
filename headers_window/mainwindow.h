@@ -43,6 +43,7 @@ public:
     void buy_health();
     void buy_speed();
     void buy_bulletinterval();
+    void update_playerfile();
 
 signals:
     void signal_back();

@@ -224,41 +224,64 @@ void MainScene::inittext()
     QTimer* timer_cd_of_laser = new QTimer;
     timer_cd_of_laser->start(500);
     connect(timer_cd_of_laser, &QTimer::timeout,[=](){
-        if(laser.skillrecorder<laser.cd)
+        if (player->has_laser == true)
         {
-            label_cd_of_laser.setText(QStringLiteral("L  激光:    ")+QString::number(int(laser.skillrecorder*100/laser.cd))+QString("%"));
+            if(laser.skillrecorder<laser.cd)
+            {
+                label_cd_of_laser.setText(QStringLiteral("L  激光:    ")+QString::number(int(laser.skillrecorder*100/laser.cd))+QString("%"));
+                label_cd_of_laser.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(255,255,255));
+                label_cd_of_laser.setPalette(palette);
+            }
+            if(laser.skillrecorder>=laser.cd)
+            {
+                label_cd_of_laser.setText(QStringLiteral("L  激光:    ")+QString::number(100)+QString("%"));
+                label_cd_of_laser.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(0,255,0));
+                label_cd_of_laser.setPalette(palette);
+            }
+        }
+        else
+        {
+            label_cd_of_laser.setText(QStringLiteral("L  激光:    未解锁"));
             label_cd_of_laser.setAutoFillBackground(true);
             QPalette palette;
             palette.setColor(QPalette::Background, QColor(255,255,255));
             label_cd_of_laser.setPalette(palette);
         }
-        if(laser.skillrecorder>=laser.cd)
-        {
-            label_cd_of_laser.setText(QStringLiteral("L  激光:    ")+QString::number(100)+QString("%"));
-            label_cd_of_laser.setAutoFillBackground(true);
-            QPalette palette;
-            palette.setColor(QPalette::Background, QColor(0,255,0));
-            label_cd_of_laser.setPalette(palette);
-        }
+
     });
 
     QTimer* timer_cd_of_missle = new QTimer;
     timer_cd_of_missle->start(500);
     connect(timer_cd_of_missle, &QTimer::timeout,[=](){
-        if(missle.skillrecorder<missle.cd)
+        if (player->has_missle == true)
         {
-            label_cd_of_missle.setText(QStringLiteral("U  导弹:    ")+QString::number(int(missle.skillrecorder*100/missle.cd))+QString("%"));
+            if(missle.skillrecorder<missle.cd)
+            {
+                label_cd_of_missle.setText(QStringLiteral("U  导弹:    ")+QString::number(int(missle.skillrecorder*100/missle.cd))+QString("%"));
+                label_cd_of_missle.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(255,255,255));
+                label_cd_of_missle.setPalette(palette);
+            }
+            if(missle.skillrecorder>=missle.cd)
+            {
+                label_cd_of_missle.setText(QStringLiteral("U  导弹:    ")+QString::number(100)+QString("%"));
+                label_cd_of_missle.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(0,255,0));
+                label_cd_of_missle.setPalette(palette);
+            }
+        }
+        else
+        {
+            label_cd_of_missle.setText(QStringLiteral("U  导弹:    未解锁"));
             label_cd_of_missle.setAutoFillBackground(true);
             QPalette palette;
             palette.setColor(QPalette::Background, QColor(255,255,255));
-            label_cd_of_missle.setPalette(palette);
-        }
-        if(missle.skillrecorder>=missle.cd)
-        {
-            label_cd_of_missle.setText(QStringLiteral("U  导弹:    ")+QString::number(100)+QString("%"));
-            label_cd_of_missle.setAutoFillBackground(true);
-            QPalette palette;
-            palette.setColor(QPalette::Background, QColor(0,255,0));
             label_cd_of_missle.setPalette(palette);
         }
     });
@@ -266,20 +289,31 @@ void MainScene::inittext()
     QTimer* timer_cd_of_screenclear = new QTimer;
     timer_cd_of_screenclear->start(500);
     connect(timer_cd_of_screenclear, &QTimer::timeout,[=](){
-        if(screenclear.skillrecorder<screenclear.cd)
+        if (player->has_screenclear == true)
         {
-            label_cd_of_screenclear.setText(QStringLiteral("K  清屏:    ")+QString::number(int(screenclear.skillrecorder*100/screenclear.cd))+QString("%"));
+            if(screenclear.skillrecorder<screenclear.cd)
+            {
+                label_cd_of_screenclear.setText(QStringLiteral("K  清屏:    ")+QString::number(int(screenclear.skillrecorder*100/screenclear.cd))+QString("%"));
+                label_cd_of_screenclear.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(255,255,255));
+                label_cd_of_screenclear.setPalette(palette);
+            }
+            if(screenclear.skillrecorder>=screenclear.cd)
+            {
+                label_cd_of_screenclear.setText(QStringLiteral("K  清屏:    ")+QString::number(100)+QString("%"));
+                label_cd_of_screenclear.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(0,255,0));
+                label_cd_of_screenclear.setPalette(palette);
+            }
+        }
+        else
+        {
+            label_cd_of_screenclear.setText(QStringLiteral("K  清屏:    未解锁"));
             label_cd_of_screenclear.setAutoFillBackground(true);
             QPalette palette;
             palette.setColor(QPalette::Background, QColor(255,255,255));
-            label_cd_of_screenclear.setPalette(palette);
-        }
-        if(screenclear.skillrecorder>=screenclear.cd)
-        {
-            label_cd_of_screenclear.setText(QStringLiteral("K  清屏:    ")+QString::number(100)+QString("%"));
-            label_cd_of_screenclear.setAutoFillBackground(true);
-            QPalette palette;
-            palette.setColor(QPalette::Background, QColor(0,255,0));
             label_cd_of_screenclear.setPalette(palette);
         }
     });
@@ -287,20 +321,31 @@ void MainScene::inittext()
     QTimer* timer_cd_of_shield = new QTimer;
     timer_cd_of_shield->start(500);
     connect(timer_cd_of_shield, &QTimer::timeout,[=](){
-        if(shield.skillrecorder<shield.cd)
+        if (player->has_shield == true)
         {
-            label_cd_of_shield.setText(QStringLiteral("I  护盾:    ")+QString::number(int(shield.skillrecorder*100/shield.cd))+QString("%"));
+            if(shield.skillrecorder<shield.cd)
+            {
+                label_cd_of_shield.setText(QStringLiteral("I  护盾:    ")+QString::number(int(shield.skillrecorder*100/shield.cd))+QString("%"));
+                label_cd_of_shield.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(255,255,255));
+                label_cd_of_shield.setPalette(palette);
+            }
+            if(shield.skillrecorder>=shield.cd)
+            {
+                label_cd_of_shield.setText(QStringLiteral("I  护盾:    ")+QString::number(100)+QString("%"));
+                label_cd_of_shield.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(0,255,0));
+                label_cd_of_shield.setPalette(palette);
+            }
+        }
+        else
+        {
+            label_cd_of_shield.setText(QStringLiteral("I  护盾:    未解锁"));
             label_cd_of_shield.setAutoFillBackground(true);
             QPalette palette;
             palette.setColor(QPalette::Background, QColor(255,255,255));
-            label_cd_of_shield.setPalette(palette);
-        }
-        if(shield.skillrecorder>=shield.cd)
-        {
-            label_cd_of_shield.setText(QStringLiteral("I  护盾:    ")+QString::number(100)+QString("%"));
-            label_cd_of_shield.setAutoFillBackground(true);
-            QPalette palette;
-            palette.setColor(QPalette::Background, QColor(0,255,0));
             label_cd_of_shield.setPalette(palette);
         }
     });
