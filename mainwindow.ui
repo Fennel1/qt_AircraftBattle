@@ -28,7 +28,7 @@ QTabBar::tab{height:60}</string>
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -567,6 +567,64 @@ QTabBar::tab{height:60}</string>
          <string>购买复活币</string>
         </property>
        </widget>
+       <widget class="QLabel" name="label_14">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>320</y>
+          <width>281</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Consolas</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>购买属性</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_health">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>400</y>
+          <width>281</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>生命值</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_speed">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>450</y>
+          <width>281</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>速度</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_bulletinterval">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>500</y>
+          <width>281</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>射速</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -582,34 +640,12 @@ QTabBar::tab{height:60}</string>
            <attribute name="title">
             <string>普通模式</string>
            </attribute>
-           <widget class="QLabel" name="label_has_reborn_coin_12">
+           <widget class="QLabel" name="label_common_3">
             <property name="geometry">
              <rect>
-              <x>30</x>
-              <y>270</y>
-              <width>311</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <family>Consolas</family>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Panel</enum>
-            </property>
-            <property name="text">
-             <string>label_has_reborn_coin</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_has_reborn_coin_13">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
+              <x>90</x>
               <y>190</y>
-              <width>311</width>
+              <width>591</width>
               <height>41</height>
              </rect>
             </property>
@@ -626,12 +662,12 @@ QTabBar::tab{height:60}</string>
              <string>label_has_reborn_coin</string>
             </property>
            </widget>
-           <widget class="QLabel" name="label_has_reborn_coin_14">
+           <widget class="QLabel" name="label_common_2">
             <property name="geometry">
              <rect>
-              <x>30</x>
-              <y>110</y>
-              <width>311</width>
+              <x>90</x>
+              <y>140</y>
+              <width>591</width>
               <height>41</height>
              </rect>
             </property>
@@ -648,12 +684,12 @@ QTabBar::tab{height:60}</string>
              <string>label_has_reborn_coin</string>
             </property>
            </widget>
-           <widget class="QLabel" name="label_has_reborn_coin_15">
+           <widget class="QLabel" name="label_common_1">
             <property name="geometry">
              <rect>
-              <x>30</x>
-              <y>30</y>
-              <width>311</width>
+              <x>90</x>
+              <y>90</y>
+              <width>591</width>
               <height>41</height>
              </rect>
             </property>
@@ -670,12 +706,144 @@ QTabBar::tab{height:60}</string>
              <string>label_has_reborn_coin</string>
             </property>
            </widget>
-           <widget class="QLabel" name="label_has_reborn_coin_16">
+           <widget class="QLabel" name="label_common_0">
             <property name="geometry">
              <rect>
-              <x>30</x>
-              <y>350</y>
-              <width>311</width>
+              <x>90</x>
+              <y>40</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_common_4">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>240</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_common_6">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>340</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_common_8">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>440</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_common_5">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>290</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_common_7">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>390</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_common_9">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>490</y>
+              <width>591</width>
               <height>41</height>
              </rect>
             </property>
@@ -697,100 +865,210 @@ QTabBar::tab{height:60}</string>
            <attribute name="title">
             <string>无尽模式</string>
            </attribute>
-           <widget class="QLabel" name="label_has_reborn_coin_7">
+           <widget class="QLabel" name="label_endless_3">
             <property name="geometry">
              <rect>
-              <x>30</x>
-              <y>270</y>
-              <width>311</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <family>Consolas</family>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Panel</enum>
-            </property>
-            <property name="text">
-             <string>label_has_reborn_coin</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_has_reborn_coin_8">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
-              <y>350</y>
-              <width>311</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <family>Consolas</family>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Panel</enum>
-            </property>
-            <property name="text">
-             <string>label_has_reborn_coin</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_has_reborn_coin_9">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
-              <y>30</y>
-              <width>311</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <family>Consolas</family>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Panel</enum>
-            </property>
-            <property name="text">
-             <string>label_has_reborn_coin</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_has_reborn_coin_10">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
-              <y>110</y>
-              <width>311</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <family>Consolas</family>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Panel</enum>
-            </property>
-            <property name="text">
-             <string>label_has_reborn_coin</string>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_has_reborn_coin_11">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
+              <x>90</x>
               <y>190</y>
-              <width>311</width>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_4">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>240</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_0">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>40</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_1">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>90</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_2">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>140</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_9">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>490</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_5">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>290</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_6">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>340</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_8">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>440</y>
+              <width>591</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <family>Consolas</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="text">
+             <string>label_has_reborn_coin</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="label_endless_7">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>390</y>
+              <width>591</width>
               <height>41</height>
              </rect>
             </property>
@@ -1246,7 +1524,7 @@ QTabBar::tab{height:60}</string>
          <rect>
           <x>20</x>
           <y>290</y>
-          <width>71</width>
+          <width>131</width>
           <height>21</height>
          </rect>
         </property>
@@ -1356,11 +1634,6 @@ QTabBar::tab{height:60}</string>
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>游戏设置</string>
-       </attribute>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -1371,7 +1644,7 @@ QTabBar::tab{height:60}</string>
      <x>0</x>
      <y>0</y>
      <width>1483</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

@@ -82,9 +82,9 @@ void RegWindow::reg()
     //文件设置
     QFile playerFile(PLAYERFILE_PATH);
     QDataStream txt(&playerFile);
-    //    playerFile.open(QIODevice::WriteOnly);
-    //    txt << 0;
-    //    playerFile.close();
+    playerFile.open(QIODevice::WriteOnly);
+    txt << 0;
+    playerFile.close();
     playerFile.open(QIODevice::ReadOnly);
     int player_num;
     txt >> player_num;
@@ -209,7 +209,7 @@ void RegWindow::reg()
                        player_list[i].myplane_path << player_list[i].has_screenclear << player_list[i].has_laser << player_list[i].has_missle << player_list[i].has_shield << player_list[i].revivetokens_num;
             }
             player_num++;
-            player = new Player(userNameLEd->text(), ConfirmLEd->text(), phoneLEd->text() , Data(), 0, 0, 0, 0, COMMONMYPLANE_PATH, false, false, false, false, 0);
+            player = new Player(userNameLEd->text(), ConfirmLEd->text(), phoneLEd->text() , Data(), 0, 5, 5, 20, COMMONMYPLANE_PATH, false, false, false, false, 0);
             //数据导入进文件
             txt << player_num << player->id << player->password << player->phone << player->mydata.score << player->mydata.coin << player->mydata.destorycommonenemy << player->mydata.destoryshootenemy << player->mydata.destoryspeedenemy << player->mydata.myplaneshoottime <<
                    player->mydata.crashtime << player->mydata.beshottime << player->mydata.destroyedbycommonenemy << player->mydata.destroyedbyshootenemy << player->mydata.destroyedbyspeedenemy << player->mydata.injury << player->mydata.cure <<

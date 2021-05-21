@@ -40,6 +40,9 @@ public:
     void click_cancel_button();
     void common_sort();
     void endless_sort();
+    void buy_health();
+    void buy_speed();
+    void buy_bulletinterval();
 
 signals:
     void signal_back();
@@ -54,6 +57,9 @@ private:
     int cost_of_laser;
     int cost_of_shield;
     int cost_of_screenclear;
+    int cost_of_health;
+    int cost_of_speed;
+    int cost_of_bulletinterval;
 
     Ui::MainWindow *ui;
     QPushButton btn_back;
@@ -69,6 +75,9 @@ private:
     bool is_laser;
     bool is_shield;
     bool is_screenclear;
+    bool is_health;
+    bool is_speed;
+    bool is_bulletinterval;
 
     //记录
     CommonRecord common_record[10];

@@ -2,6 +2,10 @@
 
 Player::Player()
 {
+    myplane_path = COMMONENEMY_PATH;
+    myplane_speed = 5;
+    myplane_health = 5;
+    myplane_bulletinterval = 20;
 }
 
 Player::Player(QString id, QString password,QString phone,Data mydata, int coins, int myplane_health, int myplane_speed, int myplane_bulletinterval,

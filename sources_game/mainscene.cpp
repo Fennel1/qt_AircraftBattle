@@ -5,7 +5,6 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <ctime>
-
 MainScene::MainScene(int difficulty, int model, Player *p, CommonRecord *commonrecord,
                      EndlessRecord *endlessrecord, QWidget *parent)
     : QWidget(parent), difficulty(difficulty), model(model)
@@ -38,7 +37,7 @@ MainScene::~MainScene()
 }
 
 void MainScene::initplane()
-{   
+{
     //敌机最大数量
     commonenemynum = 20 + difficulty;
     shootenemynum = 10 + difficulty;
@@ -50,7 +49,6 @@ void MainScene::initplane()
     plane->speed = player->myplane_speed;
     plane->bulletinterval = player->myplane_bulletinterval;
     plane->setplanePath(player->myplane_path);
-
 
     commonenemys = new CommonEnemyPlane[commonenemynum];
     shootenemys = new ShootEnemyPlane[shootenemynum];
@@ -109,7 +107,6 @@ void MainScene::initplane()
     difficultyinterval = 5000;
     difficultyrecorder = 0;
     isgameover = false;
-
 }
 
 void MainScene::initobject()
@@ -173,16 +170,24 @@ void MainScene::inittext()
     });
 
     QTimer* timer_value_of_boss = new QTimer;
-    timer_value_of_boss->start(500);
-    connect(timer_value_of_boss,&QTimer::timeout,[=](){
-        if(boss.health>0)
-        {
-            label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(boss.health));
-        }
-        else
-        {
-            label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(0));
-        }
+        timer_value_of_boss->start(500);
+        connect(timer_value_of_boss,&QTimer::timeout,[=](){
+            if(model == 0)
+            {
+                if(boss.health>0)
+                {
+                    label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(boss.health));
+                }
+                else
+                {
+                    label_value_of_boss.setText(QStringLiteral("boss血量: ")+QString::number(0));
+                }
+            }
+            else if(model == 1)
+            {
+                label_value_of_boss.setText(QStringLiteral("难度提升进度: ")+QString::number(difficultyrecorder*100/difficultyinterval)+QString("%"));
+            }
+
     });
 
     QTimer* timer_score = new QTimer;
@@ -194,18 +199,25 @@ void MainScene::inittext()
     QTimer* timer_progress_of_boss = new QTimer;
     timer_progress_of_boss->start(500);
     connect(timer_progress_of_boss,&QTimer::timeout,[=](){
-        if(bossrecorder*100/bossinterval<99)
+        if(model == 0)
         {
-            label_progress_of_boss.setText(QStringLiteral("boss出现进度:")+QString::number(bossrecorder*100/bossinterval)+QString("%"));
+            if(bossrecorder*100/bossinterval<99)
+            {
+                label_progress_of_boss.setText(QStringLiteral("boss出现进度:")+QString::number(bossrecorder*100/bossinterval)+QString("%"));
+            }
+            else
+            {
+                timer_progress_of_boss->stop();
+                label_progress_of_boss.setAutoFillBackground(true);
+                QPalette palette;
+                palette.setColor(QPalette::Background, QColor(255,0,0));
+                label_progress_of_boss.setPalette(palette);
+                label_progress_of_boss.setText(QStringLiteral("boss已出现！"));
+            }
         }
-        else
+        else if(model == 1)
         {
-            timer_progress_of_boss->stop();
-            label_progress_of_boss.setAutoFillBackground(true);
-            QPalette palette;
-            palette.setColor(QPalette::Background, QColor(255,0,0));
-            label_progress_of_boss.setPalette(palette);
-            label_progress_of_boss.setText(QStringLiteral("boss已出现！"));
+            label_progress_of_boss.setText(QStringLiteral("难度: ")+QString::number(difficulty));
         }
     });
 
@@ -1868,7 +1880,6 @@ void MainScene::return_home()
             }
             File.close();
         }
-
     }
     else        //无尽模式
     {
