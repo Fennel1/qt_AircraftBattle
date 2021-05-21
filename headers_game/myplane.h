@@ -25,6 +25,7 @@ public:
     //设置飞机参数
     void setspeed(int speed);
     void sethealth(int health);
+    void setplanePath(QString planepath);
     void setbulletinterval(int interval);
 
 protected:

@@ -5,11 +5,17 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <ctime>
-MainScene::MainScene(int difficulty, int model,Player *p, QWidget *parent)
+
+MainScene::MainScene(int difficulty, int model, Player *p, CommonRecord *commonrecord,
+                     EndlessRecord *endlessrecord, QWidget *parent)
     : QWidget(parent), difficulty(difficulty), model(model)
 {
     //用户
     player = p;
+
+    //记录
+    this->commonrecord = commonrecord;
+    this->endlessrecord = endlessrecord;
 
     //飞机参数初始化
     initplane();
@@ -32,7 +38,7 @@ MainScene::~MainScene()
 }
 
 void MainScene::initplane()
-{
+{   
     //敌机最大数量
     commonenemynum = 20 + difficulty;
     shootenemynum = 10 + difficulty;
@@ -40,6 +46,12 @@ void MainScene::initplane()
 
     //初始化飞机
     plane = new CommonMyPlane(COMMONMYPLANE_PATH, COMMONMYBOMB_PATH);
+    plane->health = player->myplane_health;
+    plane->speed = player->myplane_speed;
+    plane->bulletinterval = player->myplane_bulletinterval;
+    plane->setplanePath(player->myplane_path);
+
+
     commonenemys = new CommonEnemyPlane[commonenemynum];
     shootenemys = new ShootEnemyPlane[shootenemynum];
     speedenemys = new SpeedEnemyPlane[speedenemynum];
@@ -97,6 +109,7 @@ void MainScene::initplane()
     difficultyinterval = 5000;
     difficultyrecorder = 0;
     isgameover = false;
+
 }
 
 void MainScene::initobject()
@@ -1365,7 +1378,7 @@ void MainScene::collisionDetection()
                 commonenemys[i].free = true;
                 commonenemys[i].bombfree = false;
 
-                data.destoryshootenemy++;   //击毁普通敌机数加一
+                data.destorycommonenemy++;   //击毁普通敌机数加一
                 data.score += 5 + difficulty;
             }
         }
@@ -1761,6 +1774,7 @@ void MainScene::objectCollisionDetection()  //掉落物碰撞检测
         if (bloodbags[i].rect.intersects(plane->rect))
         {
             bloodbags[i].free = true;
+            data.cure++;
             plane->health++;
         }
     }
@@ -1829,11 +1843,63 @@ void MainScene::return_home()
         CommonRecord *record = new CommonRecord(player->id, data.score, data.coin);
         record->update();
 
+        QFile File(COMMONRECORDFILE_PATH);
+        QDataStream txt(&File);
+        int record_num;
+        File.open(QIODevice::ReadOnly);
+        txt >> record_num;
+        File.close();
+        if (record_num == 0)
+        {
+            return;
+        }
+        else
+        {
+            CommonRecord temp[record_num];
+            File.open(QIODevice::ReadOnly);
+            for (int i=0; i<record_num; i++)
+            {
+                txt >> record_num >> temp[i].player_name >> temp[i].score >> temp[i].coins;
+            }
+            sort(temp, temp+record_num, cmp);
+            for (int i=0; i<record_num && i<10; i++)
+            {
+                commonrecord[i] = temp[i];
+            }
+            File.close();
+        }
+
     }
     else        //无尽模式
     {
         EndlessRecord * record = new EndlessRecord(player->id, data.score, data.coin, difficulty);
         record->update();
+
+        QFile File(ENDLESSRECORDFILE_PATH);
+        QDataStream txt(&File);
+        int record_num;
+        File.open(QIODevice::ReadOnly);
+        txt >> record_num;
+        File.close();
+        if (record_num == 0)
+        {
+            return;
+        }
+        else
+        {
+            EndlessRecord temp[record_num];
+            File.open(QIODevice::ReadOnly);
+            for (int i=0; i<record_num; i++)
+            {
+                txt >> record_num >> temp[i].player_name >> temp[i].score >> temp[i].coins;
+            }
+            sort(temp, temp+record_num, cmp);
+            for (int i=0; i<record_num && i<10; i++)
+            {
+                endlessrecord[i] = temp[i];
+            }
+            File.close();
+        }
     }
 
     //更新玩家数据文件

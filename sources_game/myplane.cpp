@@ -86,6 +86,11 @@ void MyPlane::setPosition(int x, int y)
     rect.moveTo(X, Y);
 }
 
+void MyPlane::setplanePath(QString planepath)
+{
+    Plane.load(planepath);
+}
+
 void MyPlane::shoot()
 {
     //累加时间间隔记录变量

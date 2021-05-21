@@ -92,7 +92,7 @@ void RegWindow::reg()
     if(player_num==0){
         //要导入的数据
         player_num++;
-        player = new Player(userNameLEd->text(), ConfirmLEd->text(), phoneLEd->text() , Data(), 0, 0, 0, 0, "123", false, false, false, false, 0);
+        player = new Player(userNameLEd->text(), ConfirmLEd->text(), phoneLEd->text() , Data(), 0, 5, 5, 20, COMMONMYPLANE_PATH, false, false, false, false, 0);
         //数据导入进文件
         playerFile.open(QIODevice::WriteOnly);
         txt << player_num << player->id << player->password << player->phone << player->mydata.score << player->mydata.coin << player->mydata.destorycommonenemy << player->mydata.destoryshootenemy << player->mydata.destoryspeedenemy << player->mydata.myplaneshoottime <<

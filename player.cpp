@@ -2,7 +2,6 @@
 
 Player::Player()
 {
-
 }
 
 Player::Player(QString id, QString password,QString phone,Data mydata, int coins, int myplane_health, int myplane_speed, int myplane_bulletinterval,

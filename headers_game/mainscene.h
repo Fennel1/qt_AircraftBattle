@@ -1,6 +1,7 @@
 #ifndef MAINSCENE_H
 #define MAINSCENE_H
 
+#include <algorithm>
 #include <QWidget>
 #include <QTimer>
 #include <QTextBrowser>
@@ -17,6 +18,7 @@
 #include "boss.h"
 #include "player.h"
 #include "gamerecord.h"
+using namespace std;
 
 class MainScene : public QWidget
 {
@@ -25,7 +27,7 @@ class MainScene : public QWidget
 public:
     QTimer Timer;
 
-    MainScene(int difficulty, int model, Player *p, QWidget *parent = nullptr);
+    MainScene(int difficulty, int model, Player *p, CommonRecord *commonrecord, EndlessRecord *endlessrecord, QWidget *parent = nullptr);
     ~MainScene();
     //初始化
     void initScene();
@@ -156,8 +158,13 @@ private:
 
     //用户
     Player *player;
+
+    //记录
+    CommonRecord *commonrecord;
+    EndlessRecord *endlessrecord;
 };
 
+bool cmp(const Gamerecord &a, const Gamerecord &b);
 
 
 #endif // MAINSCENE_H

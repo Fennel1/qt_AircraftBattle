@@ -482,7 +482,6 @@ void MainWindow::common_sort()
         }
         File.close();
     }
-
 }
 
 void MainWindow::endless_sort()

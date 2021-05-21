@@ -8,10 +8,12 @@
 #include "headers_game/config.h"
 
 class MainWindow;
+class MainScene;
 
 class Gamerecord
 {
     friend class MainWindow;
+    friend class MainScene;
     friend bool cmp (const Gamerecord & a, const Gamerecord & b);
 public:
     Gamerecord();
