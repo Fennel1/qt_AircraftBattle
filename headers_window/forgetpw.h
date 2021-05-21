@@ -13,6 +13,8 @@
 #include "mainwindow.h"
 #include "player.h"
 #include <QMessageBox>
+#include <QValidator>
+
 
 class ForgetPW : public QWidget
 {
