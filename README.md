@@ -1,5 +1,7 @@
 # 东北大学计算机学院大一下C++课程设计 qt飞机大战
 
+# 如需要自取即可，记得点个star :D
+
 ## 部分截图
 ![image](https://user-images.githubusercontent.com/38092591/145820314-996a535c-0043-4986-9610-b63b3e6454ff.png)
 ![image](https://user-images.githubusercontent.com/38092591/145820331-6c7e732b-6905-49e9-aca4-318c710a4d89.png)
